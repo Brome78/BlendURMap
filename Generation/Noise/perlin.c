@@ -24,15 +24,15 @@ void shuffle(int *perm, int size)
 
 }
 
-float perlin(float x,float y,int resolution,int *perm)
+double perlin(double x,double y,int resolution,int *perm)
 {
-    float tmpX;
-    float tmpY;
+    double tmpX;
+    double tmpY;
     int x0, y0, ii, jj, gi0, gi1, gi2, gi3;
-    float unit = 1.0/sqrt(2);
-    float tmp, s, t, u, v, Cx, Cy, Li1, Li2;
+    double unit = 1.0/sqrt(2);
+    double tmp, s, t, u, v, Cx, Cy, Li1, Li2;
     int gradientX = 2;
-    float gradient[] = {unit,unit,-unit,unit,unit,-unit,-unit,-unit,
+    double gradient[] = {unit,unit,-unit,unit,unit,-unit,-unit,-unit,
         1,0,-1,0,0,1,0,-1};
 
     x /= resolution;
@@ -43,10 +43,10 @@ float perlin(float x,float y,int resolution,int *perm)
     ii = x0 % 255;
     jj = y0 % 255;
 
-    gi0 = perm[ii + perm[jj]]%8;
-    gi1 = perm[ii + 1 + perm[jj]]%8;
-    gi2 = perm[ii + perm[jj + 1]]%8;
-    gi3 = perm[ii + 1 + perm[jj + 1]]%8;
+    gi0 = perm[(ii + perm[jj])%255]%8;
+    gi1 = perm[(ii + 1 + perm[jj])%255]%8;
+    gi2 = perm[(ii + perm[jj + 1])%255]%8;
+    gi3 = perm[(ii + 1 + perm[jj + 1])%255]%8;
 
 
     tmpX = x-x0;
@@ -77,13 +77,37 @@ float perlin(float x,float y,int resolution,int *perm)
     return Li1 + Cy * (Li2-Li1);
 }
 
+double color_perlin(double x, double y, int resolution, int *perm, int oct,
+        double freq, double pers)
+{
+    double r = 0.;
+    double f = freq;
+    double amplitude = 1.;
+
+    for(int i = 0; i < oct; i++)
+    {
+        //Translation du centre de symétrie en i * 4096
+        int t = i * 4096;
+
+        //Calcul du bruit translaté
+        r += perlin(x * f + t, y*f+t, resolution, perm) * amplitude;
+
+        amplitude *= pers;
+        f *= 2;
+    }
+
+    double geo_lim = (1 - pers) / (1 - amplitude);
+
+    return r * geo_lim;
+}
+
 SDL_Surface* generate(int sizex,int sizey, int resolution)
 {
     srand(time(NULL));
     SDL_Surface* image = SDL_CreateRGBSurface(0,sizex,sizey,32,0,0,0,0);
     SDL_LockSurface(image);
     Uint32* pixels = image->pixels;
-
+    
 
     int perm[] = 
 {151,160,137,91,90,15,131,13,201,95,96,53,194,233,7,225,140,36,103,30,69,
@@ -108,7 +132,17 @@ SDL_Surface* generate(int sizex,int sizey, int resolution)
     {
         for(int x = 0; x<sizex; x++)
         {
-            int c = (perlin(x,y,resolution,perm)+1)*0.5*255;
+            pixels[y*sizey+x] = SDL_MapRGB(format,0,0,255);
+        }
+    }
+
+    for(int y = 0; y<sizey;y++)
+    {
+        for(int x = 0; x<sizex; x++)
+        {
+            int c = (color_perlin(x,y,resolution,perm,5,2.0,0.5)+1)*0.5*255;
+            if (c<20)
+                printf("break");
             pixels[y*sizey+x] = SDL_MapRGB(format,c,c,c);
         }
     }

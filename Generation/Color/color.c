@@ -1,5 +1,9 @@
 #include "../Utils/utils.h"
 
+Uint32 deep_ocean(SDL_PixelFormat* format)
+{
+    return SDL_MapRGB(format,0,0,180);
+}
 
 Uint32 ocean(SDL_PixelFormat* format)
 {
@@ -49,19 +53,23 @@ SDL_Surface* apply_biome(SDL_Surface* heightmap, int sizex, int sizey)
             Uint8 r,g,b;
             SDL_GetRGB(height_pixels[y*sizey+x],format,&r,&g,&b);
             Uint32 c = ocean(format);
-            if(r<108)
+            if(r<95)
+            {
+                c = deep_ocean(format);
+            }
+            else if(r<110)
             {
                 c = ocean(format);
             }
-            else if(r<115)
+            else if(r<128)
             {
                 c = coast(format);
             }
-            else if(r>= 115 && r <120)
+            else if(r>= 128 && r <135)
             {
                 c = beach(format);
             }
-            else if(r >= 200)
+            else if(r >= 170)
             {
                 c = picks(format);
             }
