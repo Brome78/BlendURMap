@@ -101,7 +101,7 @@ double color_perlin(double x, double y, int resolution, int *perm, int oct,
     return r * geo_lim;
 }
 
-SDL_Surface* generate(int sizex,int sizey, int resolution)
+SDL_Surface* perlin_generate(int sizex,int sizey, int resolution)
 {
     srand(time(NULL));
     SDL_Surface* image = SDL_CreateRGBSurface(0,sizex,sizey,32,0,0,0,0);
@@ -132,17 +132,7 @@ SDL_Surface* generate(int sizex,int sizey, int resolution)
     {
         for(int x = 0; x<sizex; x++)
         {
-            pixels[y*sizey+x] = SDL_MapRGB(format,0,0,255);
-        }
-    }
-
-    for(int y = 0; y<sizey;y++)
-    {
-        for(int x = 0; x<sizex; x++)
-        {
             int c = (color_perlin(x,y,resolution,perm,5,2.0,0.5)+1)*0.5*255;
-            if (c<20)
-                printf("break");
             pixels[y*sizey+x] = SDL_MapRGB(format,c,c,c);
         }
     }

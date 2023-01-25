@@ -30,6 +30,12 @@ Uint32 mountains(SDL_PixelFormat* format)
     return SDL_MapRGB(format,90,90,90);
 }
 
+Uint32 mid_mountains(SDL_PixelFormat* format)
+{
+    return SDL_MapRGB(format,120,120,120);
+}
+
+
 Uint32 plains(SDL_PixelFormat* format)
 {
     return SDL_MapRGB(format,58, 148, 45);
@@ -53,7 +59,7 @@ SDL_Surface* apply_biome(SDL_Surface* heightmap, int sizex, int sizey)
             Uint8 r,g,b;
             SDL_GetRGB(height_pixels[y*sizey+x],format,&r,&g,&b);
             Uint32 c = ocean(format);
-            if(r<95)
+            if(r<90)
             {
                 c = deep_ocean(format);
             }
@@ -61,11 +67,11 @@ SDL_Surface* apply_biome(SDL_Surface* heightmap, int sizex, int sizey)
             {
                 c = ocean(format);
             }
-            else if(r<128)
+            else if(r<118)
             {
                 c = coast(format);
             }
-            else if(r>= 128 && r <135)
+            else if(r>= 118 && r <125)
             {
                 c = beach(format);
             }
@@ -73,9 +79,13 @@ SDL_Surface* apply_biome(SDL_Surface* heightmap, int sizex, int sizey)
             {
                 c = picks(format);
             }
-            else if(r>=150)
+            else if(r>=160)
             {
                 c = mountains(format);
+            }
+            else if(r>=155)
+            {
+                c = mid_mountains(format);
             }
             else
             {

@@ -1,3 +1,3 @@
 #include "../Utils/utils.h"
 
-SDL_Surface* generate(int sizex, int sizey, int resolution);
+SDL_Surface* perlin_generate(int sizex, int sizey, int resolution);
