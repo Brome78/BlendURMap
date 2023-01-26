@@ -6,7 +6,7 @@ int main(void)
 {
     SDL_Surface *perlin = generate_simplex(1000,1000);
     save_image(perlin,"simplex.png");
-    SDL_Surface *map = apply_biome(perlin, 1000,1000);
+    SDL_Surface *map = apply_biome(perlin, perlin,1000,1000);
     save_image(map,"map.png");
     SDL_FreeSurface(perlin);
     SDL_FreeSurface(map);
