@@ -4,24 +4,43 @@
 #include <math.h>
 
 #include <stdio.h>
+#include "perlin.h"
 
 float interpolate(float a0, float a1, float w)
 {
     return (a1-a0)*w + a0;
 }
 
-void shuffle(int *perm, int size)
+char* shuffle(int *perm, int size, char *seed)
 {
+    char * n_seed = malloc(size*sizeof(char));
+    n_seed[0] = 1;
+    n_seed[1] = 1;
     int n = size - 1;
     while(n>1)
     {
-        int k = rand()%size;
+        int k = 0;
+        if(seed == NULL)
+        {
+            char c = rand()%size;
+            if(c<0)
+                c = -c;
+            if(c==0 && c == '\n')
+                c++;
+            n_seed[n] = c;
+            k = c;
+        }
+        else
+        {
+            k = seed[n];
+        }
         n--;
         int tmp = perm[n];
         perm[n] = perm[k];
         perm[k] = tmp;
     }
-
+    //printf("%s\n",n_seed);
+    return n_seed;
 }
 
 double perlin(double x,double y,int resolution,int *perm)
@@ -101,16 +120,15 @@ double color_perlin(double x, double y, int resolution, int *perm, int oct,
     return r * geo_lim;
 }
 
-SDL_Surface* perlin_generate(int sizex,int sizey, int resolution)
+struct map* perlin_generate(int sizex,int sizey, int resolution, char* seed)
 {
     srand(time(NULL));
     SDL_Surface* image = SDL_CreateRGBSurface(0,sizex,sizey,32,0,0,0,0);
     SDL_LockSurface(image);
     Uint32* pixels = image->pixels;
     
-
     int perm[] = 
-{151,160,137,91,90,15,131,13,201,95,96,53,194,233,7,225,140,36,103,30,69,
+    {151,160,137,91,90,15,131,13,201,95,96,53,194,233,7,225,140,36,103,30,69,
  142,8,99,37,240,21,10,23,190,6,148,247,120,234,75,0,26,197,62,94,252,219,
  203,117,35,11,32,57,177,33,88,237,149,56,87,174,20,125,136,171,168,68,175,
  74,165,71,134,139,48,27,166,77,146,158,231,83,111,229,122,60,211,133,230,220,
@@ -125,20 +143,29 @@ SDL_Surface* perlin_generate(int sizex,int sizey, int resolution)
  243,141,128,195,78,66,215,61,
  156,180};
 
-
-    shuffle(perm,256);
+    char* n_seed = shuffle(perm,256,seed);
     SDL_PixelFormat* format = image->format;
     for(int y = 0; y<sizey;y++)
     {
         for(int x = 0; x<sizex; x++)
         {
             int c = (color_perlin(x,y,resolution,perm,5,2.0,0.5)+1)*0.5*255;
-            pixels[y*sizey+x] = SDL_MapRGB(format,c,c,c);
+            pixels[y*sizex+x] = SDL_MapRGB(format,c,c,c);
         }
     }
 
     SDL_UnlockSurface(image);
-    return image;
+    struct map* map = malloc(sizeof(struct map));
+    map->map = image;
+    if (seed == NULL)
+    {
+        map->seed = n_seed;
+    }
+    else
+    {
+        map->seed = seed;
+    }
+    return map;
 }
 
 

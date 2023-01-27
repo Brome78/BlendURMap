@@ -6,7 +6,7 @@ CFLAGS = -Wall -Wextra `pkg-config --cflags sdl2 SDL2_image` -lm -g
 LDFLAGS =
 LDLIBS = `pkg-config --libs sdl2 SDL2_image` -lm
 
-SRC = Utils/utils.c Noise/perlin.c Noise/simplex.c Color/color.c main.c
+SRC = Utils/utils.c Noise/perlin.c Noise/simplex.c Color/chunk.c Color/color.c Noise/seed.c main.c
 OBJ = ${SRC:.c=.o}
 EXE = main
 

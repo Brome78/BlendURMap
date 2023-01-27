@@ -1,4 +1,7 @@
 #include "../Utils/utils.h"
+#include <stdlib.h>
+#include <time.h>
+#include <math.h>
 
 Uint32 deep_ocean(SDL_PixelFormat* format)
 {
@@ -154,7 +157,7 @@ SDL_Surface* apply_biome(SDL_Surface* heightmap, SDL_Surface* tempmap,
                 {
                     c = coast(format);
                 }
-                else if(rh>= 118 && rh <125)
+                else if(rh>= 118 && rh <120)
                 {
                     c = beach(format);
                 }
@@ -190,7 +193,7 @@ SDL_Surface* apply_biome(SDL_Surface* heightmap, SDL_Surface* tempmap,
                 {
                     c = coast(format);
                 }
-                else if(rh>= 118 && rh <125)
+                else if(rh>= 118 && rh <120)
                 {
                     c = beach(format);
                 }
@@ -245,3 +248,92 @@ SDL_Surface* apply_biome(SDL_Surface* heightmap, SDL_Surface* tempmap,
     SDL_UnlockSurface(image);
     return image;
 }
+
+
+SDL_Surface* draw_riviere(SDL_Surface* image,SDL_Surface* heightmap, int sizex, int sizey)
+{
+    SDL_LockSurface(image);
+    SDL_PixelFormat* format = image->format;
+    Uint32* pixels = image->pixels;
+    Uint32* h = heightmap->pixels;
+    srand(time(NULL));
+    for(int y = 0; y<sizey; y++)
+    {
+        for(int x = 0; x<sizex; x++)
+        {
+            if(pixels[y*sizex+ x] == ocean(format))
+            {
+                int prob = rand()%100;
+                if(prob < 10)
+                {
+                    int x0 = x;
+                    
+                    int y0 = y;
+                    
+                    char End = 0;
+                    while(!End && x0-1>0 && y0-1>0&&x0+1<sizex&&y0+1<sizey)
+                    {
+                        if(h[x0+1+(y0+1)*sizex]>h[x0+y0*sizex])
+                        {
+                            pixels[y0*sizex+x0] = ocean(format);
+                            x0 = x0+1;
+                            y0 = y0+1;
+                        }
+                        else if(h[x0+1+y0*sizex]>h[x0+y0*sizex])
+                        {
+                            pixels[y0*sizex+x0] = ocean(format);
+                            x0 = x0+1;
+                            y0 = y0;
+                        }
+                        else if(h[x0+1+(y0-1)*sizex]>h[x0+y0*sizex])
+                        {
+                            pixels[y0*sizex+x0] = ocean(format);
+                            x0 = x0+1;
+                            y0 = y0-1;
+                        }
+
+                        else if(h[x0 + (y0+1)*sizex]>h[x0+y0*sizex])
+                        {
+                            pixels[y0*sizex+x0] = ocean(format);
+                            x0 = x0;
+                            y0 = y0+1;
+                        }
+                        else if(h[x0+(y0-1)*sizex]>h[x0+y0*sizex])
+                        {
+                            pixels[y0*sizex+x0] = ocean(format);
+                            x0 = x0;
+                            y0 = y0-1;
+                        }
+                        else if(h[x0-1+(y0+1)*sizex]>h[x0+y0*sizex])
+                        {
+                            pixels[y0*sizex+x0] = ocean(format);
+                            x0 = x0-1;
+                            y0 = y0+1;
+                        }
+                        else if(h[x0-1+y0*sizex]>h[x0+y0*sizex])
+                        {
+                            pixels[y0*sizex+x0] = ocean(format);
+                            x0 = x0-1;
+                            y0 = y0;
+                        }
+                        else if(h[x0-1+(y0-1)*sizex]>h[x0+y0*sizex])
+                        {
+                            pixels[y0*sizex+x0] = ocean(format);
+                            x0 = x0-1;
+                            y0 = y0-1;
+                        }
+                        else
+                        {
+                            End = 1;
+                        }
+
+                        
+                    }
+                }
+            }
+        }
+    }
+    SDL_UnlockSurface(image);
+    return image;
+}
+
