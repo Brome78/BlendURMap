@@ -13,19 +13,19 @@ int main(void)
 
     char *s = read_seed("seed");
 
-    struct map *perlin = perlin_generate(1000,1000,500,s);
+    struct map *perlin = perlin_generate(1920,1080,500,s);
     //FILE *seed = fopen("seed","w");
     //fprintf(seed,"%s",perlin->seed);
     save_image(perlin->map,"simplex.png");
-    struct map *perlin2 = perlin_generate(1000,1000,900,NULL);
+    struct map *perlin2 = perlin_generate(1920,1080,900,s);
     SDL_Surface *map = apply_biome(perlin->map, perlin2->map,
-            1000,1000);
+            1920,1080);
 
 
     save_image(map,"map.png");
 
     struct chunk **chunk_map = define_chunk(perlin->map,
-            perlin2->map,1000,1000);
+            perlin2->map,1920,1080);
     //print_chunk(chunk_map, 1000,1000);
     //map = draw_riviere(map,perlin,1920,1080);
     //save_image(map,"riviere.png");

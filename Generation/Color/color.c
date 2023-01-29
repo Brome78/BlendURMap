@@ -38,6 +38,15 @@ Uint32 mid_mountains(SDL_PixelFormat* format)
     return SDL_MapRGB(format,120,120,120);
 }
 
+Uint32 plains2(SDL_PixelFormat* format)
+{
+    return SDL_MapRGB(format,0,102,51);
+}
+
+Uint32 plains3(SDL_PixelFormat* format)
+{
+    return SDL_MapRGB(format,0, 130, 0 );
+}
 
 Uint32 plains(SDL_PixelFormat* format)
 {
@@ -66,6 +75,11 @@ Uint32 mountains_desert(SDL_PixelFormat* format)
 Uint32 savanna(SDL_PixelFormat* format)
 {
     return SDL_MapRGB(format,146, 164, 90 );
+}
+
+Uint32 savanna2(SDL_PixelFormat* format)
+{
+    return SDL_MapRGB(format,111, 127, 68 );
 }
 
 Uint32 snow(SDL_PixelFormat* format)
@@ -173,7 +187,15 @@ SDL_Surface* apply_biome(SDL_Surface* heightmap, SDL_Surface* tempmap,
                 {
                     c = mid_mountains(format);
                 }
-                else
+                else if (rh>=140 && rh<155)
+                {
+                    c = plains2(format);
+                }
+                else if(rh>=135&&rh<140)
+                {
+                    c= plains3(format);
+                }
+                else 
                 {
                     c = plains(format);
                 }
@@ -197,13 +219,21 @@ SDL_Surface* apply_biome(SDL_Surface* heightmap, SDL_Surface* tempmap,
                 {
                     c = beach(format);
                 }
-                else if(rh<155 && rh>=125)
+                else if(rh<130 && rh>=125)
                 {
                     c = savanna(format);
+                }
+                else if(rh>=130&&rh<140)
+                {
+                    c = savanna2(format);
                 }
                 else if(rh<160)
                 {
                     c = mid_mountains_desert(format);
+                }
+                else if(rh>=130&&rh<140)
+                {
+                    c = savanna2(format);
                 }
                 else
                 {
