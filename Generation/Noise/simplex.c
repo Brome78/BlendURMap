@@ -8,7 +8,12 @@
 #include "simplex.h"
 
 #define FASTFLOOR(x) ( ((int)(x)<=(x)) ? ((int)x) : (((int)x)-1) )
-
+#define AMPLITUDE 1.0
+#define OCTAVES 6
+#define PERSISTENCE 0.5
+#define F2 0.366025403 // F2 = 0.5*(sqrt(3.0)-1.0)
+#define G2 0.211324865 // G2 = (3.0-Math.sqrt(3.0))/6.0
+                       
 int perm[256] = {151,160,137,91,90,15,
     131,13,201,95,96,53,194,233,7,225,140,36,103,30,69,142,8,99,37,240,21,10,23,
     190, 6,148,247,120,234,75,0,26,197,62,94,252,219,203,117,35,11,32,57,177,33,
@@ -56,12 +61,7 @@ char* shufflePerm(int *perm, int size, char *seed)
     //printf("%s\n",n_seed);
     return n_seed;
 }
-float  grad1( int hash, float x ) {
-    int h = hash & 15;
-    float grad = 1.0f + (h & 7);   // Gradient value 1.0, 2.0, ..., 8.0
-    if (h&8) grad = -grad;         // Set a random sign for the gradient
-    return ( grad * x );           // Multiply the gradient with the distance
-}
+
 
 float  grad2( int hash, float x, float y ) {
     int h = hash & 7;      // Convert low 3 bits of hash code
@@ -71,37 +71,10 @@ float  grad2( int hash, float x, float y ) {
 }
 
 
-// 1D simplex noise
-float snoise1(float x) {
-
-    int i0 = FASTFLOOR(x);
-    int i1 = i0 + 1;
-    float x0 = x - i0;
-    float x1 = x0 - 1.0f;
-
-    float n0, n1;
-
-    float t0 = 1.0f - x0*x0;
-    //  if(t0 < 0.0f) t0 = 0.0f; // this never happens for the 1D case
-    t0 *= t0;
-    n0 = t0 * t0 * grad1(perm[i0 & 0xff], x0);
-
-    float t1 = 1.0f - x1*x1;
-    //  if(t1 < 0.0f) t1 = 0.0f; // this never happens for the 1D case
-    t1 *= t1;
-    n1 = t1 * t1 * grad1(perm[i1 & 0xff], x1);
-    // The maximum value of this noise is 8*(3/4)^4 = 2.53125
-    // A factor of 0.395 would scale to fit exactly within [-1,1], but
-    // we want to match PRMan's 1D noise, so we scale it down some more.
-    return 0.25f * (n0 + n1);
-
-}
 
 // 2D simplex noise
 double simplexNoise2D(double x, double y,double resolution) {
 
-#define F2 0.366025403 // F2 = 0.5*(sqrt(3.0)-1.0)
-#define G2 0.211324865 // G2 = (3.0-Math.sqrt(3.0))/6.0
     x /= resolution;
     y /= resolution;
     float n0, n1, n2; // Noise contributions from the three corners
@@ -164,12 +137,26 @@ double simplexNoise2D(double x, double y,double resolution) {
     // The result is scaled to return values in the interval [-1,1].
     return 40.0f * (n0 + n1 + n2); 
 }
+double fractalNoise2D(double x, double y, int octaves, double persistence,double resolution) {
+    double total = 0;
+    double frequency = 1;
+    double amplitude = 1;
+    double maxValue = 0;  // Used for normalizing result to 0.0 - 1.0
+    for (int i = 0; i < octaves; i++) {
+        total += simplexNoise2D(x * frequency, y * frequency,resolution) * amplitude;
+
+        maxValue += amplitude;
+
+        amplitude *= persistence;
+        frequency *= 2;
+    }
+
+    return total/maxValue;
+}
 double smoothNoise(double x, double y,double resolution) {
-    x/= resolution;
-    y/= resolution;
-    double corners = (simplexNoise2D(x - 1, y - 1,resolution) + simplexNoise2D(x + 1, y - 1,resolution) + simplexNoise2D(x - 1, y + 1,resolution) + simplexNoise2D(x + 1, y + 1,resolution)) / 16.0;
-    double sides   = (simplexNoise2D(x - 1, y ,resolution  ) + simplexNoise2D(x + 1, y   ,resolution ) + simplexNoise2D(x    , y - 1,resolution) + simplexNoise2D(x    , y + 1,resolution)) /  8.0;
-    double center  =  simplexNoise2D(x    , y   ,resolution) / 4.0;
+    double corners = (fractalNoise2D(x - 1, y - 1,OCTAVES,PERSISTENCE,resolution) + fractalNoise2D(x + 1, y - 1,OCTAVES,PERSISTENCE,resolution) + fractalNoise2D(x - 1, y + 1,OCTAVES,PERSISTENCE,resolution) + fractalNoise2D(x + 1, y + 1,OCTAVES,PERSISTENCE,resolution)) / 16.0;
+    double sides   = (fractalNoise2D(x - 1, y ,OCTAVES,PERSISTENCE,resolution  ) + fractalNoise2D(x + 1, y   ,OCTAVES,PERSISTENCE,resolution ) + fractalNoise2D(x    , y - 1,OCTAVES,PERSISTENCE,resolution) + fractalNoise2D(x    , y + 1,OCTAVES,PERSISTENCE,resolution)) /  8.0;
+    double center  =  fractalNoise2D(x    , y   ,OCTAVES,PERSISTENCE,resolution) / 4.0;
     return corners + sides + center;
 }
 SDL_Surface* generate_simplex(double sizex, double sizey, double resolution)
@@ -181,8 +168,13 @@ SDL_Surface* generate_simplex(double sizex, double sizey, double resolution)
     SDL_PixelFormat* format = image->format;
     for (int x = 0; x < sizex; x++) {
         for (int y = 0; y < sizey; y++) {
-            double noise = simplexNoise2D(x,y,resolution);
+            double noise = smoothNoise(x,y,resolution);
             int color = (int)((noise+ 1.0) * 0.5 * 255.0); 
+            while(color < 255)
+                color += 255;
+            while(color > 255)
+                color -= 255;
+            //printf("%d\n",color);
             pixels[y*image->w+x] = SDL_MapRGB(format,color,color,color);
         }
     }
