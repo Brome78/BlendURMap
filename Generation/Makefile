@@ -2,9 +2,9 @@
 
 CC = gcc
 CPPFLAGS =
-CFLAGS = -Wall -Wextra `pkg-config --cflags sdl2 SDL2_image` -lm -g
+CFLAGS = -Wall -Wextra `pkg-config --cflags sdl2 SDL2_image` -lm -g -lpng
 LDFLAGS =
-LDLIBS = `pkg-config --libs sdl2 SDL2_image` -lm
+LDLIBS = `pkg-config --libs sdl2 SDL2_image` -lm -lpng
 
 SRC = Utils/utils.c Noise/perlin.c Noise/simplex.c Color/chunk.c Color/color.c Color/props.c Noise/seed.c main.c
 OBJ = ${SRC:.c=.o}
@@ -17,4 +17,4 @@ ${EXE}: ${OBJ}
 .PHONY: clean
 
 clean:
-	${RM} ${OBJ} ${EXE} *.png
+	${RM} ${OBJ} ${EXE} *.png *.bmp

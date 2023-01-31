@@ -15,3 +15,6 @@ SDL_Surface* load_image(const char* path);
 
 void save_image(SDL_Surface* surface, const char* path);
 
+int** to_rows(SDL_Surface* s);
+
+void bmp_to_png(char* input,char* output); 
