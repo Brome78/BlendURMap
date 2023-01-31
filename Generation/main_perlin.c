@@ -4,6 +4,7 @@
 #include "Noise/simplex.h"
 #include "Color/chunk.h"
 #include "Noise/seed.h"
+#include "Color/props.h"
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -21,9 +22,8 @@ int main(void)
     SDL_Surface *map = apply_biome(perlin->map, perlin2->map,
             1920,1080);
 
-
+    draw_bush(map,10,10,1920,1080);
     save_image(map,"map.png");
-
     struct chunk **chunk_map = define_chunk(perlin->map,
             perlin2->map,1920,1080);
     //print_chunk(chunk_map, 1000,1000);
