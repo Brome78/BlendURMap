@@ -15,6 +15,11 @@
 #define SAVANNA 9
 #define FREEZE_PLAINS 10
 #define BEACH 11
+#define FOREST 12
+
+Uint32 plains2(SDL_PixelFormat* format);
+Uint32 plains(SDL_PixelFormat* format);
+Uint32 desert(SDL_PixelFormat* format);
 
 SDL_Surface* apply_biome(SDL_Surface* heightmap, SDL_Surface* tempmap,
         int sizex, int sizey);

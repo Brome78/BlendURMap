@@ -99,6 +99,14 @@ Uint32 freeze_deep_ocean(SDL_PixelFormat* format)
 {
     return SDL_MapRGB(format,41, 128, 185);
 }
+Uint32 relief_mountains(SDL_PixelFormat* format)
+{
+    return SDL_MapRGB(format,70, 70, 70);
+}
+Uint32 relief_beach(SDL_PixelFormat* format)
+{
+    return SDL_MapRGB(format,41, 128, 185);
+}
 
 
 SDL_Surface* apply_biome(SDL_Surface* heightmap, SDL_Surface* tempmap,
@@ -150,8 +158,6 @@ SDL_Surface* apply_biome(SDL_Surface* heightmap, SDL_Surface* tempmap,
                 {
                     c = mid_mountains(format);
                 }
-
-
                 else
                 {
                     c=snow(format);
@@ -272,7 +278,30 @@ SDL_Surface* apply_biome(SDL_Surface* heightmap, SDL_Surface* tempmap,
                     c = mountains_desert(format);
                 }
             }
-            pixels[y*sizex+x] = c;
+            if(y+1<sizey&&rh==155&&c==mid_mountains(format))
+            {
+                pixels[(y)*sizex+x] = c;
+                pixels[(y+1)*sizex+x] = relief_mountains(format);
+            }
+            else if(y+1<sizey&&rh==118&&c==beach(format))
+            {
+                pixels[(y)*sizex+x] = c;
+                pixels[(y+1)*sizex+x] = relief_beach(format);
+
+            }
+            else if(y+1<sizey&&rh==160&&c==mountains(format))
+            {
+                pixels[(y)*sizex+x] = c;
+                pixels[(y+1)*sizex+x] = relief_mountains(format);
+            }
+            else if(pixels[y*sizex+x] == relief_mountains(format)&&
+                    ((rh>155 && rh<159) ||rh>160))
+                pixels[y*sizex+x] = c;
+           else if(pixels[y*sizex+x] == relief_beach(format)&&rh>118)
+                pixels[y*sizex+x] = c;
+            else if(pixels[y*sizex+x]!=relief_mountains(format)&&
+                    pixels[y*sizex+x]!=relief_beach(format))
+                pixels[y*sizex+x] =c;
         }
     }
     SDL_UnlockSurface(image);

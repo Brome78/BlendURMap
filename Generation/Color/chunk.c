@@ -68,6 +68,8 @@ int set_biome(SDL_Surface *height, SDL_Surface *temp,
     }
     else if(temp_med<140)
     {
+        if(height_med>=140 && height_med<155)
+            return FOREST;
         return PLAINS;
     }
     else if(temp_med<155)

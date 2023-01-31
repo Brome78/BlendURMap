@@ -41,18 +41,15 @@ int main(int argc, char** argv)
             1920,1080);
 
 
-    draw_bush(map,10,10,1920,1080);
+    //draw_tree(map,10,10,1920,1080);
     save_image(map,"map.bmp");
     struct chunk **chunk_map = define_chunk(perlin->map,
             perlin2->map,1920,1080);
 
+    apply_props(map, chunk_map,1920,1080);
+    save_image(map,"map_forest.bmp");
 
-    save_image(map,"map.bmp");
-
-    //struct chunk **chunk_map = define_chunk(perlin->map,
-     //       perlin2->map,1920,1080);
-
-    //print_chunk(chunk_map, 1000,1000);
+    //print_chunk(chunk_map, 1920,1080);
     //map = draw_riviere(map,perlin,1920,1080);
     //save_image(map,"riviere.png");
     SDL_FreeSurface(perlin->map);

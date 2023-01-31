@@ -5,6 +5,8 @@
 
 #include "../Utils/utils.h"
 
-int draw_bush(SDL_Surface *map, int x, int y, int sizex, int sizey);
+int draw_tree(SDL_Surface *map, int x, int y, int sizex, int sizey);
+int apply_props(SDL_Surface *map, struct chunk **chunk_map, 
+        int sizex, int sizey);
 
 #endif
