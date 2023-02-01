@@ -8,7 +8,7 @@
 
 
 int set_biome(SDL_Surface *height, SDL_Surface *temp,
-        int xmin, int xmax, int ymin, int ymax, int sizex, int sizey)
+        int xmin, int xmax, int ymin, int ymax, int sizex)
 {
     int height_med = 0;
     int temp_med = 0;
@@ -116,7 +116,7 @@ struct chunk **define_chunk(SDL_Surface *height, SDL_Surface *temp,
                 curr->ymax = (y+1)*16;
 
             curr->id_biome = set_biome(height, temp,curr->xmin,curr->xmax,
-                    curr->ymin,curr->ymax,sizex,sizey);
+                    curr->ymin,curr->ymax,sizex);
 
             chunk_map[y*chunk_sizex+x] = curr;
         }
@@ -183,7 +183,9 @@ void print_chunk(struct chunk **chunk_map, int sizex, int sizey)
                 case BEACH:
                     printf("BIOME = BEACH\n");
                     break;
-
+                case FOREST:
+                    printf("BIOME = FOREST\n");
+                    break;
                 default:
                     printf("BIOME = NULL\n");
             }

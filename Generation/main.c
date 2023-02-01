@@ -32,16 +32,15 @@ int main(int argc, char** argv)
     }
 
 
-    struct map* perlin = perlin_generate(1920,1080,500,NULL);
+    struct map* perlin = perlin_generate(1920,1080,500,s);
     //FILE *seed = fopen("seed","w");
     //fprintf(seed,"%s",perlin->seed);
     save_image(perlin->map,"perlin.bmp");
-    struct map *perlin2 = perlin_generate(1920,1080,900,NULL);
+    struct map *perlin2 = perlin_generate(1920,1080,900,s);
     SDL_Surface *map = apply_biome(perlin->map, perlin2->map,
             1920,1080);
 
 
-    //draw_tree(map,10,10,1920,1080);
     save_image(map,"map.bmp");
     struct chunk **chunk_map = define_chunk(perlin->map,
             perlin2->map,1920,1080);
@@ -50,8 +49,8 @@ int main(int argc, char** argv)
     save_image(map,"map_forest.bmp");
 
     //print_chunk(chunk_map, 1920,1080);
-    //map = draw_riviere(map,perlin,1920,1080);
-    //save_image(map,"riviere.png");
+    map = draw_riviere(map,perlin->map,1920,1080);
+    save_image(map,"riviere.png");
     SDL_FreeSurface(perlin->map);
     SDL_FreeSurface(map);
     return 0;
