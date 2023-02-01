@@ -4,7 +4,7 @@
 #include "Noise/simplex.h"
 #include "Color/chunk.h"
 #include "Noise/seed.h"
-
+#include "Color/biome.h"
 #include "Color/props.h"
 
 #include <err.h>

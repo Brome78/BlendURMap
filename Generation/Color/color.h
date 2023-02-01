@@ -20,9 +20,28 @@
 Uint32 plains2(SDL_PixelFormat* format);
 Uint32 plains(SDL_PixelFormat* format);
 Uint32 desert(SDL_PixelFormat* format);
+Uint32 deep_ocean(SDL_PixelFormat* format);
+Uint32 ocean(SDL_PixelFormat* format);
+Uint32 coast(SDL_PixelFormat* format);
+Uint32 beach(SDL_PixelFormat* format);
+Uint32 picks(SDL_PixelFormat* format);
+Uint32 mountains(SDL_PixelFormat* format);
+Uint32 mid_mountains(SDL_PixelFormat* format);
+Uint32 plains3(SDL_PixelFormat* format);
+Uint32 low_desert(SDL_PixelFormat* format);
+Uint32 mid_mountains_desert(SDL_PixelFormat* format);
+Uint32 mountains_desert(SDL_PixelFormat* format);
+Uint32 savanna(SDL_PixelFormat* format);
+Uint32 savanna2(SDL_PixelFormat* format);
+Uint32 snow(SDL_PixelFormat* format);
+Uint32 freeze_ocean(SDL_PixelFormat* format);
+Uint32 freeze_coast(SDL_PixelFormat* format);
+Uint32 freeze_deep_ocean(SDL_PixelFormat* format);
+Uint32 relief_mountains(SDL_PixelFormat* format);
+Uint32 relief_beach(SDL_PixelFormat* format);
+Uint32 relief_desert(SDL_PixelFormat* format);
 
-SDL_Surface* apply_biome(SDL_Surface* heightmap, SDL_Surface* tempmap,
-        int sizex, int sizey);
+
 
 SDL_Surface* draw_riviere(SDL_Surface* image,SDL_Surface* heightmap, int sizex, int sizey);
 
