@@ -1,5 +1,5 @@
 #include <err.h>
-#include "../../libs/include/libpng16/png.h"
+#include "../../libs/libpng/include/libpng16/png.h"
 #include "utils.h"
 SDL_Surface* load_image(const char* path)
 {

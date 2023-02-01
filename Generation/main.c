@@ -10,7 +10,7 @@
 
 #include "Color/props.h"
 
-#include "../libs/include/libpng16/png.h"
+#include "../libs/libpng/include/libpng16/png.h"
 
 
 int main(int argc, char** argv)
