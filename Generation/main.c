@@ -1,3 +1,6 @@
+#include <err.h>
+#include <stdlib.h>
+#include <stdio.h>
 #include "Utils/utils.h"
 #include "Noise/perlin.h"
 #include "Color/color.h"
@@ -7,12 +10,8 @@
 
 #include "Color/props.h"
 
-#include <err.h>
-#include <png.h>
+#include "../libs/include/libpng16/png.h"
 
-#include <stdlib.h>
-#include <libpng/png.h>
-#include <stdio.h>
 
 int main(int argc, char** argv)
 {
