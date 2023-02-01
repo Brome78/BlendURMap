@@ -4,7 +4,7 @@ CC = gcc
 CPPFLAGS =
 CFLAGS = -Wall -Wextra `pkg-config --cflags sdl2 SDL2_image` -lm -g -lpng
 LDFLAGS =-L./../libs/lib
-LDLIBS = `pkg-config --libs sdl2 SDL2_image` -lm -lpng -lpng
+LDLIBS = `pkg-config --libs sdl2 SDL2_image` -lm -lpng 
 
 SRC = Utils/utils.c Noise/perlin.c Noise/simplex.c Color/chunk.c Color/color.c Color/props.c Noise/seed.c main.c
 OBJ = ${SRC:.c=.o}
