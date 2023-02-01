@@ -168,7 +168,7 @@ SDL_Surface* generate_simplex(double sizex, double sizey, double resolution)
     SDL_PixelFormat* format = image->format;
     for (int x = 0; x < sizex; x++) {
         for (int y = 0; y < sizey; y++) {
-            double noise = smoothNoise(x,y,resolution);
+            double noise = fractalNoise2D(x,y,OCTAVES,PERSISTENCE,resolution);
             int color = (int)((noise+ 1.0) * 0.5 * 255.0); 
             while(color < 255)
                 color += 255;
