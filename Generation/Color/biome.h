@@ -17,8 +17,21 @@
 #define BEACH 11
 #define FOREST 12
 
+typedef struct threshold{
+    int deep_ocean;
+    int ocean;
+    int coast;
+    int beach;
+    int mid_mountains;
+    int mountains;
+    int picks;
+    int plains;
+    int snow;
+    int savanna;
+}threshold;
+
 SDL_Surface* apply_biome(SDL_Surface* heightmap, SDL_Surface* tempmap,
-        int sizex, int sizey);
+        int sizex, int sizey, struct threshold *threshold);
 
 
 

@@ -1,11 +1,12 @@
 #include "../Utils/utils.h"
 #include "color.h"
+#include "biome.h"
 #include <stdlib.h>
 #include <time.h>
 #include <math.h>
 
 SDL_Surface* apply_biome(SDL_Surface* heightmap, SDL_Surface* tempmap,
-        int sizex, int sizey)
+        int sizex, int sizey, struct threshold *threshold)
 {
     Uint32* height_pixels = heightmap->pixels;
     Uint32* temp_pixels = tempmap->pixels;
@@ -23,33 +24,29 @@ SDL_Surface* apply_biome(SDL_Surface* heightmap, SDL_Surface* tempmap,
             SDL_GetRGB(height_pixels[y*sizex+x],format,&rh,&gh,&bh);
             SDL_GetRGB(temp_pixels[y*sizex+x],format, &rt,&gt,&bt);
             Uint32 c = ocean(format);
-            if (rt<115)
+            if (rt<threshold->snow)
             {
-                if(rh<90)
+                if(rh<threshold->deep_ocean)
                 {
                     c = freeze_deep_ocean(format);
                 }
-                else if(rh<110)
+                else if(rh<threshold->ocean)
                 {
                     c = freeze_ocean(format);
                 }
-                else if(rh<118)
+                else if(rh<threshold->coast)
                 {
                     c = freeze_coast(format);
                 }
-                /*else if(rh>= 118 && rh <125)
-                {
-                    c = beach(format);
-                }*/
-                else if(rh >= 170)
+                else if(rh >= threshold->picks)
                 {
                     c = picks(format);
                 }
-                else if(rh>=160)
+                else if(rh>=threshold->mountains)
                 {
                     c = mountains(format);
                 }
-                else if(rh>=155)
+                else if(rh>=threshold->mid_mountains)
                 {
                     c = mid_mountains(format);
                 }
@@ -58,33 +55,33 @@ SDL_Surface* apply_biome(SDL_Surface* heightmap, SDL_Surface* tempmap,
                     c=snow(format);
                 }
             }
-            else if(rt<140)
+            else if(rt<threshold->plains)
             {
-                if(rh<90)
+                if(rh<threshold->deep_ocean)
                 {
                     c = deep_ocean(format);
                 }
-                else if(rh<110)
+                else if(rh<threshold->ocean)
                 {
                     c = ocean(format);
                 }
-                else if(rh<118)
+                else if(rh<threshold->coast)
                 {
                     c = coast(format);
                 }
-                else if(rh>= 118 && rh <120)
+                else if(rh>= threshold->coast && rh <120)
                 {
                     c = beach(format);
                 }
-                else if(rh >= 170)
+                else if(rh >= threshold->picks)
                 {
                     c = picks(format);
                 }
-                else if(rh>=160)
+                else if(rh>=threshold->mountains)
                 {
                     c = mountains(format);
                 }
-                else if(rh>=155)
+                else if(rh>=threshold->mid_mountains)
                 {
                     c = mid_mountains(format);
                 }
@@ -101,7 +98,7 @@ SDL_Surface* apply_biome(SDL_Surface* heightmap, SDL_Surface* tempmap,
                     c = plains(format);
                 }
             }
-            else if(rt <155)
+            else if(rt <threshold->savanna)
             {
                 if(rh<90)
                 {
