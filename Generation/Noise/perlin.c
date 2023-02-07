@@ -13,9 +13,14 @@ float interpolate(float a0, float a1, float w)
 
 char* shuffle(int *perm, int size, char *seed)
 {
-    char * n_seed = malloc(size*sizeof(char));
-    n_seed[0] = 1;
-    n_seed[1] = 1;
+    
+    char * n_seed;
+    if(seed == NULL)
+    {
+        n_seed = malloc(size*sizeof(char));
+        n_seed[0] = 1;
+        n_seed[1] = 1;
+    }
     int n = size - 1;
     while(n>1)
     {
@@ -32,15 +37,18 @@ char* shuffle(int *perm, int size, char *seed)
         }
         else
         {
-            k = seed[n];
+            k = (int)seed[n];
+            if(k<0)
+                k = k*(-1);
         }
         n--;
         int tmp = perm[n];
         perm[n] = perm[k];
         perm[k] = tmp;
     }
-    //printf("%s\n",n_seed);
-    return n_seed;
+    if(seed == NULL)
+        return n_seed;
+    return seed;
 }
 
 double perlin(double x,double y,int resolution,int *perm)
@@ -126,8 +134,8 @@ struct map* perlin_generate(int sizex,int sizey, int resolution, char* seed)
     SDL_Surface* image = SDL_CreateRGBSurface(0,sizex,sizey,32,0,0,0,0);
     SDL_LockSurface(image);
     Uint32* pixels = image->pixels;
-    
-    int perm[] = 
+
+    int perm[] =
     {151,160,137,91,90,15,131,13,201,95,96,53,194,233,7,225,140,36,103,30,69,
  142,8,99,37,240,21,10,23,190,6,148,247,120,234,75,0,26,197,62,94,252,219,
  203,117,35,11,32,57,177,33,88,237,149,56,87,174,20,125,136,171,168,68,175,
@@ -157,14 +165,8 @@ struct map* perlin_generate(int sizex,int sizey, int resolution, char* seed)
     SDL_UnlockSurface(image);
     struct map* map = malloc(sizeof(struct map));
     map->map = image;
-    if (seed == NULL)
-    {
-        map->seed = n_seed;
-    }
-    else
-    {
-        map->seed = seed;
-    }
+    map->seed = n_seed;
+    
     return map;
 }
 

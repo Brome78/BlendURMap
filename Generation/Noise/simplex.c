@@ -32,9 +32,13 @@ int perm[256] = {151,160,137,91,90,15,
 
 char* shufflePerm(int *perm, int size, char *seed)
 {
-    char * n_seed = malloc(size*sizeof(char));
-    n_seed[0] = 1;
-    n_seed[1] = 1;
+    char * n_seed;
+    if(seed == NULL)
+    {
+        n_seed= malloc(size*sizeof(char));
+        n_seed[0] = 1;
+        n_seed[1] = 1;
+    }
     int n = size - 1;
     while(n>1)
     {
@@ -52,14 +56,17 @@ char* shufflePerm(int *perm, int size, char *seed)
         else
         {
             k = seed[n];
+            if(k<0)
+                k = -1*k;
         }
         n--;
         int tmp = perm[n];
         perm[n] = perm[k];
         perm[k] = tmp;
     }
-    //printf("%s\n",n_seed);
-    return n_seed;
+    if(seed == NULL)
+        return n_seed;
+    return seed;
 }
 
 
@@ -161,7 +168,8 @@ double smoothNoise(double x, double y,double resolution) {
 }
 SDL_Surface* generate_simplex(double sizex, double sizey, double resolution)
 {
-    shufflePerm(perm,256,NULL);
+    char* seed = shufflePerm(perm,256,NULL);
+    free(seed); // TMP FOR MEM LEAK
     SDL_Surface* image = SDL_CreateRGBSurface(0,sizex,sizey,32,0,0,0,0);
     SDL_LockSurface(image);
     Uint32* pixels = image->pixels;

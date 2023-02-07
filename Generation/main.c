@@ -26,6 +26,8 @@ int main(int argc, char** argv)
         SDL_Surface* simplex = generate_simplex(1920,1080,500);
         save_image(simplex,"simplex.bmp");
         bmp_to_png("simplex.bmp","simplex.png");
+        SDL_FreeSurface(simplex);
+        free(s);
         return 0;
     }
 
@@ -49,16 +51,27 @@ int main(int argc, char** argv)
     SDL_Surface *map = apply_biome(perlin->map, perlin2->map,
             1920,1080,t);
 
-    save_image(map,"map.bmp");
+    //save_image(map,"map.bmp");
     struct chunk **chunk_map = define_chunk(perlin->map,
             perlin2->map,1920,1080);
 
     apply_props(map, chunk_map,1920,1080);
-    save_image(map,"map_forest.bmp");
+    //save_image(map,"map_forest.bmp");
 
     map = draw_riviere(map,perlin->map,1920,1080);
-    save_image(map,"riviere.png");
+    //save_image(map,"riviere.png");
+
+
+    free_chunk(chunk_map,1920,1080);
     SDL_FreeSurface(perlin->map);
+    free(perlin->seed);
+    free(perlin);
+
+
     SDL_FreeSurface(map);
+    SDL_FreeSurface(perlin2->map);
+    free(perlin2);
+
+    free(t);
     return 0;
 }

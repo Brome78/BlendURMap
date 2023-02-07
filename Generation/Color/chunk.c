@@ -95,6 +95,8 @@ struct chunk **define_chunk(SDL_Surface *height, SDL_Surface *temp,
 
     struct chunk **chunk_map = 
         malloc(chunk_sizex*chunk_sizey*sizeof(struct chunk*));
+    if(chunk_map == 0)
+        return NULL;
     
     for(int y = 0; y < chunk_sizey; y++)
     {
@@ -122,6 +124,24 @@ struct chunk **define_chunk(SDL_Surface *height, SDL_Surface *temp,
         }
     }
     return chunk_map;
+}
+
+void free_chunk(struct chunk **chunk_map, int sizex, int sizey)
+{
+     int chunk_sizex = sizex/16;
+    if(sizex%16>0)
+        chunk_sizex++;
+
+    int chunk_sizey = sizey/16;
+    if(sizey%16>0)
+        chunk_sizey++;
+
+
+    for(int i = 0;i<chunk_sizex*chunk_sizey;i++)
+    {
+        free(chunk_map[i]);
+    }
+    free(chunk_map);
 }
 
 void print_chunk(struct chunk **chunk_map, int sizex, int sizey)
