@@ -31,6 +31,7 @@ int main(int argc, char** argv)
         return 0;
     }
 
+
     struct options* opt_alt = malloc(sizeof(struct options));
     opt_alt->sizex = 1920;
     opt_alt->sizey = 1080;
@@ -87,6 +88,9 @@ int main(int argc, char** argv)
     SDL_FreeSurface(map);
     SDL_FreeSurface(perlin2->map);
     free(perlin2);
+
+    free(opt_alt);
+    free(opt_temp);
 
     free(t);
     return 0;
