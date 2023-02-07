@@ -1,16 +1,14 @@
 #include <stdlib.h>
+#include <time.h>
 #include <math.h>
-#include <stdbool.h>
 #include <string.h>
 #include <stdint.h>
 #include <errno.h>
 #include <stdio.h>
 #include "simplex.h"
-
+#include "../Utils/utils.h"
+#include "../Color/biome.h"
 #define FASTFLOOR(x) ( ((int)(x)<=(x)) ? ((int)x) : (((int)x)-1) )
-#define AMPLITUDE 1.0
-#define OCTAVES 6
-#define PERSISTENCE 0.5
 #define F2 0.366025403 // F2 = 0.5*(sqrt(3.0)-1.0)
 #define G2 0.211324865 // G2 = (3.0-Math.sqrt(3.0))/6.0
                        
@@ -160,31 +158,24 @@ double fractalNoise2D(double x, double y, int octaves, double persistence,double
 
     return total/maxValue;
 }
-double smoothNoise(double x, double y,double resolution) {
-    double corners = (fractalNoise2D(x - 1, y - 1,OCTAVES,PERSISTENCE,resolution) + fractalNoise2D(x + 1, y - 1,OCTAVES,PERSISTENCE,resolution) + fractalNoise2D(x - 1, y + 1,OCTAVES,PERSISTENCE,resolution) + fractalNoise2D(x + 1, y + 1,OCTAVES,PERSISTENCE,resolution)) / 16.0;
-    double sides   = (fractalNoise2D(x - 1, y ,OCTAVES,PERSISTENCE,resolution  ) + fractalNoise2D(x + 1, y   ,OCTAVES,PERSISTENCE,resolution ) + fractalNoise2D(x    , y - 1,OCTAVES,PERSISTENCE,resolution) + fractalNoise2D(x    , y + 1,OCTAVES,PERSISTENCE,resolution)) /  8.0;
-    double center  =  fractalNoise2D(x    , y   ,OCTAVES,PERSISTENCE,resolution) / 4.0;
-    return corners + sides + center;
-}
-SDL_Surface* generate_simplex(double sizex, double sizey, double resolution)
+struct map* generate_simplex(char* s,struct options* o)
 {
-    char* seed = shufflePerm(perm,256,NULL);
-    free(seed); // TMP FOR MEM LEAK
-    SDL_Surface* image = SDL_CreateRGBSurface(0,sizex,sizey,32,0,0,0,0);
+    srand(time(NULL));
+    char* seed = shufflePerm(perm,256,s);
+    SDL_Surface* image = SDL_CreateRGBSurface(0,o->sizex,o->sizey,32,0,0,0,0);
     SDL_LockSurface(image);
     Uint32* pixels = image->pixels;
     SDL_PixelFormat* format = image->format;
-    for (int x = 0; x < sizex; x++) {
-        for (int y = 0; y < sizey; y++) {
-            double noise = fractalNoise2D(x,y,OCTAVES,PERSISTENCE,resolution);
+    for (int x = 0; x < o->sizex; x++) {
+        for (int y = 0; y < o->sizey; y++) {
+            double noise = fractalNoise2D(x,y,o->octave,o->persistence,o->resolution);
             int color = (int)((noise+ 1.0) * 0.5 * 255.0); 
-            while(color < 255)
-                color += 255;
-            while(color > 255)
-                color -= 255;
-            //printf("%d\n",color);
             pixels[y*image->w+x] = SDL_MapRGB(format,color,color,color);
         }
     }
     return image;
+    struct map* m = malloc(sizeof(struct map));
+    m->map = image;
+    m->seed = seed;
+    return m;
 }
