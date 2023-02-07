@@ -10,6 +10,15 @@ typedef struct vector2
     int y;
 }vector2;
 
+typedef struct options
+{
+    int sizex;
+    int sizey;
+    int resolution;
+    int octave;
+    double frequence;
+    double persistence;
+}options;
 
 SDL_Surface* load_image(const char* path);
 

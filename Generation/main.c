@@ -31,10 +31,26 @@ int main(int argc, char** argv)
         return 0;
     }
 
-    struct map* perlin = perlin_generate(1920,1080,500,s);
+    struct options* opt_alt = malloc(sizeof(struct options));
+    opt_alt->sizex = 1920;
+    opt_alt->sizey = 1080;
+    opt_alt->resolution = 500;
+    opt_alt->octave = 5;
+    opt_alt->frequence = 2.0;
+    opt_alt->persistence = 0.5;
+
+    struct options* opt_temp = malloc(sizeof(struct options));
+    opt_temp->sizex = 1920;
+    opt_temp->sizey = 1080;
+    opt_temp->resolution = 800;
+    opt_temp->octave = 5;
+    opt_temp->frequence = 2.0;
+    opt_temp->persistence = 0.5;
+
+    struct map* perlin = perlin_generate(s,opt_alt);
 
     save_image(perlin->map,"perlin.bmp");
-    struct map *perlin2 = perlin_generate(1920,1080,900,s);
+    struct map *perlin2 = perlin_generate(s,opt_temp);
 
     struct threshold *t = malloc(sizeof(struct threshold));
     t->deep_ocean = 90;
@@ -49,20 +65,20 @@ int main(int argc, char** argv)
     t->savanna = 155;
 
     SDL_Surface *map = apply_biome(perlin->map, perlin2->map,
-            1920,1080,t);
+            opt_alt,t);
 
-    //save_image(map,"map.bmp");
+    save_image(map,"map.bmp");
     struct chunk **chunk_map = define_chunk(perlin->map,
-            perlin2->map,1920,1080);
+            perlin2->map,opt_alt,t);
 
-    apply_props(map, chunk_map,1920,1080);
-    //save_image(map,"map_forest.bmp");
+    apply_props(map, chunk_map,opt_alt);
+    save_image(map,"map_forest.bmp");
 
-    map = draw_riviere(map,perlin->map,1920,1080);
+    //map = draw_riviere(map,perlin->map,1920,1080);
     //save_image(map,"riviere.png");
 
 
-    free_chunk(chunk_map,1920,1080);
+    free_chunk(chunk_map,opt_alt);
     SDL_FreeSurface(perlin->map);
     free(perlin->seed);
     free(perlin);

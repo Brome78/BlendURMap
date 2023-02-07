@@ -3,12 +3,13 @@
 #include <stdio.h>
 #include "chunk.h"
 #include "color.h"
+#include "biome.h"
 
 
 
 
 int set_biome(SDL_Surface *height, SDL_Surface *temp,
-        int xmin, int xmax, int ymin, int ymax, int sizex)
+        int xmin, int xmax, int ymin, int ymax, struct threshold* t ,int sizex)
 {
     int height_med = 0;
     int temp_med = 0;
@@ -25,7 +26,7 @@ int set_biome(SDL_Surface *height, SDL_Surface *temp,
             Uint8 rt,gt,bt;
             SDL_GetRGB(height_pixels[y*sizex+x],format,&rh,&gh,&bh);
             SDL_GetRGB(temp_pixels[y*sizex+x],format, &rt,&gt,&bt);
-            
+
             height_med+=rh;
             temp_med+=rt;
         }
@@ -34,45 +35,45 @@ int set_biome(SDL_Surface *height, SDL_Surface *temp,
     height_med /= (xmax-xmin)*(ymax-ymin);
     temp_med /= (xmax-xmin)*(ymax-ymin);
 
-    if(height_med<90)
+    if(height_med<t->deep_ocean)
     {
         return DEEP_OCEAN;
     }
-    else if(height_med<110)
+    else if(height_med<t->ocean)
     {
         return OCEAN;
     }
-    else if(height_med<118)
+    else if(height_med<t->coast)
     {
         return COAST;
     }
-    else if(height_med<125)
+    else if(height_med<t->beach)
     {
         return BEACH;
     }
-    else if(height_med>=170)
+    else if(height_med>=t->picks)
     {
         return PICKS;
     }
-    else if(height_med>=160)
+    else if(height_med>=t->mountains)
     {
         return MOUNTAINS;
     }
-    else if(height_med>=155)
+    else if(height_med>=t->mid_mountains)
     {
         return MID_MOUNTAINS;
     }
-    else if(temp_med<115)
+    else if(temp_med<t->snow)
     {
         return FREEZE_PLAINS;
     }
-    else if(temp_med<140)
+    else if(temp_med<t->plains)
     {
-        if(height_med>=140 && height_med<155)
+        if(height_med>=t->plains && height_med<t->savanna)
             return FOREST;
         return PLAINS;
     }
-    else if(temp_med<155)
+    else if(temp_med<t->savanna)
     {
         return SAVANNA;
     }
@@ -83,8 +84,12 @@ int set_biome(SDL_Surface *height, SDL_Surface *temp,
 }
 
 struct chunk **define_chunk(SDL_Surface *height, SDL_Surface *temp,
-        int sizex, int sizey)
+        struct options* opt, struct threshold* t)
 {
+    int sizex = opt->sizex;
+    int sizey = opt->sizey;
+
+
     int chunk_sizex = sizex/16;
     if(sizex%16>0)
         chunk_sizex++;
@@ -118,7 +123,7 @@ struct chunk **define_chunk(SDL_Surface *height, SDL_Surface *temp,
                 curr->ymax = (y+1)*16;
 
             curr->id_biome = set_biome(height, temp,curr->xmin,curr->xmax,
-                    curr->ymin,curr->ymax,sizex);
+                    curr->ymin,curr->ymax,t,sizex);
 
             chunk_map[y*chunk_sizex+x] = curr;
         }
@@ -126,9 +131,12 @@ struct chunk **define_chunk(SDL_Surface *height, SDL_Surface *temp,
     return chunk_map;
 }
 
-void free_chunk(struct chunk **chunk_map, int sizex, int sizey)
+void free_chunk(struct chunk **chunk_map,struct options* opt)
 {
-     int chunk_sizex = sizex/16;
+    int sizex = opt->sizex;
+    int sizey = opt->sizey;
+
+    int chunk_sizex = sizex/16;
     if(sizex%16>0)
         chunk_sizex++;
 
@@ -144,8 +152,12 @@ void free_chunk(struct chunk **chunk_map, int sizex, int sizey)
     free(chunk_map);
 }
 
-void print_chunk(struct chunk **chunk_map, int sizex, int sizey)
+void print_chunk(struct chunk **chunk_map, struct options* opt)
 {
+    int sizex = opt->sizex;
+    int sizey = opt->sizey;
+
+
     if (chunk_map == NULL)
         return;
     int chunk_sizex = sizex/16;

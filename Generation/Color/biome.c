@@ -6,8 +6,11 @@
 #include <math.h>
 
 SDL_Surface* apply_biome(SDL_Surface* heightmap, SDL_Surface* tempmap,
-        int sizex, int sizey, struct threshold *threshold)
+        struct options* opt, struct threshold *threshold)
 {
+    int sizex = opt->sizex;
+    int sizey = opt->sizey;
+
     Uint32* height_pixels = heightmap->pixels;
     Uint32* temp_pixels = tempmap->pixels;
     SDL_Surface* image = SDL_CreateRGBSurface(0,sizex,sizey,32,0,0,0,0);

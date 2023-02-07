@@ -85,8 +85,11 @@ int draw_cactus(SDL_Surface *map,int x, int y , int sizex, int sizey)
 }
 
 
-int apply_props(SDL_Surface *map, struct chunk **chunk_map, int sizex, int sizey)
+int apply_props(SDL_Surface *map, struct chunk **chunk_map, struct options* opt)
 {
+    int sizex = opt->sizex;
+    int sizey = opt->sizey;
+
     srand(time(NULL));
     int chunk_sizex = sizex/16;
     if(sizex%16>0)

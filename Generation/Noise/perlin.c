@@ -13,7 +13,6 @@ float interpolate(float a0, float a1, float w)
 
 char* shuffle(int *perm, int size, char *seed)
 {
-    
     char * n_seed;
     if(seed == NULL)
     {
@@ -104,34 +103,33 @@ double perlin(double x,double y,int resolution,int *perm)
     return Li1 + Cy * (Li2-Li1);
 }
 
-double color_perlin(double x, double y, int resolution, int *perm, int oct,
-        double freq, double pers)
+double color_perlin(double x, double y, int *perm, struct options* opt)
 {
     double r = 0.;
-    double f = freq;
+    double f = opt->frequence;
     double amplitude = 1.;
 
-    for(int i = 0; i < oct; i++)
+    for(int i = 0; i < opt->octave; i++)
     {
         //Translation du centre de symétrie en i * 4096
         int t = i * 4096;
 
         //Calcul du bruit translaté
-        r += perlin(x * f + t, y*f+t, resolution, perm) * amplitude;
+        r += perlin(x * f + t, y*f+t, opt->resolution, perm) * amplitude;
 
-        amplitude *= pers;
+        amplitude *= opt->persistence;
         f *= 2;
     }
 
-    double geo_lim = (1 - pers) / (1 - amplitude);
+    double geo_lim = (1 - opt->persistence) / (1 - amplitude);
 
     return r * geo_lim;
 }
 
-struct map* perlin_generate(int sizex,int sizey, int resolution, char* seed)
+struct map* perlin_generate(char* seed, struct options *opt)
 {
     srand(time(NULL));
-    SDL_Surface* image = SDL_CreateRGBSurface(0,sizex,sizey,32,0,0,0,0);
+    SDL_Surface* image = SDL_CreateRGBSurface(0,opt->sizex,opt->sizey,32,0,0,0,0);
     SDL_LockSurface(image);
     Uint32* pixels = image->pixels;
 
@@ -153,12 +151,12 @@ struct map* perlin_generate(int sizex,int sizey, int resolution, char* seed)
 
     char* n_seed = shuffle(perm,256,seed);
     SDL_PixelFormat* format = image->format;
-    for(int y = 0; y<sizey;y++)
+    for(int y = 0; y<opt->sizey;y++)
     {
-        for(int x = 0; x<sizex; x++)
+        for(int x = 0; x<opt->sizex; x++)
         {
-            int c = (color_perlin(x,y,resolution,perm,5,2.0,0.5)+1)*0.5*255;
-            pixels[y*sizex+x] = SDL_MapRGB(format,c,c,c);
+            int c = (color_perlin(x,y,perm,opt)+1)*0.5*255;
+            pixels[y*opt->sizex+x] = SDL_MapRGB(format,c,c,c);
         }
     }
 

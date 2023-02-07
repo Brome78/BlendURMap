@@ -10,7 +10,6 @@ typedef struct map
     char* seed;
 }map;
 
-struct map* perlin_generate(int sizex, int sizey,
-        int resolution, char *seed);
+struct map* perlin_generate( char *seed, struct options *opt);
 
 #endif
