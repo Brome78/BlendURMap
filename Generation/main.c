@@ -12,7 +12,7 @@
 
 int main(int argc, char** argv)
 {
-    if(argc != 3 && argc != 2)
+    if(argc != 2)
         errx(EXIT_FAILURE,"USAGE: ./main + -perlin or -simplex + (optional) -map");
 
     char *s = read_seed("seed");
@@ -38,7 +38,10 @@ int main(int argc, char** argv)
         struct map* simplex = generate_simplex(s,opt_alt);
         save_image(simplex->map,"simplex.bmp");
         bmp_to_png("simplex.bmp","simplex.png");
+        free(simplex->seed);
         SDL_FreeSurface(simplex->map);
+        free(simplex);
+        return 0;
     }
     else if(strcmp(argv[1],"-perlin") == 0)
     {
@@ -46,10 +49,16 @@ int main(int argc, char** argv)
         struct map* perlin = perlin_generate(s,opt_alt);
         save_image(perlin->map,"perlin.bmp");
         bmp_to_png("perlin.bmp","perlin.png");
-        if(strcmp(argv[2],"-map") == 0)
-        {
+        free(perlin->seed);
+        SDL_FreeSurface(perlin->map);
+        free(perlin);
+        return 0;
+    }
+    else if(strcmp(argv[1],"-map") == 0)
+    {
+            struct map* perlin = perlin_generate(s,opt_alt);
 
-            struct map *perlin2 = perlin_generate(s,opt_temp);
+            struct map *simplex = generate_simplex(s,opt_temp);
 
             struct threshold *t = malloc(sizeof(struct threshold));
             t->deep_ocean = 90;
@@ -60,30 +69,31 @@ int main(int argc, char** argv)
             t->mountains = 160;
             t->picks = 170;
             t->plains = 140;
-            t->snow = 115;
+            t->snow = 65;
             t->savanna = 155;
 
-            SDL_Surface *map = apply_biome(perlin->map, perlin2->map,
+            SDL_Surface *map = apply_biome(perlin->map, simplex->map,
                     opt_alt,t);
 
             save_image(map,"map.bmp");
             bmp_to_png("map.bmp","map.png");
+
+            struct chunk **chunk_map = define_chunk(perlin->map,
+            simplex->map,opt_alt,t);
+
+            apply_props(map, chunk_map,opt_alt);
+            save_image(map,"map_forest.bmp");
+            bmp_to_png("map_forest.bmp","map_forest.png");
+
+            show_chunk(chunk_map, map, opt_alt);
+            save_image(map,"chunk.bmp");
+
             SDL_FreeSurface(perlin->map);
             free(perlin->seed);
-            free(perlin); 
-            SDL_FreeSurface(perlin2->map);
-            free(perlin2); 
-        }
-        /*else if(argc == 2)
-        {
-            SDL_FreeSurface(perlin->map);
-            free(perlin->seed);
-            free(perlin); 
-        }*/
-        else
-        {
-            errx(EXIT_FAILURE,"The 2nd argument is incorrect (must be -map)");
-        }
+            free(perlin);
+            SDL_FreeSurface(simplex->map);
+            free(simplex);
+            return 0;
     }
     else
         errx(EXIT_FAILURE,"The first argument is incorrect (must be -simplex or -perlin)");

@@ -152,6 +152,44 @@ void free_chunk(struct chunk **chunk_map,struct options* opt)
     free(chunk_map);
 }
 
+void show_chunk(struct chunk **chunk_map, SDL_Surface* map, 
+        struct options* opt)
+{
+    int sizex = opt->sizex;
+    int sizey = opt->sizey;
+
+    int chunk_sizex = sizex/16;
+    if(sizex%16>0)
+        chunk_sizex++;
+
+    int chunk_sizey = sizey/16;
+    if(sizey%16>0)
+        chunk_sizey++;
+    SDL_PixelFormat* format = map->format;
+    Uint32* pixels = map->pixels;
+    for(int y = 0;y<chunk_sizey; y++)
+    {
+        for(int x = 0; x<chunk_sizex;x++)
+        {
+            struct chunk* c = chunk_map[y*chunk_sizex+x];
+            for(int y2 = c->ymin; y2<c->ymax;y2++)
+            {
+                for(int x2 = c->xmin; x2<c->xmax; x2++)
+                {
+                    if(x2 == c->xmin || x2 == c->xmax || y2 == c->ymin 
+                            || y2 == c->ymax)
+                    {
+                        pixels[y2*sizex+x2] = SDL_MapRGB(format, 255,0,0);
+                    }
+                }
+            }
+        }
+    }
+}
+    
+
+
+
 void print_chunk(struct chunk **chunk_map, struct options* opt)
 {
     int sizex = opt->sizex;
@@ -170,13 +208,13 @@ void print_chunk(struct chunk **chunk_map, struct options* opt)
 
     printf("MAP = %d CHUNK_X\n",chunk_sizex);
     printf("MAP = %d CHUNK_Y\n\n",chunk_sizey);
-    
+
     for(int y = 0; y < chunk_sizey; y++)
     {
         for(int x = 0; x<chunk_sizex;x++)
         {
             struct chunk* curr = chunk_map[y*chunk_sizex+x];
-            
+
             printf("=======CHUNK %d/%d=======\n",x,y);
             printf("X_MIN = %d, X_MAX = %d\n", curr->xmin, curr->xmax);
             printf("Y_MIN = %d, Y_MAX = %d\n", curr->ymin, curr->ymax);

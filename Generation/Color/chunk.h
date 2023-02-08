@@ -14,4 +14,6 @@ void free_chunk(struct chunk **chunk_map, struct options* opt);
 
 void print_chunk(struct chunk **chunk_map, struct options* opt);
 
+void show_chunk(struct chunk** chunk_map, SDL_Surface* map, struct options* opt);
+
 #endif
