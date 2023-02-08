@@ -50,12 +50,14 @@ char* shufflePerm(int *perm, int size, char *seed)
                 c++;
             n_seed[n] = c;
             k = c;
+            if(k<0)
+                k = -k;
         }
         else
         {
-            k = seed[n];
+            k = (int)seed[n];
             if(k<0)
-                k = -1*k;
+                k = (-1)*k;
         }
         n--;
         int tmp = perm[n];
