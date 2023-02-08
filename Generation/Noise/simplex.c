@@ -169,11 +169,10 @@ struct map* generate_simplex(char* s,struct options* o)
     for (int x = 0; x < o->sizex; x++) {
         for (int y = 0; y < o->sizey; y++) {
             double noise = fractalNoise2D(x,y,o->octave,o->persistence,o->resolution);
-            int color = (int)((noise+ 1.0) * 0.5 * 255.0); 
+            int color = (int)((noise+ 1.0) * 0.5 * 255.0);
             pixels[y*image->w+x] = SDL_MapRGB(format,color,color,color);
         }
     }
-    return image;
     struct map* m = malloc(sizeof(struct map));
     m->map = image;
     m->seed = seed;

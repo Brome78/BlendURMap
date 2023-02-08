@@ -72,15 +72,14 @@ int main(int argc, char** argv)
             free(perlin->seed);
             free(perlin); 
             SDL_FreeSurface(perlin2->map);
-            free(perlin2->seed);
             free(perlin2); 
         }
-        else if(argc == 2)
+        /*else if(argc == 2)
         {
             SDL_FreeSurface(perlin->map);
             free(perlin->seed);
             free(perlin); 
-        }
+        }*/
         else
         {
             errx(EXIT_FAILURE,"The 2nd argument is incorrect (must be -map)");
