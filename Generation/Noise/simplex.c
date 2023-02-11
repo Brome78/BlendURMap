@@ -34,6 +34,7 @@ char* shufflePerm(int *perm, int size, char *seed)
     if(seed == NULL)
     {
         n_seed= malloc(size*sizeof(char));
+
         n_seed[0] = 1;
         n_seed[1] = 1;
     }

@@ -19,16 +19,16 @@ int main(int argc, char** argv)
     char *s = read_seed("seed");
 
     struct options* opt_alt = malloc(sizeof(struct options));
-    opt_alt->sizex = 1920;
-    opt_alt->sizey = 1080;
+    opt_alt->sizex = 1000;
+    opt_alt->sizey = 1000;
     opt_alt->resolution = 500;
     opt_alt->octave = 5;
     opt_alt->frequence = 2.0;
     opt_alt->persistence = 0.5;
 
     struct options* opt_temp = malloc(sizeof(struct options));
-    opt_temp->sizex = 1920;
-    opt_temp->sizey = 1080;
+    opt_temp->sizex = opt_alt->sizex;
+    opt_temp->sizey = opt_alt->sizey;
     opt_temp->resolution = 800;
     opt_temp->octave = 5;
     opt_temp->frequence = 2.0;
@@ -39,6 +39,9 @@ int main(int argc, char** argv)
         struct map* simplex = generate_simplex(s,opt_alt);
         save_image(simplex->map,"simplex.bmp");
         bmp_to_png("simplex.bmp","simplex.png");
+
+        free(opt_alt);
+        free(opt_temp);
         free(simplex->seed);
         SDL_FreeSurface(simplex->map);
         free(simplex);
@@ -50,6 +53,9 @@ int main(int argc, char** argv)
         struct map* perlin = perlin_generate(s,opt_alt);
         save_image(perlin->map,"perlin.bmp");
         bmp_to_png("perlin.bmp","perlin.png");
+
+        free(opt_alt);
+        free(opt_temp);
         free(perlin->seed);
         SDL_FreeSurface(perlin->map);
         free(perlin);
@@ -79,15 +85,7 @@ int main(int argc, char** argv)
         save_image(map,"map.bmp");
         bmp_to_png("map.bmp","map.png");
 
-        struct chunk **chunk_map = define_chunk(perlin->map,
-                simplex->map,opt_alt,t);
-
-        apply_props(map, chunk_map,opt_alt);
-        save_image(map,"map_forest.bmp");
-        bmp_to_png("map_forest.bmp","map_forest.png");
-
-        show_chunk(chunk_map, map, opt_alt);
-        save_image(map,"chunk.bmp");
+        
 
         SDL_FreeSurface(perlin->map);
         free(perlin->seed);
@@ -96,6 +94,7 @@ int main(int argc, char** argv)
 
         free(opt_alt);
         free(opt_temp);
+        SDL_FreeSurface(map);
 
         SDL_FreeSurface(simplex->map);
         free(simplex);
@@ -113,6 +112,7 @@ int main(int argc, char** argv)
 
         if(strcmp(buffer,"Y")==0)
         {
+            free(s);
             s = NULL;
         }
 
@@ -177,6 +177,7 @@ int main(int argc, char** argv)
 
         free(opt_alt);
         free(opt_temp);
+        SDL_FreeSurface(map);
 
         SDL_FreeSurface(simplex->map);
         free(simplex);

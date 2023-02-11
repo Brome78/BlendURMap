@@ -33,6 +33,8 @@ char* shuffle(int *perm, int size, char *seed)
                 c++;
             n_seed[n] = c;
             k = c;
+            if(k<0)
+                k = -k;
         }
         else
         {

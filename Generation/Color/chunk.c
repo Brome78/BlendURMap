@@ -167,6 +167,9 @@ void show_chunk(struct chunk **chunk_map, SDL_Surface* map,
         chunk_sizey++;
     SDL_PixelFormat* format = map->format;
     Uint32* pixels = map->pixels;
+
+    SDL_LockSurface(map);
+
     for(int y = 0;y<chunk_sizey; y++)
     {
         for(int x = 0; x<chunk_sizex;x++)
@@ -185,6 +188,7 @@ void show_chunk(struct chunk **chunk_map, SDL_Surface* map,
             }
         }
     }
+    SDL_UnlockSurface(map);
 }
     
 
