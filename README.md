@@ -1,4 +1,4 @@
-# BlenURMap
+# BlendURMap
 
 ## Introduction
 
