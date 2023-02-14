@@ -13,14 +13,16 @@
 int main(int argc, char** argv)
 {
     if(argc != 2)
-        errx(EXIT_FAILURE,"USAGE: ./main + -perlin or -simplex or \
-                -map or -perso");
+        errx(EXIT_FAILURE,"USAGE: ./main -perlin \n \
+                   -simplex \n \
+                   -map \n \
+                   -perso");
 
     char *s = read_seed("seed");
 
     struct options* opt_alt = malloc(sizeof(struct options));
-    opt_alt->sizex = 1000;
-    opt_alt->sizey = 1000;
+    opt_alt->sizex = 1920;
+    opt_alt->sizey = 1080;
     opt_alt->resolution = 500;
     opt_alt->octave = 5;
     opt_alt->frequence = 2.0;
@@ -36,9 +38,19 @@ int main(int argc, char** argv)
 
     if(strcmp(argv[1],"-simplex") == 0)
     {
+        printf("\e[1;1H\e[2J");
+        printf("[            ]\nGenerate Simplex Noise\n");
+
         struct map* simplex = generate_simplex(s,opt_alt);
+
+        printf("\e[1;1H\e[2J");
+        printf("[//////      ]\nSave Noise\n");
+
         save_image(simplex->map,"simplex.bmp");
         bmp_to_png("simplex.bmp","simplex.png");
+
+        printf("\e[1;1H\e[2J");
+        printf("[////////////]\nComplete\n");
 
         free(opt_alt);
         free(opt_temp);
@@ -49,10 +61,19 @@ int main(int argc, char** argv)
     }
     else if(strcmp(argv[1],"-perlin") == 0)
     {
+        printf("\e[1;1H\e[2J");
+        printf("[            ]\nGenerate Perlin Noise\n");
 
         struct map* perlin = perlin_generate(s,opt_alt);
+
+        printf("\e[1;1H\e[2J");
+        printf("[//////      ]\nSave Noise\n");
+
         save_image(perlin->map,"perlin.bmp");
         bmp_to_png("perlin.bmp","perlin.png");
+
+        printf("\e[1;1H\e[2J");
+        printf("[////////////]\nComplete\n");
 
         free(opt_alt);
         free(opt_temp);
@@ -63,7 +84,14 @@ int main(int argc, char** argv)
     }
     else if(strcmp(argv[1],"-map") == 0)
     {
+
+        printf("\e[1;1H\e[2J");
+        printf("[            ]\nGenerate Perlin Noise\n");
+
         struct map* perlin = perlin_generate(s,opt_alt);
+
+        printf("\e[1;1H\e[2J");
+        printf("[///         ]\nGenerate Simplex Noise\n");
 
         struct map *simplex = generate_simplex(s,opt_temp);
 
@@ -79,13 +107,20 @@ int main(int argc, char** argv)
         t->snow = 65;
         t->savanna = 155;
 
+        printf("\e[1;1H\e[2J");
+        printf("[//////      ]\nApply Biome\n");
+
         SDL_Surface *map = apply_biome(perlin->map, simplex->map,
                 opt_alt,t);
+
+        printf("\e[1;1H\e[2J");
+        printf("[/////////   ]\nSave Map\n");
 
         save_image(map,"map.bmp");
         bmp_to_png("map.bmp","map.png");
 
-        
+        printf("\e[1;1H\e[2J");
+        printf("[////////////]\nComplete\n");
 
         SDL_FreeSurface(perlin->map);
         free(perlin->seed);
@@ -103,9 +138,27 @@ int main(int argc, char** argv)
     else if(strcmp(argv[1],"-perso") == 0)
     {
         char *buffer = calloc(16,sizeof(char));
+        int w = 0;
+        int h = 0;
 
         char props = 0;
         char show = 0;
+
+        printf("Width : ");
+        scanf("%d",&w);
+
+        printf("Height : ");
+        scanf("%d",&h);
+
+        opt_alt->sizex = w;
+        opt_alt->sizey = h;
+        opt_temp->sizex = w;
+        opt_temp->sizey = h;
+
+        if(h == 0 || w == 0)
+        {
+            errx(EXIT_FAILURE,"Size must be higher than 0");
+        }
 
         printf("Would you a new seed ? (Y/N)");
         scanf("%s",buffer);
@@ -132,7 +185,13 @@ int main(int argc, char** argv)
             show = 1;
         }
 
+        printf("\e[1;1H\e[2J");
+        printf("[            ]\nGenerate Perlin Noise\n");
+
         struct map* perlin = perlin_generate(s,opt_alt);
+
+        printf("\e[1;1H\e[2J");
+        printf("[//          ]\nGenerate Simplex Noise\n");
 
         struct map *simplex = generate_simplex(s,opt_temp);
 
@@ -148,26 +207,44 @@ int main(int argc, char** argv)
         t->snow = 65;
         t->savanna = 155;
 
+        printf("\e[1;1H\e[2J");
+        printf("[////        ]\nApply Biome\n");
+
         SDL_Surface *map = apply_biome(perlin->map, simplex->map,
                 opt_alt,t);
+
+        printf("\e[1;1H\e[2J");
+        printf("[//////      ]\nSave Map\n");
 
         save_image(map,"map.bmp");
         bmp_to_png("map.bmp","map.png");
 
 
+
+        printf("\e[1;1H\e[2J");
+        printf("[////////    ]\nCreate Chunks\n");
+
         struct chunk **chunk_map = define_chunk(perlin->map,
                 simplex->map,opt_alt,t);
         if(props)
         {
+            printf("\e[1;1H\e[2J");
+            printf("[//////////  ]\nApply props\n");
             apply_props(map, chunk_map,opt_alt);
             save_image(map,"map_forest.bmp");
             bmp_to_png("map_forest.bmp","map_forest.png");
         }
         if(show)
         {
+            printf("\e[1;1H\e[2J");
+            printf("[//////////  ]\nCreate Chunk Map\n");
             show_chunk(chunk_map, map, opt_alt);
             save_image(map,"chunk.bmp");
+            bmp_to_png("chunk.bmp","chunk.png");
         }
+
+        printf("\e[1;1H\e[2J");
+        printf("[////////////]\nComplete\n");
 
         free_chunk(chunk_map, opt_alt);
         SDL_FreeSurface(perlin->map);
@@ -186,25 +263,7 @@ int main(int argc, char** argv)
 
     }
     else
-        errx(EXIT_FAILURE,"The first argument is incorrect (must be -simplex or -perlin)");
-    /*struct chunk **chunk_map = define_chunk(perlin->map,
-      perlin2->map,opt_alt,t);
+        errx(EXIT_FAILURE,"The first argument is incorrect (must be -simplex or -perlin or -map or-perso)");
 
-      apply_props(map, chunk_map,opt_alt);
-      save_image(map,"map_forest.bmp");
-
-    //map = draw_riviere(map,perlin->map,1920,1080);
-    //save_image(map,"riviere.png");
-
-
-    free_chunk(chunk_map,opt_alt);
-
-
-
-
-    free(opt_alt);
-    free(opt_temp);
-
-    free(t);*/
     return 0;
 }

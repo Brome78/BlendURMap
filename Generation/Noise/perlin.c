@@ -166,7 +166,7 @@ struct map* perlin_generate(char* seed, struct options *opt)
     struct map* map = malloc(sizeof(struct map));
     map->map = image;
     map->seed = n_seed;
-    
+
     return map;
 }
 
