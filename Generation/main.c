@@ -10,7 +10,7 @@
 #include "Noise/seed.h"
 #include "Color/biome.h"
 #include "Color/props.h"
-
+#include "Noise/ds.h"
 int main(int argc, char** argv)
 {
     if(argc != 2)
@@ -89,12 +89,12 @@ int main(int argc, char** argv)
         printf("\e[1;1H\e[2J");
         printf("[            ]\nGenerate Diamond-Square Noise\n");
 
-        struct map* diamond_square = generate_diamond_square(s,opt_alt);
+        SDL_Surface* diamond_square = generate_diamond();
 
         printf("\e[1;1H\e[2J");
         printf("[//////      ]\nSave Noise\n");
 
-        save_image(diamond_square->map,"diamond_square.bmp");
+        save_image(diamond_square,"diamond_square.bmp");
         bmp_to_png("diamond_square.bmp","diamond_square.png");
 
         printf("\e[1;1H\e[2J");
@@ -102,9 +102,7 @@ int main(int argc, char** argv)
 
         free(opt_alt);
         free(opt_temp);
-        free(diamond_square->seed);
-        SDL_FreeSurface(diamond_square->map);
-        free(diamond_square);
+        SDL_FreeSurface(diamond_square);
         return 0;
     }
 

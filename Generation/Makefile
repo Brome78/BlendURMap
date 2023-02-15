@@ -7,7 +7,8 @@ LDFLAGS =
 LDLIBS = `pkg-config --libs sdl2 SDL2_image` -lm -lpng
 
 SRC = Utils/utils.c Noise/perlin.c Noise/simplex.c Noise/diamond_square.c \
-		Color/chunk.c Color/color.c Color/props.c Color/biome.c Noise/seed.c main.c
+		Color/chunk.c Color/color.c Color/props.c Color/biome.c Noise/seed.c \
+	   	main.c Noise/ds.c
 OBJ = ${SRC:.c=.o}
 EXE = main
 
