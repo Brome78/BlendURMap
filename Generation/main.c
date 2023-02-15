@@ -108,6 +108,10 @@ int main(int argc, char** argv)
         return 0;
     }
 
+    /*******************************************/
+    /* ADD DIAMOND_SQUARE CASE WHEN IT'LL WORK */
+    /*******************************************/
+
     else if(strcmp(argv[1],"-map") == 0)
     {
 
@@ -289,7 +293,7 @@ int main(int argc, char** argv)
 
     }
     else
-        errx(EXIT_FAILURE,"The first argument is incorrect (must be -simplex or -perlin or -map or-perso)");
+        errx(EXIT_FAILURE,"The first argument is incorrect (must be -simplex or -perlin or -diamond_square or -map or-perso)");
 
     return 0;
 }

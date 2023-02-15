@@ -73,65 +73,7 @@ char* shuffle_diam(int *_perm, int size, char *seed)
     return seed;
 }
 
-
-/*double diamond_square(double x, double y, int* resolution, int* _perm) 
-{
-    double scale = 1.0 / (double)(1 << *resolution);
-    int step = 1 << *resolution;
-    double r = 0.5 * scale;
-    // double h = 0.5 * scale;
-    double z = 0.0;
-    
-    // Diamond step
-    for (int i = step; i <= SIZE - step; i += step) 
-    {
-        for (int j = step; j <= SIZE - step; j += step) 
-        {
-            double a = heights[i-step][j-step];
-            double b = heights[i+step][j-step];
-            double c = heights[i-step][j+step];
-            double d = heights[i+step][j+step];
-            double e = (a + b + c + d) * 0.25 + r * (_perm[SIZE*(i/step) + j/step] - 0.5);
-            heights[i][j] = e;
-        }
-    }
-    
-    // Square step
-    for (int i = 0; i <= SIZE; i += step) {
-        for (int j = (i+step) % (2*step); j <= SIZE; j += 2*step) 
-        {
-            double a = (i-step < 0) ? 0.0 : heights[i-step][j];
-            double b = (i+step > SIZE) ? 0.0 : heights[i+step][j];
-            double c = (j-step < 0) ? 0.0 : heights[i][j-step];
-            double d = (j+step > SIZE) ? 0.0 : heights[i][j+step];
-            double e = (a + b + c + d) * 0.25 + r * (_perm[SIZE*i + j] - 0.5);
-            heights[i][j] = e;
-        }
-    }
-    
-    // Update values outside the grid (wrapping)
-    for (int i = 0; i < SIZE; i += step) 
-    {
-        heights[0][i] = heights[SIZE][i];
-        heights[i][0] = heights[i][SIZE];
-    }
-    heights[0][0] = 0.5 * (heights[0][step] + heights[step][0]);
-    heights[SIZE][0] = 0.5 * (heights[SIZE-step][0] + heights[SIZE][step]);
-    heights[0][SIZE] = 0.5 * (heights[step][SIZE] + heights[0][SIZE-step]);
-    heights[SIZE][SIZE] = 0.5 * (heights[SIZE-step][SIZE] + heights[SIZE][SIZE-step]);
-
-    // Return height at given coordinates
-    int ix = (int)(x / scale);
-    int iy = (int)(y / scale);
-    double dx = x / scale - ix;
-    double dy = y / scale - iy;
-    double h1 = heights[ix][iy] * (1.0 - dx) + heights[ix+step][iy] * dx;
-    double h2 = heights[ix][iy+step] * (1.0 - dx) + heights[ix+step][iy+step] * dx;
-    z = h1 * (1.0 - dy) + h2 * dy;
-    return z;
-}*/
-
-// Fonction de bruit aléatoire 2D
+// 2D random noise function
 double noise2d(int x, int y) 
 {
     int n = x + y * 57;
@@ -139,6 +81,9 @@ double noise2d(int x, int y)
     return (1.0 - ((n * (n * n * 15731 + 789221) + 1376312589) & 0x7fffffff) / 1073741824.0);
 }
 
+// coordinates (x,y) of a point 
+// array _perm containing a random integers permutation
+// resolution which defines the size of the grid on which the function is applied
 double diamond_square(double x, double y, int* _perm, double* resolution)
 {
     int intX = (int)x;
@@ -147,6 +92,11 @@ double diamond_square(double x, double y, int* _perm, double* resolution)
     double fracY = y - intY;
     double TL, TR, BL, BR;
     int step = *resolution;
+
+    // If the resolution is > 1, the function recursively calls the diamond_square function on 
+    // 4 points (TL, TR, BL, BR) which are located at the corners of a square of size step, 
+    // and whose coordinates are calculated as a function of the initial position (intX, intY) and the grid size 
+    // The grid size for recursive calls is divided by 2 at each call to obtain a finer resolution
     if (step > 1)
     {
         double halfStep = step / 2.0;
@@ -155,6 +105,8 @@ double diamond_square(double x, double y, int* _perm, double* resolution)
         BL = diamond_square(intX, intY + step, _perm, &halfStep);
         BR = diamond_square(intX + step, intY + step, _perm, &halfStep);
     }
+    // If resolution == 1, i.e. the grid is reduced to one point, the function 
+    // uses the noise2d function to calculate the noise value for each corner of the square
     else
     {
         TL = noise2d(intX, intY);
@@ -163,6 +115,8 @@ double diamond_square(double x, double y, int* _perm, double* resolution)
         BR = noise2d(intX + step, intY + step);
     }
 
+    // Calculates the sum of the values of the top corners (TL and TR), 
+    // the left corners (TL and BL), and all the corners (TL, TR, BL, BR) to find the center
     double top = TL + TR;
     double left = TL + BL;
     double center = TL + TR + BL + BR;
@@ -170,6 +124,9 @@ double diamond_square(double x, double y, int* _perm, double* resolution)
     double result = 0.0;
     int count = 0;
 
+    // Calculates the average of the corner values according to the position 
+    // of the point (x,y) in the grid. It checks whether the point is located on an edge 
+    // or a corner of the grid, and adds the average value accordingly
     if (intX % step == 0 && intY % step == 0)
     {
         result += center / 4.0;
@@ -194,6 +151,8 @@ double diamond_square(double x, double y, int* _perm, double* resolution)
         count++;
     }
 
+    // If none of the special cases is satisfied, the function uses 
+    // the value of the center to calculate the avg
     if (count == 0)
     {
         result += center / 4.0;
@@ -202,6 +161,7 @@ double diamond_square(double x, double y, int* _perm, double* resolution)
 
     result /= count;
 
+    // returns the calculated average value
     return result;
 }
 
