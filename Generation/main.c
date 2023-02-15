@@ -95,7 +95,7 @@ int main(int argc, char** argv)
         printf("[//////      ]\nSave Noise\n");
 
         save_image(diamond_square->map,"diamond_square.bmp");
-        bmp_to_png("diamond_square.bmp","diamond_square.png");
+        save_to_png(diamond_square->map,"diamond_square.png");
 
         printf("\e[1;1H\e[2J");
         printf("[////////////]\nComplete\n");
