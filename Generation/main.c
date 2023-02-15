@@ -47,7 +47,7 @@ int main(int argc, char** argv)
         printf("[//////      ]\nSave Noise\n");
 
         save_image(simplex->map,"simplex.bmp");
-        bmp_to_png("simplex.bmp","simplex.png");
+        save_to_png(simplex->map,"simplex.png");
 
         printf("\e[1;1H\e[2J");
         printf("[////////////]\nComplete\n");
@@ -70,7 +70,7 @@ int main(int argc, char** argv)
         printf("[//////      ]\nSave Noise\n");
 
         save_image(perlin->map,"perlin.bmp");
-        bmp_to_png("perlin.bmp","perlin.png");
+        save_to_png(perlin->map,"perlin.png");
 
         printf("\e[1;1H\e[2J");
         printf("[////////////]\nComplete\n");
@@ -117,7 +117,7 @@ int main(int argc, char** argv)
         printf("[/////////   ]\nSave Map\n");
 
         save_image(map,"map.bmp");
-        bmp_to_png("map.bmp","map.png");
+        save_to_png(map,"map.png");
 
         printf("\e[1;1H\e[2J");
         printf("[////////////]\nComplete\n");
@@ -217,7 +217,7 @@ int main(int argc, char** argv)
         printf("[//////      ]\nSave Map\n");
 
         save_image(map,"map.bmp");
-        bmp_to_png("map.bmp","map.png");
+        save_to_png(map,"map.png");
 
 
 
@@ -232,7 +232,7 @@ int main(int argc, char** argv)
             printf("[//////////  ]\nApply props\n");
             apply_props(map, chunk_map,opt_alt);
             save_image(map,"map_forest.bmp");
-            bmp_to_png("map_forest.bmp","map_forest.png");
+            save_to_png(map,"map_forest.png");
         }
         if(show)
         {
@@ -240,7 +240,7 @@ int main(int argc, char** argv)
             printf("[//////////  ]\nCreate Chunk Map\n");
             show_chunk(chunk_map, map, opt_alt);
             save_image(map,"chunk.bmp");
-            bmp_to_png("chunk.bmp","chunk.png");
+            save_to_png(map,"chunk.png");
         }
 
         printf("\e[1;1H\e[2J");

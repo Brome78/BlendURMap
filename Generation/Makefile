@@ -2,9 +2,9 @@
 
 CC = gcc
 CPPFLAGS =
-CFLAGS = -Wall -Wextra `pkg-config --cflags sdl2 SDL2_image` -lm -g -lpng
+CFLAGS = -Wall -Wextra `pkg-config --cflags sdl2 SDL2_image` -lm -g
 LDFLAGS =
-LDLIBS = `pkg-config --libs sdl2 SDL2_image` -lm -lpng
+LDLIBS = `pkg-config --libs sdl2 SDL2_image` -lm
 
 SRC = Utils/utils.c Noise/perlin.c Noise/simplex.c Color/chunk.c\
 		Color/color.c Color/props.c Color/biome.c Noise/seed.c main.c
