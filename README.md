@@ -18,6 +18,8 @@ just use the makefile `make -j`. Once it's compiled, launch the program using th
 
 `./main -perlin` Generate a perlin noise in 1920x1080
 
+`./main -diamond_square` Generate a diamond square noise in 1920x1080
+
 `./main -map` Generate a map in 1920x1080
 
 `./main -perso` Generate an personnalized map in 1920x1080
