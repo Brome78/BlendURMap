@@ -54,4 +54,4 @@ void save_image(SDL_Surface* surface, const char* path);
 
 int** to_rows(SDL_Surface* s);
 
-void bmp_to_png(char* input,char* output); 
+void save_to_png(SDL_Surface* surface, const char* path); 
