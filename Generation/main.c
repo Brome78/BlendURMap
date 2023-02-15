@@ -6,6 +6,7 @@
 #include "Color/color.h"
 #include "Noise/simplex.h"
 #include "Color/chunk.h"
+#include "Noise/diamond_square.h"
 #include "Noise/seed.h"
 #include "Color/biome.h"
 #include "Color/props.h"
@@ -15,6 +16,7 @@ int main(int argc, char** argv)
     if(argc != 2)
         errx(EXIT_FAILURE,"USAGE: ./main -perlin \n \
                    -simplex \n \
+                   -diamond_square \n \
                    -map \n \
                    -perso");
 
@@ -82,6 +84,30 @@ int main(int argc, char** argv)
         free(perlin);
         return 0;
     }
+    else if(strcmp(argv[1],"-diamond_square") == 0)
+    {
+        printf("\e[1;1H\e[2J");
+        printf("[            ]\nGenerate Diamond-Square Noise\n");
+
+        struct map* diamond_square = generate_diamond_square(s,opt_alt);
+
+        printf("\e[1;1H\e[2J");
+        printf("[//////      ]\nSave Noise\n");
+
+        save_image(diamond_square->map,"diamond_square.bmp");
+        bmp_to_png("diamond_square.bmp","diamond_square.png");
+
+        printf("\e[1;1H\e[2J");
+        printf("[////////////]\nComplete\n");
+
+        free(opt_alt);
+        free(opt_temp);
+        free(diamond_square->seed);
+        SDL_FreeSurface(diamond_square->map);
+        free(diamond_square);
+        return 0;
+    }
+
     else if(strcmp(argv[1],"-map") == 0)
     {
 
