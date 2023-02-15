@@ -74,7 +74,7 @@ char* shuffle_diam(int *_perm, int size, char *seed)
 }
 
 
-double diamond_square(double x, double y, int* resolution, int* _perm) 
+/*double diamond_square(double x, double y, int* resolution, int* _perm) 
 {
     double scale = 1.0 / (double)(1 << *resolution);
     int step = 1 << *resolution;
@@ -129,6 +129,80 @@ double diamond_square(double x, double y, int* resolution, int* _perm)
     double h2 = heights[ix][iy+step] * (1.0 - dx) + heights[ix+step][iy+step] * dx;
     z = h1 * (1.0 - dy) + h2 * dy;
     return z;
+}*/
+
+// Fonction de bruit aléatoire 2D
+double noise2d(int x, int y) 
+{
+    int n = x + y * 57;
+    n = (n << 13) ^ n;
+    return (1.0 - ((n * (n * n * 15731 + 789221) + 1376312589) & 0x7fffffff) / 1073741824.0);
+}
+
+double diamond_square(double x, double y, int* _perm, double* resolution)
+{
+    int intX = (int)x;
+    int intY = (int)y;
+    double fracX = x - intX;
+    double fracY = y - intY;
+    double TL, TR, BL, BR;
+    int step = *resolution;
+    if (step > 1)
+    {
+        double halfStep = step / 2.0;
+        TL = diamond_square(intX, intY, _perm, &halfStep);
+        TR = diamond_square(intX + step, intY, _perm, &halfStep);
+        BL = diamond_square(intX, intY + step, _perm, &halfStep);
+        BR = diamond_square(intX + step, intY + step, _perm, &halfStep);
+    }
+    else
+    {
+        TL = noise2d(intX, intY);
+        TR = noise2d(intX + step, intY);
+        BL = noise2d(intX, intY + step);
+        BR = noise2d(intX + step, intY + step);
+    }
+
+    double top = TL + TR;
+    double left = TL + BL;
+    double center = TL + TR + BL + BR;
+
+    double result = 0.0;
+    int count = 0;
+
+    if (intX % step == 0 && intY % step == 0)
+    {
+        result += center / 4.0;
+        count++;
+    }
+
+    if (intY % step == 0 && fracX == 0)
+    {
+        result += top / 2.0;
+        count++;
+    }
+
+    if (intX % step == 0 && fracY == 0)
+    {
+        result += left / 2.0;
+        count++;
+    }
+
+    if (fracX == 0 && fracY == 0)
+    {
+        result += center / 4.0;
+        count++;
+    }
+
+    if (count == 0)
+    {
+        result += center / 4.0;
+        count++;
+    }
+
+    result /= count;
+
+    return result;
 }
 
 
@@ -145,7 +219,7 @@ struct map* generate_diamond_square(char* seed, struct options *opt)
     {
         for (int x = 0; x < opt->sizex; x++)
         {
-            int c = (diamond_square(x, y, _perm, &(opt->resolution)) + 1) * 0.5 * 255;
+            int c = (diamond_square(x, y, _perm, (double*)(&opt->resolution)) + 1) * 0.5 * 255;
             pixels[y * opt->sizex + x] = SDL_MapRGB(format, c, c, c);
         }
     }
