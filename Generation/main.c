@@ -160,6 +160,7 @@ int main(int argc, char** argv)
         SDL_FreeSurface(map);
 
         SDL_FreeSurface(simplex->map);
+        free(simplex->seed);
         free(simplex);
         return 0;
     }
@@ -171,6 +172,7 @@ int main(int argc, char** argv)
 
         char props = 0;
         char show = 0;
+        char print = 0;
 
         printf("Width : ");
         scanf("%d",&w);
@@ -211,6 +213,14 @@ int main(int argc, char** argv)
         if(strcmp(buffer, "Y")==0)
         {
             show = 1;
+        }
+
+        printf("Would you print chunks? (Y/N)");
+        scanf("%s",buffer);
+
+        if(strcmp(buffer, "Y")==0)
+        {
+            print = 1;
         }
 
         printf("\e[1;1H\e[2J");
@@ -273,6 +283,8 @@ int main(int argc, char** argv)
 
         printf("\e[1;1H\e[2J");
         printf("[////////////]\nComplete\n");
+        if(print)
+            print_chunk(chunk_map, opt_alt);
 
         free_chunk(chunk_map, opt_alt);
         SDL_FreeSurface(perlin->map);
@@ -285,6 +297,7 @@ int main(int argc, char** argv)
         SDL_FreeSurface(map);
 
         SDL_FreeSurface(simplex->map);
+        free(simplex->seed);
         free(simplex);
 
         free(buffer);
