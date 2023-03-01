@@ -11,6 +11,8 @@
 #include "Color/biome.h"
 #include "Color/props.h"
 #include "Noise/ds.h"
+#include "Noise/circular_gradient.h"
+
 int main(int argc, char** argv)
 {
     if(argc != 2)
@@ -84,6 +86,30 @@ int main(int argc, char** argv)
         free(perlin);
         return 0;
     }
+    else if(strcmp(argv[1],"-circle") == 0)
+    {
+        printf("\e[1;1H\e[2J");
+        printf("[            ]\nGenerate Circular Gradient\n");
+
+        struct map* perlin = generate_circ_gradient(opt_alt);
+
+        printf("\e[1;1H\e[2J");
+        printf("[//////      ]\nSave Gradient\n");
+
+        save_image(perlin->map,"circular_gradient.bmp");
+        save_to_png(perlin->map,"circular_gradient.png");
+
+        printf("\e[1;1H\e[2J");
+        printf("[////////////]\nComplete\n");
+
+        free(opt_alt);
+        free(opt_temp);
+        free(perlin->seed);
+        SDL_FreeSurface(perlin->map);
+        free(perlin);
+        return 0;
+    }
+
     else if(strcmp(argv[1],"-diamond_square") == 0)
     {
         printf("\e[1;1H\e[2J");
@@ -160,7 +186,6 @@ int main(int argc, char** argv)
         SDL_FreeSurface(map);
 
         SDL_FreeSurface(simplex->map);
-        free(simplex->seed);
         free(simplex);
         return 0;
     }

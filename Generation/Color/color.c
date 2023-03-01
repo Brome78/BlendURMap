@@ -121,7 +121,6 @@ SDL_Surface* draw_riviere(SDL_Surface* image,SDL_Surface* heightmap, int sizex, 
     SDL_PixelFormat* format = image->format;
     Uint32* pixels = image->pixels;
     Uint32* h = heightmap->pixels;
-    srand(time(NULL));
     for(int y = 0; y<sizey; y++)
     {
         for(int x = 0; x<sizex; x++)
