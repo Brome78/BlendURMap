@@ -6,6 +6,6 @@
 
 
 struct map* generate_circ_gradient(struct options *opt);
-//void apply_island(struct map* map, struct options *opt);
+void apply_island(struct map* map, struct options *opt);
 
 #endif

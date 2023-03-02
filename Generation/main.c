@@ -91,22 +91,22 @@ int main(int argc, char** argv)
         printf("\e[1;1H\e[2J");
         printf("[            ]\nGenerate Circular Gradient\n");
 
-        struct map* perlin = generate_circ_gradient(opt_alt);
+        struct map* circ = generate_circ_gradient(opt_alt);
 
         printf("\e[1;1H\e[2J");
         printf("[//////      ]\nSave Gradient\n");
 
-        save_image(perlin->map,"circular_gradient.bmp");
-        save_to_png(perlin->map,"circular_gradient.png");
+        save_image(circ->map,"circular_gradient.bmp");
+        save_to_png(circ->map,"circular_gradient.png");
 
         printf("\e[1;1H\e[2J");
         printf("[////////////]\nComplete\n");
 
         free(opt_alt);
         free(opt_temp);
-        free(perlin->seed);
-        SDL_FreeSurface(perlin->map);
-        free(perlin);
+        free(circ->seed);
+        SDL_FreeSurface(circ->map);
+        free(circ);
         return 0;
     }
 
@@ -189,6 +189,71 @@ int main(int argc, char** argv)
         free(simplex);
         return 0;
     }
+    else if(strcmp(argv[1],"-island") == 0)
+    {
+
+        printf("\e[1;1H\e[2J");
+        printf("[            ]\nGenerate Perlin Noise\n");
+
+        opt_alt->sizex = 1000;
+        opt_alt->sizey = 1000;
+
+        struct map* perlin = perlin_generate(s,opt_alt);
+
+        printf("\e[1;1H\e[2J");
+        printf("[///         ]\nGenerate Simplex Noise\n");
+
+        opt_temp->sizex = 1000;
+        opt_temp->sizey = 1000;
+
+        struct map *simplex = generate_simplex(s,opt_temp);
+
+        apply_island(perlin,opt_alt);
+        apply_island(simplex, opt_alt);
+
+        save_to_png(perlin->map,"perlin.png");
+        save_to_png(simplex->map,"simplex.png");
+
+        struct threshold *t = malloc(sizeof(struct threshold));
+        t->deep_ocean = 90;
+        t->ocean = 110;
+        t->coast = 118;
+        t->beach = 125;
+        t->mid_mountains = 155;
+        t->mountains = 160;
+        t->picks = 170;
+        t->plains = 255;
+        t->snow = 0;
+        t->savanna = 0;
+
+        printf("\e[1;1H\e[2J");
+        printf("[//////      ]\nApply Biome\n");
+
+        SDL_Surface *map = apply_biome(perlin->map, simplex->map,
+                opt_alt,t);
+
+        printf("\e[1;1H\e[2J");
+        printf("[/////////   ]\nSave Map\n");
+
+        save_to_png(map,"island.png");
+
+        printf("\e[1;1H\e[2J");
+        printf("[////////////]\nComplete\n");
+
+        SDL_FreeSurface(perlin->map);
+        free(perlin->seed);
+        free(perlin);
+        free(t);
+
+        free(opt_alt);
+        free(opt_temp);
+        SDL_FreeSurface(map);
+
+        SDL_FreeSurface(simplex->map);
+        free(simplex);
+        return 0;
+    }
+
     else if(strcmp(argv[1],"-perso") == 0)
     {
         char *buffer = calloc(16,sizeof(char));
