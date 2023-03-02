@@ -11,45 +11,25 @@ float interpolate(float a0, float a1, float w)
     return (a1-a0)*w + a0;
 }
 
-char* shuffle(int *perm, int size, char *seed)
+void shuffle_perlin(int *perm, int size)
 {
-    char * n_seed;
-    if(seed == NULL)
-    {
-        n_seed = malloc(size*sizeof(char));
-        n_seed[0] = 1;
-        n_seed[1] = 1;
-    }
     int n = size - 1;
     while(n>1)
     {
         int k = 0;
-        if(seed == NULL)
-        {
-            char c = rand()%size;
-            if(c<0)
-                c = -c;
-            if(c==0 && c == '\n')
-                c++;
-            n_seed[n] = c;
-            k = c;
-            if(k<0)
-                k = -k;
-        }
-        else
-        {
-            k = (int)seed[n];
-            if(k<0)
-                k = k*(-1);
-        }
+        char c = rand()%size;
+        if(c<0)
+            c = -c;
+        k = c;
+        if(k<0)
+            k = -k;
+        
         n--;
         int tmp = perm[n];
         perm[n] = perm[k];
         perm[k] = tmp;
     }
-    if(seed == NULL)
-        return n_seed;
-    return seed;
+    
 }
 
 double perlin(double x,double y,int resolution,int *perm)
@@ -128,9 +108,14 @@ double color_perlin(double x, double y, int *perm, struct options* opt)
     return r * geo_lim;
 }
 
-struct map* perlin_generate(char* seed, struct options *opt)
+struct map* perlin_generate(int seed, struct options *opt)
 {
-    srand(time(NULL));
+    int tmp;
+    if (seed == -1)
+        tmp = time(NULL);
+    else
+        tmp = seed;
+    srand(tmp);
     SDL_Surface* image = SDL_CreateRGBSurface(0,opt->sizex,opt->sizey,32,0,0,0,0);
     SDL_LockSurface(image);
     Uint32* pixels = image->pixels;
@@ -151,7 +136,7 @@ struct map* perlin_generate(char* seed, struct options *opt)
  243,141,128,195,78,66,215,61,
  156,180};
 
-    char* n_seed = shuffle(perm,256,seed);
+    shuffle_perlin(perm,256);
     SDL_PixelFormat* format = image->format;
     for(int y = 0; y<opt->sizey;y++)
     {
@@ -165,7 +150,7 @@ struct map* perlin_generate(char* seed, struct options *opt)
     SDL_UnlockSurface(image);
     struct map* map = malloc(sizeof(struct map));
     map->map = image;
-    map->seed = n_seed;
+    map->seed = tmp;
 
     return map;
 }

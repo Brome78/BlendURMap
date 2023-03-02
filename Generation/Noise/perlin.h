@@ -6,6 +6,6 @@
 
 
 
-struct map* perlin_generate( char *seed, struct options *opt);
+struct map* perlin_generate(int seed, struct options *opt);
 
 #endif

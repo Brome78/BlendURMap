@@ -28,47 +28,7 @@ int perm[256] = {151,160,137,91,90,15,
 };
 
 
-char* shufflePerm(int *perm, int size, char *seed)
-{
-    char * n_seed;
-    if(seed == NULL)
-    {
-        n_seed= malloc(size*sizeof(char));
 
-        n_seed[0] = 1;
-        n_seed[1] = 1;
-    }
-    int n = size - 1;
-    while(n>1)
-    {
-        int k = 0;
-        if(seed == NULL)
-        {
-            char c = rand()%size;
-            if(c<0)
-                c = -c;
-            if(c==0 && c == '\n')
-                c++;
-            n_seed[n] = c;
-            k = c;
-            if(k<0)
-                k = -k;
-        }
-        else
-        {
-            k = (int)seed[n];
-            if(k<0)
-                k = (-1)*k;
-        }
-        n--;
-        int tmp = perm[n];
-        perm[n] = perm[k];
-        perm[k] = tmp;
-    }
-    if(seed == NULL)
-        return n_seed;
-    return seed;
-}
 
 
 float  grad2( int hash, float x, float y ) {
@@ -78,7 +38,26 @@ float  grad2( int hash, float x, float y ) {
     return ((h&1)? -u : u) + ((h&2)? -2.0f*v : 2.0f*v);
 }
 
-
+void shuffle(int *perm, int size)
+{
+    int n = size - 1;
+    while(n>1)
+    {
+        int k = 0;
+        char c = rand()%size;
+        if(c<0)
+            c = -c;
+        k = c;
+        if(k<0)
+            k = -k;
+        
+        n--;
+        int tmp = perm[n];
+        perm[n] = perm[k];
+        perm[k] = tmp;
+    }
+    
+}
 
 // 2D simplex noise
 double simplexNoise2D(double x, double y,double resolution) {
@@ -161,10 +140,16 @@ double fractalNoise2D(double x, double y, int octaves, double persistence,double
 
     return total/maxValue;
 }
-struct map* generate_simplex(char* s,struct options* o)
+struct map* generate_simplex(int seed,struct options* o)
 {
-    srand(time(NULL));
-    char* seed = shufflePerm(perm,256,s);
+    int tmp;
+    if(seed==-1)
+        tmp=time(NULL);
+    else
+        tmp=seed;
+
+    srand(tmp);
+    shuffle(perm,256);
     SDL_Surface* image = SDL_CreateRGBSurface(0,o->sizex,o->sizey,32,0,0,0,0);
     SDL_LockSurface(image);
     Uint32* pixels = image->pixels;
@@ -178,6 +163,6 @@ struct map* generate_simplex(char* s,struct options* o)
     }
     struct map* m = malloc(sizeof(struct map));
     m->map = image;
-    m->seed = seed;
+    m->seed = tmp;
     return m;
 }

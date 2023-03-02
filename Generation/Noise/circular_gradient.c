@@ -61,7 +61,6 @@ struct map* generate_circ_gradient(struct options* opt)
     SDL_UnlockSurface(image);
     struct map* map = malloc(sizeof(struct map));
     map->map = image;
-    map->seed = NULL;
 
     return map;
 }

@@ -32,47 +32,24 @@ int _perm[256] = {151,160,137,91,90,15,
 }*/
 
 
-char* shuffle_diam(int *_perm, int size, char *seed)
+void shuffle_diam(int *perm, int size)
 {
-    char* n_seed;
-    if(seed == NULL)
-    {
-        n_seed = malloc(size*sizeof(char));
-        n_seed[0] = 1;
-        n_seed[1] = 1;
-    }
     int n = size - 1;
-    while(n > 1)
+    while(n>1)
     {
         int k = 0;
-        if(seed == NULL)
-        {
-            char c = rand()%size;
-            if(c < 0)
-                c = -c;
-            if(c == 0 && c == '\n')
-                c++;
-            n_seed[n] = c;
-            k = c;
-            if(k < 0)
-                k = -k;
-        }
-        else
-        {
-            k = (int)seed[n];
-            if(k < 0)
-                k = -k;
-        }
+        char c = rand()%size;
+        if(c<0)
+            c = -c;
+        k = c;
+        if(k<0)
+            k = -k;
         n--;
-        int tmp = _perm[n];
-        _perm[n] = _perm[k];
-        _perm[k] = tmp;
+        int tmp = perm[n];
+        perm[n] = perm[k];
+        perm[k] = tmp;
     }
-    if(seed == NULL)
-        return n_seed;
-    return seed;
 }
-
 // 2D random noise function
 double noise2d(int x, int y) 
 {
@@ -166,14 +143,20 @@ double diamond_square(double x, double y, int* _perm, double* resolution)
 }
 
 
-struct map* generate_diamond_square(char* seed, struct options *opt)
+struct map* generate_diamond_square(int seed, struct options *opt)
 {
-    srand(time(NULL));
+    int tmp;
+
+    if(seed == -1)
+        tmp = time(NULL);
+    else
+        tmp = seed;
+    srand(tmp);
     SDL_Surface* image = SDL_CreateRGBSurface(0, opt->sizex, opt->sizey, 32, 0, 0, 0, 0);
     SDL_LockSurface(image);
     Uint32* pixels = image->pixels;
     
-    char* n_seed = shuffle_diam(_perm, 256, seed);
+    shuffle_diam(_perm, 256);
     SDL_PixelFormat* format = image->format;
     for (int y = 0; y < opt->sizey; y++)
     {
@@ -187,7 +170,7 @@ struct map* generate_diamond_square(char* seed, struct options *opt)
     SDL_UnlockSurface(image);
     struct map* map = malloc(sizeof(struct map));
     map->map = image;
-    map->seed = n_seed;
+    map->seed = tmp;
     
     return map;
 }

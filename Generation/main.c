@@ -22,7 +22,7 @@ int main(int argc, char** argv)
                    -map \n \
                    -perso");
 
-    char *s = read_seed("seed");
+    int s = 1677768393;
 
     struct options* opt_alt = malloc(sizeof(struct options));
     opt_alt->sizex = 1920;
@@ -58,7 +58,6 @@ int main(int argc, char** argv)
 
         free(opt_alt);
         free(opt_temp);
-        free(simplex->seed);
         SDL_FreeSurface(simplex->map);
         free(simplex);
         return 0;
@@ -81,7 +80,6 @@ int main(int argc, char** argv)
 
         free(opt_alt);
         free(opt_temp);
-        free(perlin->seed);
         SDL_FreeSurface(perlin->map);
         free(perlin);
         return 0;
@@ -104,7 +102,6 @@ int main(int argc, char** argv)
 
         free(opt_alt);
         free(opt_temp);
-        free(circ->seed);
         SDL_FreeSurface(circ->map);
         free(circ);
         return 0;
@@ -142,7 +139,7 @@ int main(int argc, char** argv)
         printf("\e[1;1H\e[2J");
         printf("[            ]\nGenerate Perlin Noise\n");
 
-        struct map* perlin = perlin_generate(s,opt_alt);
+        struct map* perlin = perlin_generate(1677768393,opt_alt);
 
         printf("\e[1;1H\e[2J");
         printf("[///         ]\nGenerate Simplex Noise\n");
@@ -170,14 +167,12 @@ int main(int argc, char** argv)
         printf("\e[1;1H\e[2J");
         printf("[/////////   ]\nSave Map\n");
 
-        save_image(map,"map.bmp");
         save_to_png(map,"map.png");
 
         printf("\e[1;1H\e[2J");
         printf("[////////////]\nComplete\n");
 
         SDL_FreeSurface(perlin->map);
-        free(perlin->seed);
         free(perlin);
         free(t);
 
@@ -241,7 +236,6 @@ int main(int argc, char** argv)
         printf("[////////////]\nComplete\n");
 
         SDL_FreeSurface(perlin->map);
-        free(perlin->seed);
         free(perlin);
         free(t);
 
@@ -285,8 +279,7 @@ int main(int argc, char** argv)
 
         if(strcmp(buffer,"Y")==0)
         {
-            free(s);
-            s = NULL;
+            s = -1;
         }
 
         printf("Would you some props? (Y/N)");
@@ -378,7 +371,6 @@ int main(int argc, char** argv)
 
         free_chunk(chunk_map, opt_alt);
         SDL_FreeSurface(perlin->map);
-        free(perlin->seed);
         free(perlin);
         free(t);
 
@@ -387,7 +379,6 @@ int main(int argc, char** argv)
         SDL_FreeSurface(map);
 
         SDL_FreeSurface(simplex->map);
-        free(simplex->seed);
         free(simplex);
 
         free(buffer);

@@ -23,7 +23,7 @@ typedef struct options
 typedef struct map
 {
     SDL_Surface* map;
-    char* seed;
+    int seed;
 }map;
 
 typedef struct threshold{
