@@ -14,6 +14,8 @@ You can build the program using given Makefile. To do so, go to `./Generation/` 
 just use the makefile `make -j`. Once it's compiled, launch the program using the
 `./main` program.
 
+`./main -h` To see all available options
+
 `./main -simplex` Generate a simplex noise in 1920x1080
 
 `./main -perlin` Generate a perlin noise in 1920x1080
@@ -22,7 +24,7 @@ just use the makefile `make -j`. Once it's compiled, launch the program using th
 
 `./main -map` Generate a map in 1920x1080
 
-`./main -perso` Generate an personnalized map in 1920x1080
+`./main -perso` Generate an personnalized map
 
 
 
