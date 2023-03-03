@@ -43,6 +43,5 @@ Uint32 relief_desert(SDL_PixelFormat* format);
 
 
 
-SDL_Surface* draw_riviere(SDL_Surface* image,SDL_Surface* heightmap, int sizex, int sizey);
 
 #endif

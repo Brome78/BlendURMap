@@ -9,6 +9,7 @@
 #include "../Noise/ds.h"
 
 #include "../Color/biome.h"
+#include "../Color/river.h"
 
 void exec_map(int seed, struct options* opt_alt, struct options* opt_temp)
 {
@@ -29,6 +30,7 @@ void exec_map(int seed, struct options* opt_alt, struct options* opt_temp)
 
     SDL_Surface *map = apply_biome(perlin->map, simplex->map,
             opt_alt,t);
+
 
     printf("\e[1;1H\e[2J");
     printf("[/////////   ]\nSave Map\n");

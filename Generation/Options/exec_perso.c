@@ -11,6 +11,7 @@
 
 #include "../Color/chunk.h"
 #include "../Color/biome.h"
+#include "../Color/river.h"
 #include "../Color/props.h"
 
 void exec_perso(int seed, struct options* opt_alt, struct options* opt_temp)
@@ -21,6 +22,7 @@ void exec_perso(int seed, struct options* opt_alt, struct options* opt_temp)
     int h = 0;
 
     char props = 0;
+    char riv = 0;
     char show = 0;
     char print = 0;
 
@@ -47,6 +49,15 @@ void exec_perso(int seed, struct options* opt_alt, struct options* opt_temp)
     {
         seed = -1;
     }
+
+    printf("Would you some rivers? (Y/N)");
+    scanf("%s",buffer);
+
+    if(strcmp(buffer, "Y")==0)
+    {
+        riv = 1;
+    }
+
 
     printf("Would you some props? (Y/N)");
     scanf("%s",buffer);
@@ -104,8 +115,12 @@ void exec_perso(int seed, struct options* opt_alt, struct options* opt_temp)
     printf("[//////      ]\nSave Map\n");
 
     save_to_png(map,"map.png");
+    if(riv)
+    {
+        SDL_Surface *river = draw_riviere(map,opt_alt);
 
-
+        save_to_png(river,"river.png");
+    }
 
     printf("\e[1;1H\e[2J");
     printf("[////////    ]\nCreate Chunks\n");
