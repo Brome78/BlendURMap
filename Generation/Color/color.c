@@ -4,6 +4,10 @@
 #include <time.h>
 #include <math.h>
 
+/**********************************************/
+/*                  DEFAULT                   */
+/**********************************************/
+
 Uint32 deep_ocean(SDL_PixelFormat* format)
 {
     return SDL_MapRGB(format,0,0,180);
@@ -54,6 +58,10 @@ Uint32 plains(SDL_PixelFormat* format)
     return SDL_MapRGB(format,58, 148, 45);
 }
 
+/**********************************************/
+/*                  DESERT                    */
+/**********************************************/
+
 Uint32 low_desert(SDL_PixelFormat* format)
 {
     return SDL_MapRGB(format,198, 175, 109);
@@ -73,6 +81,11 @@ Uint32 mountains_desert(SDL_PixelFormat* format)
 {
     return SDL_MapRGB(format,185, 119, 14);
 }
+
+/**********************************************/
+/*                  SAVANNA                   */
+/**********************************************/
+
 Uint32 savanna(SDL_PixelFormat* format)
 {
     return SDL_MapRGB(format,146, 164, 90 );
@@ -82,6 +95,10 @@ Uint32 savanna2(SDL_PixelFormat* format)
 {
     return SDL_MapRGB(format,111, 127, 68 );
 }
+
+/**********************************************/
+/*                  SNOW                      */
+/**********************************************/
 
 Uint32 snow(SDL_PixelFormat* format)
 {
@@ -100,6 +117,11 @@ Uint32 freeze_deep_ocean(SDL_PixelFormat* format)
 {
     return SDL_MapRGB(format,41, 128, 185);
 }
+
+/**********************************************/
+/*                  RELIEF                    */
+/**********************************************/
+
 Uint32 relief_mountains(SDL_PixelFormat* format)
 {
     return SDL_MapRGB(format,70, 70, 70);
@@ -113,104 +135,22 @@ Uint32 relief_desert(SDL_PixelFormat* format)
     return SDL_MapRGB(format,165,100,0);
 }
 
+/**********************************************/
+/*                  VILLAGE                   */
+/**********************************************/
 
-
-/*
-SDL_Surface* draw_riviere(SDL_Surface* image,SDL_Surface* heightmap, int sizex, int sizey)
+Uint32 house_wall(SDL_PixelFormat* format)
 {
-    SDL_LockSurface(image);
-    SDL_PixelFormat* format = image->format;
-    Uint32* pixels = image->pixels;
-    Uint32* h = heightmap->pixels;
-    for(int y = 0; y<sizey; y++)
-    {
-        for(int x = 0; x<sizex; x++)
-        {
-            if(pixels[y*sizex+ x] == ocean(format))
-            {
-                int prob = rand()%7000;
-                if(prob < 1)
-                {
-                    int x0 = x;
-                    
-                    int y0 = y;
-                    int error = 0;
-                    
-                    int c = 500;
+    return SDL_MapRGB(format,118,110,78);
+}
 
-                    while(c > 0 && error<2 && x0-1>0 && y0-1>0&&x0+1<sizex&&y0+1<sizey)
-                    {
-                        int nmb = rand()%80;
-                        if( nmb < 10&& pixels[x0+1+(y0+1)*sizex]!=ocean(format))
-                        {
-                            pixels[y0*sizex+x0] = ocean(format);
-                            x0 = x0+1;
-                            y0 = y0+1;
-                            c--;
-                        }
-                        else if(nmb < 20 && pixels[x0+1+(y0)*sizex]!=ocean(format))
-                        {
-                            pixels[y0*sizex+x0] = ocean(format);
-                            x0 = x0+1;
-                            y0 = y0;
-                            c--;
-                        }
-                        else if(nmb<30 && pixels[x0+1+(y0-1)*sizex]!=ocean(format))
-                        {
-                            pixels[y0*sizex+x0] = ocean(format);
-                            x0 = x0+1;
-                            y0 = y0-1;
-                            c--;
-                        }
+Uint32 house_roof(SDL_PixelFormat* format)
+{ 
+    return SDL_MapRGB(format,95,77,4);
+}
 
-                        else if(nmb<40 && pixels[x0+(y0+1)*sizex]!=ocean(format))
-                        {
-                            pixels[y0*sizex+x0] = ocean(format);
-                            x0 = x0;
-                            y0 = y0+1;
-                            c--;
-                        }
-                        else if(nmb<50 && pixels[x0+(y0-1)*sizex]!=ocean(format))
-                        {
-                            pixels[y0*sizex+x0] = ocean(format);
-                            x0 = x0;
-                            y0 = y0-1;
-                            c--;
-                        }
-                        else if(nmb<60 && pixels[x0-1+(y0+1)*sizex]!=ocean(format))
-                        {
-                            pixels[y0*sizex+x0] = ocean(format);
-                            x0 = x0-1;
-                            y0 = y0+1;
-                            c--;
-                        }
-                        else if(nmb<70 && pixels[x0-1+(y0)*sizex]!=ocean(format))
-                        {
-                            pixels[y0*sizex+x0] = ocean(format);
-                            x0 = x0-1;
-                            y0 = y0;
-                            c--;
-                        }
-                        else if(pixels[x0-1+(y0-1)*sizex]!=deep_ocean(format))
-                        {
-                            c = 0;
-                        }
-                        else
-                        {
-                            pixels[y0*sizex+x0] = ocean(format);
-                            x0 = x0-1;
-                            y0 = y0-1;
-                            c--;
-                        }
-                        
-                        
-                        
-                    }
-                }
-            }
-        }
-    }
-    SDL_UnlockSurface(image);
-    return image;
-}*/
+Uint32 path(SDL_PixelFormat* format)
+{
+    return SDL_MapRGB(format,154,143,100);
+}
 

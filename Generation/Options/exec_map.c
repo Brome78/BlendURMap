@@ -10,6 +10,7 @@
 
 #include "../Color/biome.h"
 #include "../Color/river.h"
+#include "../Structure/village.h"
 
 void exec_map(int seed, struct options* opt_alt, struct options* opt_temp)
 {
@@ -36,6 +37,10 @@ void exec_map(int seed, struct options* opt_alt, struct options* opt_temp)
     printf("[/////////   ]\nSave Map\n");
 
     save_to_png(map,"map.png");
+
+    apply_village(map,opt_alt,1);
+
+    save_to_png(map,"village.png");
 
     printf("\e[1;1H\e[2J");
     printf("[////////////]\nComplete\n");

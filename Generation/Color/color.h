@@ -41,7 +41,9 @@ Uint32 relief_mountains(SDL_PixelFormat* format);
 Uint32 relief_beach(SDL_PixelFormat* format);
 Uint32 relief_desert(SDL_PixelFormat* format);
 
-
+Uint32 house_wall(SDL_PixelFormat* format);
+Uint32 house_roof(SDL_PixelFormat* format);
+Uint32 path(SDL_PixelFormat* format);
 
 
 #endif

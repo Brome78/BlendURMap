@@ -48,6 +48,12 @@ typedef struct chunk
     int id_biome;
 }chunk;
 
+typedef struct structure{
+    int sizex;
+    int sizey;
+    SDL_Surface* scheme;
+}structure;
+
 SDL_Surface* load_image(const char* path);
 
 void save_image(SDL_Surface* surface, const char* path);
