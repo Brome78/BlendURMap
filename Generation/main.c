@@ -36,7 +36,7 @@ int main(int argc, char** argv)
     }
     else if(strcmp(argv[1],"-perlin") == 0|| strcmp(argv[1],"-p") == 0 )
     {
-        exec_perlin(s,opt_alt); 
+        exec_perlin(s,opt_alt);
         return 0;
     }
     else if(strcmp(argv[1],"-circle") == 0|| strcmp(argv[1],"-c") == 0 )
@@ -50,7 +50,7 @@ int main(int argc, char** argv)
     {
         exec_ds(s,opt_alt);
         return 0;
-    } 
+    }
 
     else if(strcmp(argv[1],"-map") == 0)
     {
@@ -66,7 +66,7 @@ int main(int argc, char** argv)
     else if(strcmp(argv[1],"-perso") == 0|| strcmp(argv[1],"-P") == 0 )
     {
         exec_perso(s,opt_alt,opt_temp);
-        return 0; 
+        return 0;
     }
     else if(strcmp(argv[1],"-h") == 0)
     {

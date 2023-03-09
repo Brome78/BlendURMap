@@ -60,18 +60,18 @@ void draw_house(SDL_Surface* map, struct options* opt, int x1, int y1)
 
 }
 
-void draw_path(SDL_Surface* map, struct options* opt, int x1, int y1, 
+void draw_path(SDL_Surface* map, struct options* opt, int x1, int y1,
         struct vector2* dir)
 {
     Uint32* pixels = map->pixels;
     SDL_PixelFormat* format = map->format;
     SDL_LockSurface(map);
-    
+
     for(int i = 0; i<4;i++)
     {
         pixels[(y1+(dir->y*i))*opt->sizex+x1+(dir->x*i)] = path(format);
     }
-    
+
     SDL_UnlockSurface(map);
 
 }
@@ -79,7 +79,7 @@ void draw_path(SDL_Surface* map, struct options* opt, int x1, int y1,
 void apply_village(SDL_Surface* map, struct options* opt,int nmb)
 {
     nmb = nmb+1;
-
+    int r = rand()%20;
     draw_house(map,opt,400,100);
     draw_house(map,opt,404,100);
     draw_house(map,opt,408,100);
@@ -106,6 +106,4 @@ void apply_village(SDL_Surface* map, struct options* opt,int nmb)
     dir->y = 1;
 
     draw_path(map,opt,412,102,dir);
-
-
 }

@@ -18,33 +18,35 @@ SDL_Surface* draw_riviere(SDL_Surface* image, struct options* opt)
     {
         for(int x = 0; x<sizex; x++)
         {
-            if(pixels[y*sizex+ x] == ocean(format))
+            if(pixels[y*sizex+ x] == relief_beach(format))
             {
-                int prob = rand()%7000;
+                int prob = rand()%500;
                 if(prob < 1)
                 {
                     int x0 = x;
                     int y0 = y;
-                    int c = 500;
+                    int c = 200;
 
                     while(c > 0 && x0-1>0 && y0-1>0&&x0+1<sizex&&y0+1<sizey)
                     {
-                        int nmb = rand()%80;
-                        if( nmb < 10&& pixels[x0+1+(y0+1)*sizex]!=ocean(format))
+                        if(pixels[x0+y0*sizex] == ocean(format) || pixels[x0+y0*sizex] == coast(format))
+                            break;
+                        int nmb = rand()%50;
+                        /*if( nmb < 10&& pixels[x0+1+(y0+1)*sizex]!=ocean(format))
                         {
                             pixels[y0*sizex+x0] = ocean(format);
                             x0 = x0+1;
                             y0 = y0+1;
                             c--;
-                        }
-                        else if(nmb < 20 && pixels[x0+1+(y0)*sizex]!=ocean(format))
+                        }*/
+                        if(nmb < 10 && pixels[x0+1+(y0)*sizex]!=ocean(format))
                         {
                             pixels[y0*sizex+x0] = ocean(format);
                             x0 = x0+1;
                             y0 = y0;
                             c--;
                         }
-                        else if(nmb<30 && pixels[x0+1+(y0-1)*sizex]!=ocean(format))
+                        else if(nmb<20 && pixels[x0+1+(y0-1)*sizex]!=ocean(format))
                         {
                             pixels[y0*sizex+x0] = ocean(format);
                             x0 = x0+1;
@@ -52,28 +54,28 @@ SDL_Surface* draw_riviere(SDL_Surface* image, struct options* opt)
                             c--;
                         }
 
-                        else if(nmb<40 && pixels[x0+(y0+1)*sizex]!=ocean(format))
+                        /*else if(nmb<40 && pixels[x0+(y0+1)*sizex]!=ocean(format))
                         {
                             pixels[y0*sizex+x0] = ocean(format);
                             x0 = x0;
                             y0 = y0+1;
                             c--;
-                        }
-                        else if(nmb<50 && pixels[x0+(y0-1)*sizex]!=ocean(format))
+                        }*/
+                        else if(nmb<30 && pixels[x0+(y0-1)*sizex]!=ocean(format))
                         {
                             pixels[y0*sizex+x0] = ocean(format);
                             x0 = x0;
                             y0 = y0-1;
                             c--;
                         }
-                        else if(nmb<60 && pixels[x0-1+(y0+1)*sizex]!=ocean(format))
+                        /*else if(nmb<60 && pixels[x0-1+(y0+1)*sizex]!=ocean(format))
                         {
                             pixels[y0*sizex+x0] = ocean(format);
                             x0 = x0-1;
                             y0 = y0+1;
                             c--;
-                        }
-                        else if(nmb<70 && pixels[x0-1+(y0)*sizex]!=ocean(format))
+                        }*/
+                        else if(nmb<40 && pixels[x0-1+(y0)*sizex]!=ocean(format))
                         {
                             pixels[y0*sizex+x0] = ocean(format);
                             x0 = x0-1;

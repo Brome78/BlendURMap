@@ -71,6 +71,14 @@ Uint32 desert(SDL_PixelFormat* format)
 {
     return SDL_MapRGB(format,198, 175, 109);
 }
+Uint32 desert3(SDL_PixelFormat* format)
+{
+    return SDL_MapRGB(format,188, 165, 99);
+}
+Uint32 desert2(SDL_PixelFormat* format)
+{
+    return SDL_MapRGB(format,178, 155, 89);
+}
 
 Uint32 mid_mountains_desert(SDL_PixelFormat* format)
 {
@@ -91,9 +99,14 @@ Uint32 savanna(SDL_PixelFormat* format)
     return SDL_MapRGB(format,146, 164, 90 );
 }
 
-Uint32 savanna2(SDL_PixelFormat* format)
+Uint32 savanna3(SDL_PixelFormat* format)
 {
     return SDL_MapRGB(format,111, 127, 68 );
+}
+
+Uint32 savanna2(SDL_PixelFormat* format)
+{
+    return SDL_MapRGB(format,90, 107, 48 );
 }
 
 /**********************************************/
@@ -115,7 +128,7 @@ Uint32 freeze_coast(SDL_PixelFormat* format)
 }
 Uint32 freeze_deep_ocean(SDL_PixelFormat* format)
 {
-    return SDL_MapRGB(format,41, 128, 185);
+    return SDL_MapRGB(format,42, 128, 185);
 }
 
 /**********************************************/
@@ -133,6 +146,31 @@ Uint32 relief_beach(SDL_PixelFormat* format)
 Uint32 relief_desert(SDL_PixelFormat* format)
 {
     return SDL_MapRGB(format,165,100,0);
+}
+
+/**********************************************/
+/*                  PROPS                     */
+/**********************************************/
+
+Uint32 log_c(SDL_PixelFormat* format)
+{
+    return SDL_MapRGB(format,  120, 66, 18 );
+}
+Uint32 log2_c(SDL_PixelFormat* format)
+{
+    return SDL_MapRGB(format, 245, 241, 209);
+}
+Uint32 leave_c(SDL_PixelFormat* format)
+{
+    return SDL_MapRGB(format, 30, 173, 8 );
+}
+Uint32 leave2_c(SDL_PixelFormat* format)
+{
+    return SDL_MapRGB(format, 0, 152, 73);
+}
+Uint32 bush_c(SDL_PixelFormat* format)
+{
+    return SDL_MapRGB(format,58,130,45);
 }
 
 /**********************************************/
