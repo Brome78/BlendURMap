@@ -53,9 +53,9 @@ void diamondSquare(int n, int **grid) {
 }
 
 SDL_Surface* generate_diamond(void) {
-    int **grid = malloc(SIZE * sizeof(int *));
+    int **grid = calloc(SIZE, sizeof(int *));
     for (int i = 0; i < SIZE; i++) {
-        grid[i] = malloc(SIZE * sizeof(int));
+        grid[i] = calloc(SIZE, sizeof(int));
     }
 
     srand(time(NULL));

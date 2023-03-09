@@ -32,16 +32,19 @@ int main(int argc, char** argv)
     if(strcmp(argv[1],"-simplex") == 0 || strcmp(argv[1],"-s") == 0 )
     {
         exec_simplex(s,opt_alt);
+        free(opt_temp);
         return 0;
     }
     else if(strcmp(argv[1],"-perlin") == 0|| strcmp(argv[1],"-p") == 0 )
     {
         exec_perlin(s,opt_alt);
+        free(opt_temp);
         return 0;
     }
     else if(strcmp(argv[1],"-circle") == 0|| strcmp(argv[1],"-c") == 0 )
     {
         exec_circle(opt_alt);
+        free(opt_temp);
         return 0;
     }
 
@@ -49,6 +52,7 @@ int main(int argc, char** argv)
             || strcmp(argv[1],"-ds") == 0)
     {
         exec_ds(s,opt_alt);
+        free(opt_temp);
         return 0;
     }
 

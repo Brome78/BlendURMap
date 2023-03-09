@@ -118,6 +118,16 @@ Uint32 snow(SDL_PixelFormat* format)
     return SDL_MapRGB(format,214, 234, 248);
 }
 
+Uint32 snow3(SDL_PixelFormat* format)
+{
+    return SDL_MapRGB(format,204, 224, 238);
+}
+
+Uint32 snow2(SDL_PixelFormat* format)
+{
+    return SDL_MapRGB(format,194, 214, 228);
+}
+
 Uint32 freeze_ocean(SDL_PixelFormat* format)
 {
     return SDL_MapRGB(format,127, 179, 213);

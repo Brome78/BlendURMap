@@ -41,6 +41,8 @@ Uint32 savanna2(SDL_PixelFormat* format);
 Uint32 savanna3(SDL_PixelFormat* format);
 
 Uint32 snow(SDL_PixelFormat* format);
+Uint32 snow2(SDL_PixelFormat* format);
+Uint32 snow3(SDL_PixelFormat* format);
 Uint32 freeze_ocean(SDL_PixelFormat* format);
 Uint32 freeze_coast(SDL_PixelFormat* format);
 Uint32 freeze_deep_ocean(SDL_PixelFormat* format);

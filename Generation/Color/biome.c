@@ -33,9 +33,17 @@ Uint32 snow_alt_filter(Uint8 rh, SDL_PixelFormat* format,
     {
         c = mid_mountains(format);
     }
+    else if (rh>=threshold->plateau2 && rh<threshold->mid_mountains)
+    {
+        c = snow2(format);
+    }
+    else if(rh>=threshold->plateau3 && rh<threshold->plateau2)
+    {
+        c = snow3(format);
+    }
     else
     {
-        c=snow(format);
+        c = snow(format);
     }
     return c;
 
