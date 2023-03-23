@@ -18,4 +18,4 @@ ${EXE}: ${OBJ}
 .PHONY: clean
 
 clean:
-	${RM} ${OBJ} ${EXE} *.png *.bmp
+	${RM} ${OBJ} ${EXE} *.png *.bmp *.OBJ

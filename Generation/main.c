@@ -15,6 +15,8 @@
 #include "Options/exec_perso.h"
 #include "Options/exec_help.h"
 
+#include "Exportation/export.h"
+
 int main(int argc, char** argv)
 {
     if(argc != 2)
@@ -76,6 +78,11 @@ int main(int argc, char** argv)
     {
         exec_help();
         return 0;
+    }
+    else if (strcmp(argv[1],"-export") == 0)
+    {
+        exec_export();
+        return 1;
     }
     else
     {
