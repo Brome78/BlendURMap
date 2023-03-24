@@ -4,13 +4,14 @@
 #include <time.h>
 #include <SDL2/SDL_image.h>
 #include "../Utils/utils.h"
-#define SIZE 2049 // Change this value to adjust grid size
-#define RANGE 252 // Change this value to adjust random range
+//#define SIZE 2049 // Change this value to adjust grid size
+//#define RANGE 252 // Change this value to adjust random range
 
-void diamondSquare(int n, int **grid) {
+void diamondSquare(int n, int **grid,int range) 
+{
     int side = n - 1;
     int half;
-    int rand_range = RANGE;
+    int rand_range = range;
 
     while (side > 1) {
         half = side / 2;
@@ -52,22 +53,30 @@ void diamondSquare(int n, int **grid) {
     }
 }
 
-SDL_Surface* generate_diamond(void) {
+SDL_Surface* generate_diamond(int seed, struct options* opt) 
+{
+    int SIZE = opt->sizex;
+    int RANGE = opt->range;
     int **grid = calloc(SIZE, sizeof(int *));
     for (int i = 0; i < SIZE; i++) {
         grid[i] = calloc(SIZE, sizeof(int));
     }
 
-    srand(time(NULL));
+    int tmp;
+    if (seed == -1)
+        tmp = time(NULL);
+    else
+        tmp = seed;
+    srand(tmp);
 
     grid[0][0] = rand() % (RANGE + 1);
     grid[0][SIZE-1] = rand() % (RANGE + 1);
     grid[SIZE-1][0] = rand() % (RANGE + 1);
     grid[SIZE-1][SIZE-1] = rand() % (RANGE + 1);
 
-    diamondSquare(SIZE, grid);
+    diamondSquare(SIZE, grid,RANGE);
 
-   
+
     SDL_Surface* image = SDL_CreateRGBSurface(0,SIZE,SIZE,32,0,0,0,0);
     SDL_LockSurface(image);
     Uint32* pixels = image->pixels;

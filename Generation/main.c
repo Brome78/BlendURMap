@@ -14,6 +14,7 @@
 #include "Options/exec_island.h"
 #include "Options/exec_perso.h"
 #include "Options/exec_help.h"
+#include "Options/exec_export.h"
 
 #include "Exportation/export.h"
 
@@ -81,7 +82,7 @@ int main(int argc, char** argv)
     }
     else if (strcmp(argv[1],"-export") == 0)
     {
-        exec_export();
+        exec_export(s,opt_alt,opt_temp);
         return 1;
     }
     else

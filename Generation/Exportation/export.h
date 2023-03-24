@@ -3,11 +3,10 @@
 #define EXPORT_H
 
 #include <err.h>
-#include "../Noise/perlin.h"
-#include "../Utils/options_map.h"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include "../Utils/utils.h"
 
-int exec_export();
+int export_3d_map(struct map* pmap, char *path);
 
 #endif

@@ -18,6 +18,7 @@ typedef struct options
     int octave;
     double frequence;
     double persistence;
+    int range;
 }options;
 
 typedef struct map

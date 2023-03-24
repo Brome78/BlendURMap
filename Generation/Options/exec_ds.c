@@ -8,7 +8,10 @@ void exec_ds(int seed, struct options* opt)
     printf("\e[1;1H\e[2J");
     printf("[            ]\nGenerate Diamond-Square Noise\n");
 
-    SDL_Surface* diamond_square = generate_diamond();
+    opt->range = 252;
+    opt->sizex = 2049;
+
+    SDL_Surface* diamond_square = generate_diamond(seed,opt); //-1 for random
 
     printf("\e[1;1H\e[2J");
     printf("[//////      ]\nSave Noise\n");

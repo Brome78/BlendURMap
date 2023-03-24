@@ -3,7 +3,7 @@
 #include <stdlib.h>
 
 
-int exec_export()
+int export_3d_map(struct map* pmap, char* path)
 {
   //TODO
   //- Get the perlin surface from the generation
@@ -12,14 +12,8 @@ int exec_export()
   //- Write into it with the info
   //- Don't forget to free the pointers if needed
 
-  int s = 1677768393;
-
-  struct options* opt_alt = default_options_alt();
-  opt_alt->sizex = 100;
-  opt_alt->sizey = 100;
-  struct map* pmap = perlin_generate(-1,opt_alt);
-
-  FILE* fd = fopen("map.OBJ","w");
+  
+  FILE* fd = fopen(path,"w");
   SDL_Surface* ps = pmap->map;
 
 
