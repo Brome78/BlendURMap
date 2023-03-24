@@ -183,6 +183,26 @@ Uint32 bush_c(SDL_PixelFormat* format)
     return SDL_MapRGB(format,58,130,45);
 }
 
+Uint32 log_savanna_c(SDL_PixelFormat* format)
+{
+    return SDL_MapRGB(format,  92, 91, 85);
+}
+
+Uint32 leave_savanna_c(SDL_PixelFormat* format)
+{
+    return SDL_MapRGB(format,  102, 102, 0);
+}
+
+Uint32 log_pine_c(SDL_PixelFormat* format)
+{
+    return SDL_MapRGB(format,  70, 52, 4);
+}
+
+Uint32 leave_pine_c(SDL_PixelFormat* format)
+{
+    return SDL_MapRGB(format,  0, 70, 0);
+}
+
 /**********************************************/
 /*                  VILLAGE                   */
 /**********************************************/
@@ -193,7 +213,7 @@ Uint32 house_wall(SDL_PixelFormat* format)
 }
 
 Uint32 house_roof(SDL_PixelFormat* format)
-{ 
+{
     return SDL_MapRGB(format,95,77,4);
 }
 

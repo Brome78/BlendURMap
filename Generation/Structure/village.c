@@ -69,41 +69,174 @@ void draw_path(SDL_Surface* map, struct options* opt, int x1, int y1,
 
     for(int i = 0; i<4;i++)
     {
-        pixels[(y1+(dir->y*i))*opt->sizex+x1+(dir->x*i)] = path(format);
+        if(pixels[(y1+(dir->y*i))*opt->sizex + x1 +(dir->x*i)]
+                != house_roof(format))
+            pixels[(y1+(dir->y*i))*opt->sizex+x1+(dir->x*i)] = path(format);
     }
 
     SDL_UnlockSurface(map);
 
 }
 
-void apply_village(SDL_Surface* map, struct options* opt,int nmb)
+void generate_village(SDL_Surface* map, int x, int y, struct options* opt,
+        int nmb)
 {
-    nmb = nmb+1;
-    int r = rand()%20;
-    draw_house(map,opt,400,100);
-    draw_house(map,opt,404,100);
-    draw_house(map,opt,408,100);
-    draw_house(map,opt,412,100);
-    draw_house(map,opt,414,103);
+    Uint32* pixels = map->pixels;
+    SDL_PixelFormat* format = map->format;
+    if(nmb == 0)
+        return;
+    if(pixels[y*opt->sizex + x] != plains(format))
+        return;
 
     struct vector2* dir = malloc(sizeof(struct vector2));
+
+    int sizex = opt->sizex;
+    int sizey = opt->sizey;
+
+    int r = rand()%60;
+    if (r<0)
+        r = -r;
+
     dir->x = 1;
     dir->y = 0;
 
-    draw_path(map,opt,400,102,dir);
+    if(r<10 && x+4 < sizex)
+    {
+        
+        draw_house(map,opt,x,y);
+        generate_village(map,x+4,y,opt,nmb-1);
+    }
+    if(r<20 && x+4 < sizex)
+    {
+        draw_path(map,opt,x,y,dir);
+        generate_village(map,x+4,y,opt,nmb-1);
+    }
 
+    r = rand()%60;
+    if(r<0)
+        r = -r;
 
-    draw_path(map,opt,404,102,dir);
+    dir->x = -1;
+    dir->y = 0;
 
+    if(r<10 && x-4 > 0)
+    {
+        draw_house(map,opt,x,y);
+        generate_village(map,x-4,y,opt,nmb-1);
+    }
+    if(r<20 && x-4 > 0)
+    {
+        draw_path(map,opt,x,y,dir);
+        generate_village(map,x-4,y,opt,nmb-1);
+    }
 
-    draw_path(map,opt,408,102,dir);
+    r = rand()%60;
+    if(r<0)
+        r = -r;
 
-
-    draw_path(map,opt,412,102,dir);
-
-    draw_path(map,opt,412,105,dir);
     dir->x = 0;
     dir->y = 1;
 
-    draw_path(map,opt,412,102,dir);
+    if(r<10 && y+4 < sizey)
+    {
+        draw_house(map,opt,x,y);
+        generate_village(map,y+4,y,opt,nmb-1);
+    }
+    if(r<20 && y+4 < sizey)
+    {
+        draw_path(map,opt,x,y,dir);
+        generate_village(map,y+4,y,opt,nmb-1);
+    }
+
+    r = rand()%60;
+    if(r<0)
+        r = -r;
+
+    dir->x = 0;
+    dir->y = -1;
+
+    if(r<10 && y-4 > 0)
+    {
+        draw_house(map,opt,x,y);
+        generate_village(map,y-4,y,opt,nmb-1);
+    }
+    if(r<20 && y-4 > 0)
+    {
+        draw_path(map,opt,x,y,dir);
+        generate_village(map,y-4,y,opt,nmb-1);
+    }
+    free(dir);
+    return;
+}
+
+void apply_village(SDL_Surface* map, struct chunk **chunk_map,
+        struct options* opt,int nmb)
+{
+    /*draw_house(map,opt,400,100);
+      draw_house(map,opt,404,100);
+      draw_house(map,opt,408,100);
+      draw_house(map,opt,412,100);
+      draw_house(map,opt,414,103);
+
+      struct vector2* dir = malloc(sizeof(struct vector2));
+      dir->x = 1;
+      dir->y = 0;
+
+      draw_path(map,opt,400,102,dir);
+
+
+      draw_path(map,opt,404,102,dir);
+
+
+      draw_path(map,opt,408,102,dir);
+
+
+      draw_path(map,opt,412,102,dir);
+
+      draw_path(map,opt,412,105,dir);
+      dir->x = 0;
+      dir->y = 1;
+
+      draw_path(map,opt,412,102,dir);*/
+    int sizex = opt->sizex;
+    int sizey = opt->sizey;
+    int chunk_sizex = sizex/16;
+    if(sizex%16>0)
+        chunk_sizex++;
+
+    int chunk_sizey = sizey/16;
+    if(sizey%16>0)
+        chunk_sizey++;
+
+    Uint32* pixels = map->pixels;
+    SDL_PixelFormat* format = map->format;
+
+    for(int y = 0;y<chunk_sizey;y++)
+    {
+        for(int x = 0; x<chunk_sizex;x++)
+        {
+            struct chunk *curr = chunk_map[y*chunk_sizex+x];
+            if(curr->id_biome == PLAINS)
+            {
+                for(int y2 = curr->ymin; y2 < curr->ymax; y2++)
+                {
+                    for(int x2 = curr->xmin; x2<curr->xmax;x2++)
+                    {
+                        int r = rand()%10000;
+                        if(r<0)
+                            r = -r;
+                        if(r < 1 && nmb > 0 && pixels[y2*sizex+x2] == plains(format))
+                        {
+                            printf("launch village %d / %d\n",x2,y2);
+                            generate_village(map, x2, y2, opt, 10);
+                            nmb--;
+                        }
+                        
+
+                    }
+                }
+            }
+
+        }
+    }
 }

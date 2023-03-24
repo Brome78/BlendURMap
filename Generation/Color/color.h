@@ -56,7 +56,10 @@ Uint32 leave_c(SDL_PixelFormat* format);
 Uint32 log2_c(SDL_PixelFormat* format);
 Uint32 leave2_c(SDL_PixelFormat* format);
 Uint32 bush_c(SDL_PixelFormat* format);
-
+Uint32 log_savanna_c(SDL_PixelFormat* format);
+Uint32 leave_savanna_c(SDL_PixelFormat* format);
+Uint32 log_pine_c(SDL_PixelFormat* format);
+Uint32 leave_pine_c(SDL_PixelFormat* format);
 
 
 Uint32 house_wall(SDL_PixelFormat* format);

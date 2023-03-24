@@ -15,6 +15,8 @@
 #include "../Color/river.h"
 #include "../Color/props.h"
 
+#include "../Structure/village.h"
+
 void exec_perso(int seed, struct options* opt_alt, struct options* opt_temp)
 {
 
@@ -23,6 +25,7 @@ void exec_perso(int seed, struct options* opt_alt, struct options* opt_temp)
     int h = 0;
 
     char props = 0;
+    char structure = 0;
     char riv = 0;
     char show = 0;
     char print = 0;
@@ -67,6 +70,15 @@ void exec_perso(int seed, struct options* opt_alt, struct options* opt_temp)
     {
         props = 1;
     }
+
+    printf("Would you some structure? (Y/N)");
+    scanf("%s",buffer);
+
+    if(strcmp(buffer, "Y")==0)
+    {
+        structure = 1;
+    }
+
 
     printf("Would you show chunks? (Y/N)");
     scanf("%s",buffer);
@@ -123,8 +135,16 @@ void exec_perso(int seed, struct options* opt_alt, struct options* opt_temp)
         printf("\e[1;1H\e[2J");
         printf("[//////////  ]\nApply props\n");
         apply_props(map, chunk_map,opt_alt);
-
+        //printf("test\n");
         save_to_png(map,"map_forest.png");
+    }
+    if(structure)
+    {
+        printf("\e[1;1H\e[2J");
+        printf("[//////////  ]\nApply structure\n");
+        apply_village(map, chunk_map,opt_alt,10);
+
+        save_to_png(map,"village.png");
     }
     if(show)
     {

@@ -27,7 +27,8 @@ void apply_island(struct map* map, struct options* opt)
                     (int)gc*(tmp),(int)bc*(tmp));
         }
     }
-
+    SDL_FreeSurface(circ->map);
+    free(circ);
 }
 
 struct map* generate_circ_gradient(struct options* opt)
