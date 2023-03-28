@@ -7,6 +7,6 @@
 #include <SDL2/SDL_image.h>
 #include "../Utils/utils.h"
 
-int export_3d_map(struct map* pmap, char *path);
+int export_3d_map(struct map* pmap, SDL_Surface* cmap, char *path);
 
 #endif
