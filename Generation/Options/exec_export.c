@@ -2,6 +2,7 @@
 #include <stdlib.h>
 
 #include "../Utils/utils.h"
+#include "../Utils/options_map.h"
 #include "../Utils/threshold.h"
 
 #include "../Noise/perlin.h"
@@ -15,9 +16,7 @@
 
 void exec_export(int seed, struct options* opt_alt, struct options* opt_temp)
 {
-    opt_alt->sizex = 100;
-    opt_alt->sizey = 100;
-
+    opt_alt = options_alt_3d();
     printf("\e[1;1H\e[2J");
     printf("[            ]\nGenerate Perlin Noise\n");
 

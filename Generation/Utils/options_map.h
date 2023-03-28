@@ -3,6 +3,7 @@
 #include "../Utils/utils.h"
 
 struct options* default_options_alt(void);
+struct options* options_alt_3d(void);
 struct options* default_options_temp(void);
 
 
