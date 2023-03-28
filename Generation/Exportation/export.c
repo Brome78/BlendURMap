@@ -16,6 +16,7 @@ int export_3d_map(struct map* pmap, char* path)
   FILE* fd = fopen(path,"w");
   SDL_Surface* ps = pmap->map;
 
+  //test
 
   int width = ps->w;
   int height = ps->h;
