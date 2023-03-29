@@ -110,6 +110,27 @@ Uint32 savanna2(SDL_PixelFormat* format)
 }
 
 /**********************************************/
+/*                  SWAMP                     */
+/**********************************************/
+
+Uint32 swamp(SDL_PixelFormat* format)
+{
+    return SDL_MapRGB(format,54, 94, 70 );
+}
+
+Uint32 swamp3(SDL_PixelFormat* format)
+{
+    return SDL_MapRGB(format,34, 74, 50 );
+}
+
+Uint32 swamp2(SDL_PixelFormat* format)
+{
+    return SDL_MapRGB(format,14, 54, 30 );
+}
+
+
+
+/**********************************************/
 /*                  SNOW                      */
 /**********************************************/
 

@@ -40,6 +40,10 @@ Uint32 savanna(SDL_PixelFormat* format);
 Uint32 savanna2(SDL_PixelFormat* format);
 Uint32 savanna3(SDL_PixelFormat* format);
 
+Uint32 swamp(SDL_PixelFormat* format);
+Uint32 swamp2(SDL_PixelFormat* format);
+Uint32 swamp3(SDL_PixelFormat* format);
+
 Uint32 snow(SDL_PixelFormat* format);
 Uint32 snow2(SDL_PixelFormat* format);
 Uint32 snow3(SDL_PixelFormat* format);

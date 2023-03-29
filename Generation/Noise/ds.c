@@ -88,7 +88,7 @@ SDL_Surface* generate_diamond(int seed, struct options* opt)
             if(color < 0)
                 color = -color;
             pixels[y*image->w+x] = SDL_MapRGB(format,color,color,color);
-        }   
+        }
     }
     for (int i = 0; i < SIZE; i++) {
         free(grid[i]);

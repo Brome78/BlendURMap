@@ -31,6 +31,10 @@ int main(int argc, char** argv)
     struct options* opt_alt = default_options_alt();
 
     struct options* opt_temp = default_options_temp();
+    
+    struct options* opt_hum = default_options_alt();
+    opt_hum->sizex = 2049;
+    opt_hum->range = 252;
 
     if(strcmp(argv[1],"-simplex") == 0 || strcmp(argv[1],"-s") == 0 )
     {
@@ -61,7 +65,7 @@ int main(int argc, char** argv)
 
     else if(strcmp(argv[1],"-map") == 0)
     {
-        exec_map(s,opt_alt,opt_temp);
+        exec_map(s,opt_alt,opt_temp,opt_hum);
         return 0;
     }
     else if(strcmp(argv[1],"-island") == 0|| strcmp(argv[1],"-i") == 0 )
@@ -72,7 +76,7 @@ int main(int argc, char** argv)
 
     else if(strcmp(argv[1],"-perso") == 0|| strcmp(argv[1],"-P") == 0 )
     {
-        exec_perso(s,opt_alt,opt_temp);
+        exec_perso(s,opt_alt,opt_temp,opt_hum);
         return 0;
     }
     else if(strcmp(argv[1],"-h") == 0)
@@ -82,7 +86,7 @@ int main(int argc, char** argv)
     }
     else if (strcmp(argv[1],"-export") == 0)
     {
-        exec_export(s,opt_alt,opt_temp);
+        exec_export(s,opt_alt,opt_temp,opt_hum);
         return 1;
     }
     else

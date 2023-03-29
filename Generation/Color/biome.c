@@ -185,14 +185,61 @@ Uint32 desert_alt_filter(Uint8 rh, SDL_PixelFormat* format,
     return c;
 }
 
-SDL_Surface* apply_biome(SDL_Surface* heightmap, SDL_Surface* tempmap,
-        struct options* opt, struct threshold *threshold)
+Uint32 swamp_alt_filter(Uint8 rh, SDL_PixelFormat* format,
+        struct threshold* threshold)
+{
+    Uint32 c = ocean(format);
+    if(rh<threshold->deep_ocean)
+    {
+        c = deep_ocean(format);
+    }
+    else if(rh<threshold->ocean)
+    {
+        c = ocean(format);
+    }
+
+    else if(rh<threshold->coast)
+    {
+        c = coast(format);
+    }
+    else if(rh>= threshold->coast && rh <threshold->plateau)
+    {
+        c = beach(format);
+    }
+    else if(rh>=threshold->mountains)
+    {
+        c = mountains_desert(format);
+    }
+
+    else if(rh>=threshold->mid_mountains)
+    {
+        c = mid_mountains_desert(format);
+    }
+    else if(rh>=threshold->plateau2&&rh<threshold->mid_mountains)
+    {
+        c = swamp2(format);
+    }
+    else if(rh>=threshold->plateau3 && rh<threshold->plateau2)
+    {
+        c= swamp3(format);
+    }
+    else
+    {
+        c = swamp(format);
+    }
+    return c;
+}
+
+SDL_Surface* apply_biome(SDL_Surface* heightmap, SDL_Surface* tempmap, 
+        SDL_Surface* hummap, struct options* opt, struct options* opt_hum,
+        struct threshold *threshold)
 {
     int sizex = opt->sizex;
     int sizey = opt->sizey;
 
     Uint32* height_pixels = heightmap->pixels;
     Uint32* temp_pixels = tempmap->pixels;
+    Uint32* hum_pixels = hummap->pixels;
     SDL_Surface* image = SDL_CreateRGBSurface(0,sizex,sizey,32,0,0,0,0);
     SDL_LockSurface(image);
     Uint32* pixels = image->pixels;
@@ -204,24 +251,33 @@ SDL_Surface* apply_biome(SDL_Surface* heightmap, SDL_Surface* tempmap,
         {
             Uint8 rh,gh,bh;
             Uint8 rt,gt,bt;
+            Uint8 rhu,ghu,bhu;
             SDL_GetRGB(height_pixels[y*sizex+x],format,&rh,&gh,&bh);
             SDL_GetRGB(temp_pixels[y*sizex+x],format, &rt,&gt,&bt);
+            SDL_GetRGB(hum_pixels[y*opt_hum->sizex+x],format,&rhu,&ghu,&bhu);
             Uint32 c = ocean(format);
             if (rt<threshold->snow)
             {
-                c = snow_alt_filter(rh,format,threshold);    
+                c = snow_alt_filter(rh,format,threshold);
             }
             else if(rt<threshold->plains)
             {
-                c = plains_alt_filter(rh,format,threshold);
+                if(rhu<180)
+                    c = plains_alt_filter(rh,format,threshold);
+                else
+                    c = swamp_alt_filter(rh,format,threshold);
             }
-            else if(rt <threshold->savanna)
+            /*else if(rt <threshold->savanna)
             {
                 c = savanna_alt_filter(rh, format, threshold);
-            }
+            }*/
             else
             {
-                c = desert_alt_filter(rh, format, threshold);
+                if(rhu<180)
+                    c = desert_alt_filter(rh, format, threshold);
+                else
+                    c = savanna_alt_filter(rh, format, threshold);
+
             }
             if(y+1<sizey&&rh==155&&c==mid_mountains(format))
             {

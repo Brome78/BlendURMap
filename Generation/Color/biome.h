@@ -20,7 +20,8 @@
 
 
 SDL_Surface* apply_biome(SDL_Surface* heightmap, SDL_Surface* tempmap,
-        struct options* opt, struct threshold *threshold);
+        SDL_Surface* hummap, struct options* opt, struct options* opt_hum,
+        struct threshold *threshold);
 
 
 
