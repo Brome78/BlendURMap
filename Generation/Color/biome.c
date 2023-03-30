@@ -262,7 +262,7 @@ SDL_Surface* apply_biome(SDL_Surface* heightmap, SDL_Surface* tempmap,
             }
             else if(rt<threshold->plains)
             {
-                if(rhu<180)
+                if(rhu<200)
                     c = plains_alt_filter(rh,format,threshold);
                 else
                     c = swamp_alt_filter(rh,format,threshold);

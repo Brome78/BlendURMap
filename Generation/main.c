@@ -70,7 +70,7 @@ int main(int argc, char** argv)
     }
     else if(strcmp(argv[1],"-island") == 0|| strcmp(argv[1],"-i") == 0 )
     {
-        exec_island(s,opt_alt,opt_temp);
+        exec_island(s,opt_alt,opt_temp,opt_hum);
         return 0;
     }
 
