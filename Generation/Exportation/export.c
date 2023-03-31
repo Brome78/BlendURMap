@@ -34,6 +34,10 @@ int export_3d_map(struct map* pmap, SDL_Surface* cmap, char* path)
       Uint8 r,g,b,r2,g2,b2;
       SDL_GetRGB(px2[h * width + w], format2, &r2,&g2,&b2);
       SDL_GetRGB(px[h * width + w],format,&r,&g,&b);
+
+      if(r<=118)
+          r = 118;
+
       fprintf(fd,"v %d %02f %d %02f %02f %02f\n", w, ((float)r/255.0)*250.0, h, r2/255.0, g2/255.0, b2/255.0);
     }
   }
