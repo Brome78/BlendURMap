@@ -47,7 +47,7 @@ void exec_perso(int seed, struct options* opt_alt, struct options* opt_temp,
         errx(EXIT_FAILURE,"Size must be higher than 0");
     }
 
-    printf("Would you a new seed ? (Y/N)");
+    printf("Would you like to create a new seed ? (Y/N)");
     scanf("%s",buffer);
 
     if(strcmp(buffer,"Y")==0)
@@ -55,7 +55,7 @@ void exec_perso(int seed, struct options* opt_alt, struct options* opt_temp,
         seed = -1;
     }
 
-    printf("Would you some rivers? (Y/N)");
+    printf("Would you like to have some rivers? (Y/N)");
     scanf("%s",buffer);
 
     if(strcmp(buffer, "Y")==0)
@@ -64,7 +64,7 @@ void exec_perso(int seed, struct options* opt_alt, struct options* opt_temp,
     }
 
 
-    printf("Would you some props? (Y/N)");
+    printf("Would you like to have some props? (Y/N)");
     scanf("%s",buffer);
 
     if(strcmp(buffer, "Y")==0)
@@ -72,7 +72,7 @@ void exec_perso(int seed, struct options* opt_alt, struct options* opt_temp,
         props = 1;
     }
 
-    printf("Would you some structure? (Y/N)");
+    printf("Would you like to have some structure? (Y/N)");
     scanf("%s",buffer);
 
     if(strcmp(buffer, "Y")==0)
@@ -81,7 +81,7 @@ void exec_perso(int seed, struct options* opt_alt, struct options* opt_temp,
     }
 
 
-    printf("Would you show chunks? (Y/N)");
+    printf("Would you like to show the chunks? (Y/N)");
     scanf("%s",buffer);
 
     if(strcmp(buffer, "Y")==0)
@@ -89,7 +89,7 @@ void exec_perso(int seed, struct options* opt_alt, struct options* opt_temp,
         show = 1;
     }
 
-    printf("Would you print chunks? (Y/N)");
+    printf("Would you like to print the chunks? (Y/N)");
     scanf("%s",buffer);
 
     if(strcmp(buffer, "Y")==0)
