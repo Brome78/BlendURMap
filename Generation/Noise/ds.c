@@ -5,7 +5,7 @@
 #include <SDL2/SDL_image.h>
 #include "../Utils/utils.h"
 //#define SIZE 2049 // Change this value to adjust grid size
-//#define RANGE 252 // Change this value to adjust random range
+const int RAND_RANGE = 253; // Change this value to adjust random range
 const int power_of_two_list[17]= {1,2,4,8,16,32,64,128,256,512,1024,2048,4096,8192,16384,32768,65536};
 void diamondSquare(int n, int **grid,int range) 
 {
@@ -60,7 +60,7 @@ SDL_Surface* generate_diamond(int seed, struct options* opt)
     int i=0;
     for(; power_of_two_list[i] < SIZE;i++)
         ;
-    SIZE = power_of_two_list[i] + 1;
+    SIZE = power_of_two_list[i-1] + 1;
     int **grid = calloc(SIZE, sizeof(int *));
     for (int i = 0; i < SIZE; i++) {
         grid[i] = calloc(SIZE, sizeof(int));
@@ -73,11 +73,24 @@ SDL_Surface* generate_diamond(int seed, struct options* opt)
         tmp = seed;
     srand(tmp);
 
-    grid[0][0] = rand() % (RANGE + 1);
-    grid[0][SIZE-1] = rand() % (RANGE + 1);
-    grid[SIZE-1][0] = rand() % (RANGE + 1);
-    grid[SIZE-1][SIZE-1] = rand() % (RANGE + 1);
+    int k, j;
 
+    // set the corners to random values
+    grid[0][0] = (float)rand() / RAND_MAX * RAND_RANGE;
+    grid[0][SIZE-1] = (float)rand() / RAND_MAX * RAND_RANGE;
+    grid[SIZE-1][0] = (float)rand() / RAND_MAX * RAND_RANGE;
+    grid[SIZE-1][SIZE-1] = (float)rand() / RAND_MAX * RAND_RANGE;
+
+    // initialize the edges to zero
+    for (k = 1; i < SIZE-1; i++) {
+        grid[k][0] = 0;
+        grid[0][k] = 0;
+        grid[k][SIZE-1] = 0;
+        grid[SIZE-1][k] = 0;
+    }
+
+    // set the center to a random value
+    grid[SIZE/2][SIZE/2] = (float)rand() / RAND_MAX * RAND_RANGE;
     diamondSquare(SIZE, grid,RANGE);
 
 
