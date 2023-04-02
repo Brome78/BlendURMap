@@ -6,7 +6,7 @@
 #include "../Utils/utils.h"
 //#define SIZE 2049 // Change this value to adjust grid size
 //#define RANGE 252 // Change this value to adjust random range
-
+const int power_of_two_list[17]= {1,2,4,8,16,32,64,128,256,512,1024,2048,4096,8192,16384,32768,65536};
 void diamondSquare(int n, int **grid,int range) 
 {
     int side = n - 1;
@@ -57,6 +57,10 @@ SDL_Surface* generate_diamond(int seed, struct options* opt)
 {
     int SIZE = opt->sizex;
     int RANGE = opt->range;
+    int i=0;
+    for(; power_of_two_list[i] < SIZE;i++)
+        ;
+    SIZE = power_of_two_list[i];
     int **grid = calloc(SIZE, sizeof(int *));
     for (int i = 0; i < SIZE; i++) {
         grid[i] = calloc(SIZE, sizeof(int));
