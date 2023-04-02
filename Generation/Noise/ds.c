@@ -60,7 +60,7 @@ SDL_Surface* generate_diamond(int seed, struct options* opt)
     int i=0;
     for(; power_of_two_list[i] < SIZE;i++)
         ;
-    SIZE = power_of_two_list[i];
+    SIZE = power_of_two_list[i] + 1;
     int **grid = calloc(SIZE, sizeof(int *));
     for (int i = 0; i < SIZE; i++) {
         grid[i] = calloc(SIZE, sizeof(int));
