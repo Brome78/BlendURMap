@@ -6,7 +6,6 @@
 #include "../Utils/threshold.h"
 #include "../Noise/perlin.h"
 #include "../Noise/simplex.h"
-#include "../Noise/diamond_square.h"
 #include "../Noise/seed.h"
 #include "../Noise/ds.h"
 
