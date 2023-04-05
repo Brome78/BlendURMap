@@ -73,7 +73,7 @@ SDL_Surface* generate_diamond(int seed, struct options* opt)
         tmp = seed;
     srand(tmp);
 
-    int k, j;
+    int k;
 
     // set the corners to random values
     grid[0][0] = (float)rand() / RAND_MAX * RAND_RANGE;
