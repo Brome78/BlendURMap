@@ -1,16 +1,25 @@
 //#include "../Generation/main.h" - placeholder, make header file for main so can be called for gtk
 #include <gtk/gtk.h>
-#include "resize.h"
+#include <stdlib.h>
 
-#include <stdlib.h>²
-#include "../Generation/Options/exec_perso.h"
+#include "Utils/generate.h"
+#include "../Generation/Utils/options_map.h"
+
 
 typedef struct UserInterface
 {
   GtkWindow* window;
   GtkImage* render2d;
+  GtkSpinButton* width;
+  GtkSpinButton* height;
+  GtkSpinButton* seed;
+  GtkToggleButton *isrender3d;
+  GtkToggleButton *island;
+  GtkToggleButton *props;
+  GtkToggleButton *river;
+  GtkToggleButton *villages;
   GtkButton* generate_button;
-  GtkButton* load_button;
+  //GtkButton* load_button;
 } UserInterface;
 
 typedef struct App
@@ -25,13 +34,48 @@ void on_generate_button_clicked(GtkButton *button, gpointer user_data)
 
   GError *err = NULL;
 
-  system("feh map.png");
+  int width = gtk_spin_button_get_value_as_int(app->ui.width);
+  int height =  gtk_spin_button_get_value_as_int(app->ui.height);
+
+  if(width == 0 || height == 0)
+  {
+    width = 1000;
+    height = 1000;
+  }
+
+  struct options* opt_alt = options_alt_3d();
+  struct options* opt_temp = options_temp_3d();
+
+  opt_alt->sizex = width;
+  opt_alt->sizey = height;
+
+  opt_temp->sizex = width;
+  opt_temp->sizey = height;
 
 
-  //resize("map.png","tmp.png",400,400);
-  //GdkPixbuf* pxbuf = gdk_pixbuf_new_from_file("tmp.png",&err);
-  //gtk_image_set_from_pixbuf(app->ui.render2d,pxbuf); //sets the image on the window
+  int seedi =  gtk_spin_button_get_value_as_int(app->ui.seed);
+  if(seedi == 0)
+    seedi = -1;
+
+  exec_ui(seedi, opt_alt, opt_temp, opt_temp, width, height,
+             gtk_toggle_button_get_active(app->ui.river),
+             gtk_toggle_button_get_active(app->ui.props),
+             gtk_toggle_button_get_active(app->ui.villages),
+             0);
+
+  //if statement for 3D gen
 }
+
+void on_render_2D_clicked(GtkButton* button, gpointer user_data)
+{
+  system("feh map.png");
+}
+
+void on_render_3D_clicked(GtkButton* button, gpointer user_data)
+{
+  system("f3d map.OBJ");
+}
+
 
 int main()
 {
@@ -53,11 +97,20 @@ int main()
 
 
   GtkWindow* window = GTK_WINDOW(gtk_builder_get_object(builder, "org.gtk.NewApp"));
-  //GtkGLArea* render3d = GTK_GL_AREA(gtk_builder_get_object(builder,"3D_window"));
-  //GtkButton* start_button = GTK_BUTTON(gtk_builder_get_object(builder, "start_button"));
+
+  GtkSpinButton* width = GTK_SPIN_BUTTON(gtk_builder_get_object(builder,"width"));
+  GtkSpinButton* height = GTK_SPIN_BUTTON(gtk_builder_get_object(builder,"height"));
+  GtkSpinButton* seed = GTK_SPIN_BUTTON(gtk_builder_get_object(builder,"seed"));
+
+  GtkToggleButton* isrender3d = GTK_TOGGLE_BUTTON(gtk_builder_get_object(builder,"render"));
+  GtkToggleButton* island = GTK_TOGGLE_BUTTON(gtk_builder_get_object(builder,"island"));
+  GtkToggleButton* props = GTK_TOGGLE_BUTTON(gtk_builder_get_object(builder,"props"));
+  GtkToggleButton* river = GTK_TOGGLE_BUTTON(gtk_builder_get_object(builder,"river"));
+  GtkToggleButton* villages = GTK_TOGGLE_BUTTON(gtk_builder_get_object(builder,"villages"));
+
   GtkImage* render2d = GTK_IMAGE(gtk_builder_get_object(builder, "2D_render"));
+
   GtkButton* generate_button = GTK_BUTTON(gtk_builder_get_object(builder,"generate"));
-  GtkButton* load_button = GTK_BUTTON(gtk_builder_get_object(builder,"load"));
 
 
   App app =
@@ -66,13 +119,18 @@ int main()
             {
                 .window = window,
                 .render2d = render2d,
-                .load_button = load_button,
+                .isrender3d = isrender3d,
+                .island = island,
+                .props = props,
+                .river = river,
+                .villages = villages,
+                //.load_button = load_button,
                 .generate_button = generate_button,
             },
     };
 
   g_signal_connect(window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
-  //g_signal_connect(render2d, "render2d", G_CALLBACK(render), NULL);
+  //g_signal_connect(isrender3d, "toggled", G_CALLBACK(render), NULL);
   g_signal_connect(generate_button, "clicked", G_CALLBACK(on_generate_button_clicked),&app);
   //g_signal_connect(area, "draw", G_CALLBACK(on_draw), &rect);
   //g_signal_connect(area, "configure", G_CALLBACK(on_configure), &rect);
