@@ -1,9 +1,11 @@
 #include "generate.h"
+#include "../../Generation/Noise/circular_gradient.h"
+#include "../../Generation/Exportation/export.h"
 
 void exec_ui(int seed,
              struct options* opt_alt, struct options* opt_temp,
-             struct options* opt_hum, int w, int h, char rivers, char props,
-             char structs, char shw)
+             struct options* opt_hum, int w, int h, char island ,char rivers, 
+             char props, char structs, char is_3d, char shw)
 {
 
     char *buffer = calloc(16,sizeof(char));
@@ -13,6 +15,7 @@ void exec_ui(int seed,
     char riv = 0;
     char show = 0;
     char print = 0;
+    char isl = 0;
 
     opt_alt->sizex = w;
     opt_alt->sizey = h;
@@ -36,6 +39,15 @@ void exec_ui(int seed,
     if(shw == 1)
         show = 1;
 
+    if(island == 1)
+    {
+        isl = 1;
+        riv = 0;
+        prop = 0;
+        structure = 0;
+        show = 0;
+        print = 0;
+    }
     //printf("\e[1;1H\e[2J");
     //printf("[            ]\nGenerate Perlin Noise\n");
 
@@ -48,7 +60,15 @@ void exec_ui(int seed,
 
     SDL_Surface* ds = generate_diamond(seed,opt_hum);
 
-    struct threshold *t = default_threshold_map();
+    struct threshold *t;
+    if(!isl)
+        t  = default_threshold_map();
+    else
+    {
+        t = default_threshold_island();
+        apply_island(perlin,opt_alt);
+        apply_island(simplex, opt_alt);
+    }
 
     //printf("\e[1;1H\e[2J");
     //printf("[////        ]\nApply Biome\n");
@@ -60,6 +80,8 @@ void exec_ui(int seed,
     //printf("[//////      ]\nSave Map\n");
 
     save_to_png(map,"map.png");
+    if(is_3d)
+        export_3d_map(perlin, map,"map.OBJ");
     if(riv)
     {
         SDL_Surface *river = draw_riviere(map,opt_alt);

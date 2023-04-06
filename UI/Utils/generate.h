@@ -18,8 +18,10 @@
 
 
 void exec_ui(int seed,
-                struct options* opt_alt, struct options* opt_temp, struct options* opt_hum,
-                int w, int h, char rivers, char props, char structs, char shw);
+                struct options* opt_alt, struct options* opt_temp,
+                struct options* opt_hum, int w, int h,char island,
+                char rivers, char props, char structs, char is_3d,
+                char shw);
 
 
 #endif

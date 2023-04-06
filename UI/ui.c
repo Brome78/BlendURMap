@@ -70,18 +70,28 @@ void on_generate_button_clicked(GtkButton *button, gpointer user_data)
   int er1 = system("rm *.OBJ *.png");
   if(er1<0)
     return;
-  if(gtk_toggle_button_get_active(app->ui.isrender3d))
+  /*if(gtk_toggle_button_get_active(app->ui.isrender3d))
   {
     exec_export(seedi, opt_alt, opt_temp, opt_hum);
   }
   else
   {
     exec_ui(seedi, opt_alt, opt_temp, opt_hum, width, height,
+            gtk_toggle_button_get_active(app->ui.island),
             gtk_toggle_button_get_active(app->ui.river),
             gtk_toggle_button_get_active(app->ui.props),
             gtk_toggle_button_get_active(app->ui.villages),
+            gtk_toggle_button_get_active(app->ui.isrender3d),
             0);
-  }
+  }*/
+
+  exec_ui(seedi, opt_alt, opt_temp, opt_hum, width, height,
+            gtk_toggle_button_get_active(app->ui.island),
+            gtk_toggle_button_get_active(app->ui.river),
+            gtk_toggle_button_get_active(app->ui.props),
+            gtk_toggle_button_get_active(app->ui.villages),
+            gtk_toggle_button_get_active(app->ui.isrender3d),
+            0);
   //if statement for 3D gen
 }
 
