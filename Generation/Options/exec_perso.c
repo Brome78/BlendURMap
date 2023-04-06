@@ -31,15 +31,20 @@ void exec_perso(int seed, struct options* opt_alt, struct options* opt_temp,
     char print = 0;
 
     printf("Width : ");
-    scanf("%d",&w);
+    int er = scanf("%d",&w);
+    if(er<0)
+        return;
 
     printf("Height : ");
-    scanf("%d",&h);
+    er = scanf("%d",&h);
+    if(er<0)
+        return;
 
     opt_alt->sizex = w;
     opt_alt->sizey = h;
     opt_temp->sizex = w;
     opt_temp->sizey = h;
+    opt_hum->sizex = w;
 
     if(h == 0 || w == 0)
     {
@@ -47,7 +52,9 @@ void exec_perso(int seed, struct options* opt_alt, struct options* opt_temp,
     }
 
     printf("Would you like to create a new seed ? (Y/N)");
-    scanf("%s",buffer);
+    er = scanf("%s",buffer);
+    if(er<0)
+        return;
 
     if(strcmp(buffer,"Y")==0)
     {
@@ -55,7 +62,9 @@ void exec_perso(int seed, struct options* opt_alt, struct options* opt_temp,
     }
 
     printf("Would you like to have some rivers? (Y/N)");
-    scanf("%s",buffer);
+    er = scanf("%s",buffer);
+    if(er<0)
+        return;
 
     if(strcmp(buffer, "Y")==0)
     {
@@ -64,7 +73,9 @@ void exec_perso(int seed, struct options* opt_alt, struct options* opt_temp,
 
 
     printf("Would you like to have some props? (Y/N)");
-    scanf("%s",buffer);
+    er = scanf("%s",buffer);
+    if(er<0)
+        return;
 
     if(strcmp(buffer, "Y")==0)
     {
@@ -72,7 +83,9 @@ void exec_perso(int seed, struct options* opt_alt, struct options* opt_temp,
     }
 
     printf("Would you like to have some structure? (Y/N)");
-    scanf("%s",buffer);
+    er = scanf("%s",buffer);
+    if(er<0)
+        return;
 
     if(strcmp(buffer, "Y")==0)
     {
@@ -81,7 +94,9 @@ void exec_perso(int seed, struct options* opt_alt, struct options* opt_temp,
 
 
     printf("Would you like to show the chunks? (Y/N)");
-    scanf("%s",buffer);
+    er = scanf("%s",buffer);
+    if(er<0)
+        return;
 
     if(strcmp(buffer, "Y")==0)
     {
@@ -89,7 +104,9 @@ void exec_perso(int seed, struct options* opt_alt, struct options* opt_temp,
     }
 
     printf("Would you like to print the chunks? (Y/N)");
-    scanf("%s",buffer);
+    er = scanf("%s",buffer);
+    if(er<0)
+        return;
 
     if(strcmp(buffer, "Y")==0)
     {
@@ -137,7 +154,6 @@ void exec_perso(int seed, struct options* opt_alt, struct options* opt_temp,
         printf("\e[1;1H\e[2J");
         printf("[//////////  ]\nApply props\n");
         apply_props(map, chunk_map,opt_alt);
-        //printf("test\n");
         save_to_png(map,"map_forest.png");
     }
     if(structure)
@@ -169,7 +185,9 @@ void exec_perso(int seed, struct options* opt_alt, struct options* opt_temp,
 
     free(opt_alt);
     free(opt_temp);
+    free(opt_hum);
     SDL_FreeSurface(map);
+    SDL_FreeSurface(ds);
 
     SDL_FreeSurface(simplex->map);
     free(simplex);

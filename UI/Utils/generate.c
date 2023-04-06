@@ -44,7 +44,7 @@ void exec_ui(int seed,
     //printf("\e[1;1H\e[2J");
     //printf("[//          ]\nGenerate Simplex Noise\n");
 
-    struct map *simplex = generate_simplex(seed,opt_temp);
+    struct map *simplex = generate_simplex(seed ,opt_temp);
 
     SDL_Surface* ds = generate_diamond(seed,opt_hum);
 
@@ -109,6 +109,7 @@ void exec_ui(int seed,
 
     free(opt_alt);
     free(opt_temp);
+    free(opt_hum);
     SDL_FreeSurface(map);
 
     SDL_FreeSurface(simplex->map);

@@ -63,6 +63,8 @@ void exec_island(int seed, struct options* opt_alt, struct options* opt_temp,
 
     free(opt_alt);
     free(opt_temp);
+    free(opt_hum);
+    SDL_FreeSurface(ds);
     SDL_FreeSurface(map);
 
     SDL_FreeSurface(simplex->map);

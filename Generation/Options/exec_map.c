@@ -52,7 +52,9 @@ void exec_map(int seed, struct options* opt_alt, struct options* opt_temp,
 
     free(opt_alt);
     free(opt_temp);
+    free(opt_hum);
     SDL_FreeSurface(map);
+    SDL_FreeSurface(ds);
 
     SDL_FreeSurface(simplex->map);
     free(simplex);

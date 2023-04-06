@@ -46,13 +46,13 @@ void on_generate_button_clicked(GtkButton *button, gpointer user_data)
 
   if(width == 0 || height == 0 || height != width)
   {
-    width = 1000;
-    height = 1000;
+    width = 1025;
+    height = 1025;
   }
 
   struct options* opt_alt = options_alt_3d();
   struct options* opt_temp = options_temp_3d();
-  struct options* opt_hum = opt_alt;
+  struct options* opt_hum = options_alt_3d();
 
   opt_alt->sizex = width;
   opt_alt->sizey = height;
@@ -67,14 +67,16 @@ void on_generate_button_clicked(GtkButton *button, gpointer user_data)
   if(seedi == 0)
     seedi = -1;
 
-  //system("rm map.OBJ map.png");
+  int er1 = system("rm *.OBJ *.png");
+  if(er1<0)
+    return;
   if(gtk_toggle_button_get_active(app->ui.isrender3d))
   {
-    exec_export(seedi, opt_alt, opt_temp, opt_alt);
+    exec_export(seedi, opt_alt, opt_temp, opt_hum);
   }
   else
   {
-    exec_ui(seedi, opt_alt, opt_temp, opt_alt, width, height,
+    exec_ui(seedi, opt_alt, opt_temp, opt_hum, width, height,
             gtk_toggle_button_get_active(app->ui.river),
             gtk_toggle_button_get_active(app->ui.props),
             gtk_toggle_button_get_active(app->ui.villages),
@@ -85,12 +87,16 @@ void on_generate_button_clicked(GtkButton *button, gpointer user_data)
 
 void on_render_2D_clicked(GtkButton* button, gpointer user_data)
 {
-  system("feh map.png");
+  int er = system("feh *.png");
+  if(er<0)
+    return;
 }
 
 void on_render_3D_clicked(GtkButton* button, gpointer user_data)
 {
-  system("f3d map.OBJ");
+  int er = system("f3d map.OBJ");
+  if(er<0)
+    return;
 }
 
 

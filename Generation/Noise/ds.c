@@ -58,9 +58,10 @@ SDL_Surface* generate_diamond(int seed, struct options* opt)
     int SIZE = opt->sizex;
     int RANGE = opt->range;
     int i=0;
-    for(; power_of_two_list[i] < SIZE;i++)
+    for(; power_of_two_list[i]+1 < SIZE;i++)
         ;
-    SIZE = power_of_two_list[i-1] + 1;
+    SIZE = power_of_two_list[i] + 1;
+    opt->sizex = SIZE;
     int **grid = calloc(SIZE, sizeof(int *));
     for (int i = 0; i < SIZE; i++) {
         grid[i] = calloc(SIZE, sizeof(int));
@@ -74,6 +75,7 @@ SDL_Surface* generate_diamond(int seed, struct options* opt)
     srand(tmp);
 
     int k;
+    i = 0;
 
     // set the corners to random values
     grid[0][0] = (float)rand() / RAND_MAX * RAND_RANGE;
@@ -111,6 +113,6 @@ SDL_Surface* generate_diamond(int seed, struct options* opt)
         free(grid[i]);
     }
     free(grid);
-
+    SDL_UnlockSurface(image);
     return image;
 }

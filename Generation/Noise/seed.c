@@ -6,7 +6,9 @@ char *read_seed(char *pathname)
 {
     FILE *seed = fopen(pathname,"r");
     char *s = malloc(256*sizeof(char));
-    fread(s,256,1,seed);
+    int er = fread(s,256,1,seed);
+    if(er<0)
+        return 0;
     fclose(seed);
     return s;
 }

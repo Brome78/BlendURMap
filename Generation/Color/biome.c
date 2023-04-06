@@ -237,6 +237,8 @@ SDL_Surface* apply_biome(SDL_Surface* heightmap, SDL_Surface* tempmap,
     int sizex = opt->sizex;
     int sizey = opt->sizey;
 
+
+
     Uint32* height_pixels = heightmap->pixels;
     Uint32* temp_pixels = tempmap->pixels;
     Uint32* hum_pixels = hummap->pixels;
@@ -254,7 +256,7 @@ SDL_Surface* apply_biome(SDL_Surface* heightmap, SDL_Surface* tempmap,
             Uint8 rhu,ghu,bhu;
             SDL_GetRGB(height_pixels[y*sizex+x],format,&rh,&gh,&bh);
             SDL_GetRGB(temp_pixels[y*sizex+x],format, &rt,&gt,&bt);
-            SDL_GetRGB(hum_pixels[y*opt_hum->sizex+x],format,&rhu,&ghu,&bhu);
+            SDL_GetRGB(hum_pixels[y*(opt_hum->sizex)+x],format,&rhu,&ghu,&bhu);
             Uint32 c = ocean(format);
             if (rt<threshold->snow)
             {

@@ -22,4 +22,4 @@ void exec_ui(int seed,
                 int w, int h, char rivers, char props, char structs, char shw);
 
 
-#endif //GENERATE_H_
+#endif

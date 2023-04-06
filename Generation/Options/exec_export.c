@@ -46,27 +46,30 @@ void exec_export(int seed, struct options* opt_alt, struct options* opt_temp,
 
     SDL_Surface *map = apply_biome(perlin->map, simplex->map, ds,
             opt_alt,opt_hum,t);
-    SDL_Surface *river = draw_riviere(map,opt_alt);
+    //SDL_Surface *river = draw_riviere(map,opt_alt);
 
     printf("\e[1;1H\e[2J");
     printf("[/////////   ]\nSave Map\n");
 
     save_to_png(map,"map.png");
     export_3d_map(perlin, map,"map.OBJ");
-    export_3d_map(perlin,river,"river.OBJ");
+    //export_3d_map(perlin,river,"river.OBJ");
 
     printf("\e[1;1H\e[2J");
     printf("[////////////]\nComplete\n");
 
     SDL_FreeSurface(perlin->map);
     free(perlin);
-    //free(t);
+    free(t);
 
     free(opt_alt);
     free(opt_temp);
-    //SDL_FreeSurface(map);
+    free(opt_hum);
+    SDL_FreeSurface(map);
+    SDL_FreeSurface(ds);
+    //SDL_FreeSurface(river);
 
-    //SDL_FreeSurface(simplex->map);
-    //free(simplex);
+    SDL_FreeSurface(simplex->map);
+    free(simplex);
 
 }
