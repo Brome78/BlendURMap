@@ -17,6 +17,6 @@ ${EXE}: ${SRC}
 .PHONY: clean
 
 clean:
-	${RM} $(EXE)
+	${RM} $(EXE) *.png *.OBJ *~
 
 # END

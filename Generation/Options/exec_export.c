@@ -17,8 +17,10 @@
 void exec_export(int seed, struct options* opt_alt, struct options* opt_temp,
         struct options* opt_hum)
 {
-    opt_alt = options_alt_3d();
-    opt_temp = options_temp_3d();
+    if(opt_alt == NULL)
+        opt_alt = options_alt_3d();
+    if(opt_temp == NULL)
+        opt_temp = options_temp_3d();
     printf("\e[1;1H\e[2J");
     printf("[            ]\nGenerate Perlin Noise\n");
 
@@ -29,14 +31,14 @@ void exec_export(int seed, struct options* opt_alt, struct options* opt_temp,
 
     struct map *simplex = generate_simplex(seed,opt_temp);
 
-    SDL_Surface* ds = generate_diamond(seed,opt_hum);
+    //SDL_Surface* ds = generate_diamond(seed,opt_hum);
 
     struct threshold *t = default_threshold_map();
 
     printf("\e[1;1H\e[2J");
     printf("[//////      ]\nApply Biome\n");
 
-    SDL_Surface *map = apply_biome(perlin->map, simplex->map, ds,
+    SDL_Surface *map = apply_biome(perlin->map, simplex->map, simplex->map,
             opt_alt,opt_hum,t);
     SDL_Surface *river = draw_riviere(map,opt_alt);
 
