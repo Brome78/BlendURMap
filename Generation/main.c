@@ -86,7 +86,7 @@ int main(int argc, char** argv)
     }
     else if (strcmp(argv[1],"-export") == 0)
     {
-        exec_export(s,opt_alt,opt_temp,opt_hum);
+        exec_export(s,NULL,NULL,NULL);
         return 1;
     }
     else

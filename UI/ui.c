@@ -44,7 +44,7 @@ void on_generate_button_clicked(GtkButton *button, gpointer user_data)
 
   g_print("w : %d \n h : %d\n",width,height);
 
-  if(width == 0 || height == 0 || height%width != 0)
+  if(width == 0 || height == 0 || height != width)
   {
     width = 1000;
     height = 1000;
@@ -60,7 +60,7 @@ void on_generate_button_clicked(GtkButton *button, gpointer user_data)
   opt_temp->sizex = width;
   opt_temp->sizey = height;
 
-  opt_hum->sizex = 2000;
+  opt_hum->sizex = width;
   opt_hum->range = 252;
 
   int seedi =  gtk_adjustment_get_value(app->ui.seedix);
