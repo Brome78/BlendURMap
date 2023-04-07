@@ -8,7 +8,7 @@ SRC= $(wildcard *.c) $(wildcard */*.c) $(wildcard ../Generation/*/*.c)
 
 OBJ = ${SRC:.c=.o}
 
-EXE = ui
+EXE = BlendURMap
 
 all: $(EXE)
 
