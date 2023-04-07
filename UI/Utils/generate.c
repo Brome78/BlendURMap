@@ -48,13 +48,13 @@ void exec_ui(int seed,
         show = 0;
         print = 0;
     }
-    //printf("\e[1;1H\e[2J");
-    //printf("[            ]\nGenerate Perlin Noise\n");
+    printf("\e[1;1H\e[2J");
+    printf("[            ]\nGenerate Perlin Noise\n");
 
     struct map* perlin = perlin_generate(seed,opt_alt);
 
-    //printf("\e[1;1H\e[2J");
-    //printf("[//          ]\nGenerate Simplex Noise\n");
+    printf("\e[1;1H\e[2J");
+    printf("[//          ]\nGenerate Simplex Noise\n");
 
     struct map *simplex = generate_simplex(seed ,opt_temp);
 
@@ -70,14 +70,14 @@ void exec_ui(int seed,
         apply_island(simplex, opt_alt);
     }
 
-    //printf("\e[1;1H\e[2J");
-    //printf("[////        ]\nApply Biome\n");
+    printf("\e[1;1H\e[2J");
+    printf("[////        ]\nApply Biome\n");
 
     SDL_Surface *map = apply_biome(perlin->map, simplex->map,ds,
             opt_alt,opt_hum,t);
 
-    //printf("\e[1;1H\e[2J");
-    //printf("[//////      ]\nSave Map\n");
+    printf("\e[1;1H\e[2J");
+    printf("[//////      ]\nSave Map\n");
 
     save_to_png(map,"map.png");
     if(is_3d)
@@ -89,38 +89,37 @@ void exec_ui(int seed,
         save_to_png(river,"river.png");
     }
 
-    //printf("\e[1;1H\e[2J");
-    //printf("[////////    ]\nCreate Chunks\n");
+    printf("\e[1;1H\e[2J");
+    printf("[////////    ]\nCreate Chunks\n");
 
     struct chunk **chunk_map = define_chunk(perlin->map,
             simplex->map,opt_alt,t);
     if(prop)
     {
-        //printf("\e[1;1H\e[2J");
-        //printf("[//////////  ]\nApply props\n");
+        printf("\e[1;1H\e[2J");
+        printf("[//////////  ]\nApply props\n");
         apply_props(map, chunk_map,opt_alt);
-        //printf("test\n");
         save_to_png(map,"map_forest.png");
     }
     if(structure)
     {
-        //printf("\e[1;1H\e[2J");
-        //printf("[//////////  ]\nApply structure\n");
+        printf("\e[1;1H\e[2J");
+        printf("[//////////  ]\nApply structure\n");
         apply_village(map, chunk_map,opt_alt,10);
 
         save_to_png(map,"village.png");
     }
     if(show)
     {
-        //printf("\e[1;1H\e[2J");
-        //printf("[//////////  ]\nCreate Chunk Map\n");
+        printf("\e[1;1H\e[2J");
+        printf("[//////////  ]\nCreate Chunk Map\n");
         show_chunk(chunk_map, map, opt_alt);
 
         save_to_png(map,"chunk.png");
     }
 
-    //printf("\e[1;1H\e[2J");
-    //printf("[////////////]\nComplete\n");
+    printf("\e[1;1H\e[2J");
+    printf("[////////////]\nComplete\n");
     if(print)
         print_chunk(chunk_map, opt_alt);
 

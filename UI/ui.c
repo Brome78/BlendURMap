@@ -42,16 +42,12 @@ void on_generate_button_clicked(GtkButton *button, gpointer user_data)
   int width = gtk_adjustment_get_value(app->ui.w);
   int height = gtk_adjustment_get_value(app->ui.h);
 
-  g_print("w : %d \n h : %d\n",width,height);
+  //g_print("w : %d \nh : %d\n",width,height);
 
   if(width == 0 || height == 0 || height != width)
   {
     width = 1025;
     height = 1025;
-  }
-  if(height != width)
-  {
-    height = width;
   }
 
   struct options* opt_alt = options_alt_3d();
@@ -161,7 +157,7 @@ int main()
                 .generate_button = generate_button,
             },
     };
-
+  
   g_signal_connect(window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
   //g_signal_connect(isrender3d, "toggled", G_CALLBACK(render), NULL);
   g_signal_connect(generate_button, "clicked", G_CALLBACK(on_generate_button_clicked),&app);
