@@ -59,7 +59,7 @@ int export_3d_map(struct map* pmap, SDL_Surface* cmap, char* path)
     }
   }
 
-
+  fclose(fd);
   return 1;
 }
 
