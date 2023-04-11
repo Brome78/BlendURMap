@@ -105,7 +105,7 @@ int main()
   // Loads the UI description.
   // (Exits if an error occurs.)
   GError* error = NULL;
-  if (gtk_builder_add_from_file(builder, "NewApp.glade", &error) == 0)
+  if (gtk_builder_add_from_file(builder, "UI.glade", &error) == 0)
   {
     g_printerr("Error loading file: %s\n", error->message);
     g_clear_error(&error);
@@ -114,7 +114,7 @@ int main()
 
 
 
-  GtkWindow* window = GTK_WINDOW(gtk_builder_get_object(builder, "org.gtk.NewApp"));
+  GtkWindow* window = GTK_WINDOW(gtk_builder_get_object(builder, "org.gtk.UI"));
 
   GtkSpinButton* width = GTK_SPIN_BUTTON(gtk_builder_get_object(builder,"width"));
   GtkSpinButton* height = GTK_SPIN_BUTTON(gtk_builder_get_object(builder,"height"));
