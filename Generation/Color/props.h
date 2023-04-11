@@ -6,7 +6,7 @@
 #include "../Utils/utils.h"
 
 
-int apply_props(SDL_Surface *map, struct chunk **chunk_map, 
+struct type_structure** apply_props(SDL_Surface *map, struct chunk **chunk_map, 
         struct options* opt);
 
 #endif
