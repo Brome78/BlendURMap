@@ -55,6 +55,9 @@ Uint32 relief_mountains(SDL_PixelFormat* format);
 Uint32 relief_beach(SDL_PixelFormat* format);
 Uint32 relief_desert(SDL_PixelFormat* format);
 
+Uint32 river1(SDL_PixelFormat* format);
+Uint32 river2(SDL_PixelFormat* format);
+
 Uint32 log_c(SDL_PixelFormat* format);
 Uint32 leave_c(SDL_PixelFormat* format);
 Uint32 log2_c(SDL_PixelFormat* format);

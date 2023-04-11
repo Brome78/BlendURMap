@@ -139,9 +139,11 @@ void exec_perso(int seed, struct options* opt_alt, struct options* opt_temp,
     save_to_png(map,"map.png");
     if(riv)
     {
-        SDL_Surface *river = draw_riviere(map,opt_alt);
+        //SDL_Surface *river = draw_riviere(map,opt_alt);
+        
+        draw_riviere2(map,perlin->map,opt_alt);
 
-        save_to_png(river,"river.png");
+        save_to_png(map,"river.png");
     }
 
     printf("\e[1;1H\e[2J");
@@ -188,12 +190,12 @@ void exec_perso(int seed, struct options* opt_alt, struct options* opt_temp,
     free(opt_alt);
     free(opt_temp);
     free(opt_hum);
-    for(int i = 0; props_l[i] != NULL; i++) //NOT PERFECT POSSIBLE LEAK
+    /*for(int i = 0; props_l[i] != NULL; i++) //NOT PERFECT POSSIBLE LEAK
         free(props_l[i]);
     free(props_l);
     for(int i = 0; villages[i] != NULL; i++)
         free(villages[i]);
-    free(villages);
+    free(villages);*/
     SDL_FreeSurface(map);
     SDL_FreeSurface(ds);
 

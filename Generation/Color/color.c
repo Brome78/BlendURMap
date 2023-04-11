@@ -180,6 +180,20 @@ Uint32 relief_desert(SDL_PixelFormat* format)
 }
 
 /**********************************************/
+/*                  RIVER                     */
+/**********************************************/
+
+Uint32 river1(SDL_PixelFormat* format)
+{
+    return SDL_MapRGB(format,5,153,212);
+}
+
+Uint32 river2(SDL_PixelFormat* format)
+{
+    return SDL_MapRGB(format,0,0,253);
+}
+
+/**********************************************/
 /*                  PROPS                     */
 /**********************************************/
 
