@@ -26,10 +26,9 @@ void exec_ui(int seed,
     {
         errx(EXIT_FAILURE,"Size must be higher than 0");
     }
-
     if(rivers == 1)
         riv = 1;
-
+    printf("%d / %d\n",rivers,riv);
     if(props == 1)
         prop = 1;
 

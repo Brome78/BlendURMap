@@ -4,6 +4,14 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 
+#define TREE 0
+#define BUSH 1
+#define CACTUS 2
+#define ACACIA 3
+#define SPRUCE 4
+#define BIRCH 5
+#define VILLAGE 6
+
 typedef struct vector2
 {
     int x;
@@ -57,6 +65,12 @@ typedef struct structure{
     int sizey;
     SDL_Surface* scheme;
 }structure;
+
+typedef struct type_structure{
+    int x;
+    int y;
+    int type;
+}type_structure;
 
 SDL_Surface* load_image(const char* path);
 

@@ -162,6 +162,8 @@ int apply_props(SDL_Surface *map, struct chunk **chunk_map, struct options* opt)
     int sizex = opt->sizex;
     int sizey = opt->sizey;
 
+    struct type_structure** list = malloc(sizex*sizeof(struct type_structure*));
+
     srand(time(NULL));
     int chunk_sizex = sizex/16;
     if(sizex%16>0)

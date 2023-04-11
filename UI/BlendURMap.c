@@ -70,6 +70,7 @@ void on_generate_button_clicked(GtkButton *button, gpointer user_data)
   int er1 = system("rm *.OBJ *.png");
   if(er1<0)
     return;
+  printf("%d\n",gtk_toggle_button_get_active(app->ui.river));
   exec_ui(seedi, opt_alt, opt_temp, opt_hum, width, height,
             gtk_toggle_button_get_active(app->ui.island),
             gtk_toggle_button_get_active(app->ui.river),
@@ -127,7 +128,7 @@ int main()
   GtkToggleButton* isrender3d = GTK_TOGGLE_BUTTON(gtk_builder_get_object(builder,"render"));
   GtkToggleButton* island = GTK_TOGGLE_BUTTON(gtk_builder_get_object(builder,"island"));
   GtkToggleButton* props = GTK_TOGGLE_BUTTON(gtk_builder_get_object(builder,"props"));
-  GtkToggleButton* river = GTK_TOGGLE_BUTTON(gtk_builder_get_object(builder,"river"));
+  GtkToggleButton* river = GTK_TOGGLE_BUTTON(gtk_builder_get_object(builder,"rivers"));
   GtkToggleButton* villages = GTK_TOGGLE_BUTTON(gtk_builder_get_object(builder,"villages"));
 
   GtkButton* render2d = GTK_BUTTON(gtk_builder_get_object(builder, "render_in_2D"));
