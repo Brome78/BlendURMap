@@ -33,7 +33,7 @@ void exec_map(int seed, struct options* opt_alt, struct options* opt_temp,
     printf("[//////      ]\nApply Biome\n");
 
     SDL_Surface *map = apply_biome(perlin->map, simplex->map, ds,
-            opt_alt, opt_hum,t);
+            opt_alt, opt_hum,t,0);
 
 
     printf("\e[1;1H\e[2J");

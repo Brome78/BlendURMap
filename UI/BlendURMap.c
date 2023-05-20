@@ -18,6 +18,7 @@ typedef struct UserInterface
   GtkAdjustment* seedix;
   GtkToggleButton *isrender3d;
   GtkToggleButton *island;
+  GtkToggleButton *mindustry;
   GtkToggleButton *props;
   GtkToggleButton *river;
   GtkToggleButton *villages;
@@ -77,7 +78,8 @@ void on_generate_button_clicked(GtkButton *button, gpointer user_data)
             gtk_toggle_button_get_active(app->ui.props),
             gtk_toggle_button_get_active(app->ui.villages),
             gtk_toggle_button_get_active(app->ui.isrender3d),
-            0);
+            0,
+            gtk_toggle_button_get_active(app->ui.mindustry));
   //if statement for 3D gen
 }
 
@@ -130,6 +132,7 @@ int main()
   GtkToggleButton* props = GTK_TOGGLE_BUTTON(gtk_builder_get_object(builder,"props"));
   GtkToggleButton* river = GTK_TOGGLE_BUTTON(gtk_builder_get_object(builder,"rivers"));
   GtkToggleButton* villages = GTK_TOGGLE_BUTTON(gtk_builder_get_object(builder,"villages"));
+  GtkToggleButton* mindustry = GTK_TOGGLE_BUTTON(gtk_builder_get_object(builder,"mindustry"));
 
   GtkButton* render2d = GTK_BUTTON(gtk_builder_get_object(builder, "render_in_2D"));
   GtkButton* render3d = GTK_BUTTON(gtk_builder_get_object(builder, "render_in_3D"));
@@ -153,6 +156,7 @@ int main()
                 .props = props,
                 .river = river,
                 .villages = villages,
+                .mindustry = mindustry,
                 .render2d = render2d,
                 .render3d = render3d,
                 .generate_button = generate_button,

@@ -5,7 +5,7 @@
 void exec_ui(int seed,
              struct options* opt_alt, struct options* opt_temp,
              struct options* opt_hum, int w, int h, char island ,char rivers, 
-             char props, char structs, char is_3d, char shw)
+             char props, char structs, char is_3d, char shw, char mindustry)
 {
 
     char *buffer = calloc(16,sizeof(char));
@@ -47,6 +47,15 @@ void exec_ui(int seed,
         show = 0;
         print = 0;
     }
+    if(mindustry == 1)
+    {
+        isl = 0;
+        riv = 0;
+        prop = 0;
+        structure = 0;
+        show = 0;
+        print = 0;
+    }
     printf("\e[1;1H\e[2J");
     printf("[            ]\nGenerate Perlin Noise\n");
 
@@ -73,20 +82,24 @@ void exec_ui(int seed,
     printf("[////        ]\nApply Biome\n");
 
     SDL_Surface *map = apply_biome(perlin->map, simplex->map,ds,
-            opt_alt,opt_hum,t);
+            opt_alt,opt_hum,t,mindustry);
 
     printf("\e[1;1H\e[2J");
     printf("[//////      ]\nSave Map\n");
 
     save_to_png(map,"map.png");
-    if(is_3d)
-        export_3d_map(perlin, map,"map.OBJ");
+    //if(is_3d)
+    //    export_3d_map(perlin, map,"map.OBJ");
     if(riv)
     {
-        SDL_Surface *river = draw_riviere(map,opt_alt);
+        //SDL_Surface *river = draw_riviere(map,opt_alt);
+        draw_riviere2(map,perlin->map,opt_alt);
 
-        save_to_png(river,"river.png");
+        save_to_png(map,"river.png");
     }
+
+    if(is_3d)
+        export_3d_map(perlin, map,"map.OBJ");
 
     printf("\e[1;1H\e[2J");
     printf("[////////    ]\nCreate Chunks\n");

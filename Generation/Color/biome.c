@@ -1,238 +1,372 @@
 #include "../Utils/utils.h"
 #include "color.h"
+#include "color_mindustry.h"
 #include "biome.h"
 #include <stdlib.h>
 #include <time.h>
 #include <math.h>
 
 Uint32 snow_alt_filter(Uint8 rh, SDL_PixelFormat* format,
-        struct threshold* threshold)
+        struct threshold* threshold, char export)
 {
     Uint32 c = ocean(format);
     if(rh<threshold->deep_ocean)
     {
-        c = freeze_deep_ocean(format);
+        if(export)
+            c = m_freeze_deep_ocean(format);
+        else
+            c = freeze_deep_ocean(format);
     }
     else if(rh<threshold->ocean)
     {
-        c = freeze_ocean(format);
+        if(export)
+            c = m_freeze_ocean(format);
+        else
+            c = freeze_ocean(format);
     }
     else if(rh<threshold->coast)
     {
-        c = freeze_coast(format);
+        if(export)
+            c = m_freeze_coast(format);
+        else
+            c = freeze_coast(format);
     }
     else if(rh >= threshold->picks)
     {
-        c = picks(format);
+        if(export)
+            c = m_picks(format);
+        else
+            c = picks(format);
     }
     else if(rh>=threshold->mountains)
     {
-        c = mountains(format);
+        if(export)
+            c = m_mountains(format);
+        else
+            c = mountains(format);
     }
     else if(rh>=threshold->mid_mountains)
     {
-        c = mid_mountains(format);
+        if(export)
+            c = m_snow2(format);
+        else
+            c = mid_mountains(format);
     }
     else if (rh>=threshold->plateau2 && rh<threshold->mid_mountains)
     {
-        c = snow2(format);
+        if(export)
+            c = m_snow2(format);
+        else
+            c = snow2(format);
     }
     else if(rh>=threshold->plateau3 && rh<threshold->plateau2)
     {
-        c = snow3(format);
+        if(export)
+            c = m_snow3(format);
+        else
+            c = snow3(format);
     }
     else
     {
-        c = snow(format);
+        if(export)
+            c = m_snow(format);
+        else
+            c = snow(format);
     }
     return c;
 
 }
 
 Uint32 plains_alt_filter(Uint8 rh, SDL_PixelFormat* format,
-        struct threshold* threshold)
+        struct threshold* threshold, char export)
 {
     Uint32 c = ocean(format);
     if(rh<threshold->deep_ocean)
     {
-        c = deep_ocean(format);
+        if(export)
+            c = m_deep_ocean(format);
+        else
+            c = deep_ocean(format);
     }
     else if(rh<threshold->ocean)
     {
-        c = ocean(format);
+        if(export)
+            c = m_ocean(format);
+        else
+            c = ocean(format);
     }
     else if(rh<threshold->coast)
     {
-        c = coast(format);
+        if(export)
+            c = m_coast(format);
+        else
+            c = coast(format);
     }
     else if(rh>= threshold->coast && rh <threshold->plateau)
     {
-        c = beach(format);
+        if(export)
+            c = m_beach(format);
+        else
+            c = beach(format);
     }
     else if(rh >= threshold->picks)
     {
-        c = picks(format);
+        if(export)
+            c = m_picks(format);
+        else
+            c = picks(format);
     }
     else if(rh>=threshold->mountains)
     {
-        c = mountains(format);
+        if(export)
+            c = m_mountains(format);
+        else
+            c = mountains(format);
     }
     else if(rh>=threshold->mid_mountains)
     {
-        c = mid_mountains(format);
+        if(export)
+            c = m_mid_mountains(format);
+        else
+            c = mid_mountains(format);
     }
     else if (rh>=threshold->plateau2 && rh<threshold->mid_mountains)
     {
-        c = plains2(format);
+        if(export)
+            c = m_plains2(format);
+        else
+            c = plains2(format);
     }
     else if(rh>=threshold->plateau3 && rh<threshold->plateau2)
     {
-        c= plains3(format);
+        if(export)
+            c = m_plains3(format);
+        else
+            c= plains3(format);
     }
     else
     {
-        c = plains(format);
+        if(export)
+            c = m_plains(format);
+        else
+            c = plains(format);
     }
     return c;
 }
 
 Uint32 savanna_alt_filter(Uint8 rh, SDL_PixelFormat* format,
-        struct threshold* threshold)
+        struct threshold* threshold, char export)
 {
     Uint32 c = ocean(format);
     if(rh<threshold->deep_ocean)
     {
-        c = deep_ocean(format);
+        if(export)
+            c = m_deep_ocean(format);
+        else
+            c = deep_ocean(format);
     }
     else if(rh<threshold->ocean)
     {
-        c = ocean(format);
+        if(export)
+            c = m_ocean(format);
+        else
+            c = ocean(format);
     }
-
     else if(rh<threshold->coast)
     {
-        c = coast(format);
+        if(export)
+            c = m_coast(format);
+        else
+            c = coast(format);
     }
     else if(rh>= threshold->coast && rh <threshold->plateau)
     {
-        c = beach(format);
+        if(export)
+            c = m_beach(format);
+        else
+            c = beach(format);
     }
     else if(rh>=threshold->mountains)
     {
-        c = mountains_desert(format);
+        if(export)
+            c = m_mountains_desert(format);
+        else
+            c = mountains_desert(format);
     }
     else if(rh>=threshold->mid_mountains)
     {
-        c = mid_mountains_desert(format);
+        if(export)
+            c = m_mid_mountains_desert(format);
+        else
+            c = mid_mountains_desert(format);
     }
     else if(rh>=threshold->plateau2&&rh<threshold->mid_mountains)
     {
-        c = savanna2(format);
+        if(export)
+            c = m_savanna2(format);
+        else
+            c = savanna2(format);
     }
     else if(rh>=threshold->plateau3 && rh<threshold->plateau2)
     {
-        c= savanna3(format);
+        if(export)
+            c = m_savanna3(format);
+        else
+            c= savanna3(format);
     }
     else
     {
-        c = savanna(format);
+        if(export)
+            c = m_savanna(format);
+        else
+            c = savanna(format);
     }
     return c;
 }
 
 Uint32 desert_alt_filter(Uint8 rh, SDL_PixelFormat* format,
-        struct threshold* threshold)
+        struct threshold* threshold, char export)
 {
     Uint32 c = ocean(format);
     if(rh<threshold->deep_ocean)
     {
-        c = deep_ocean(format);
+        if(export)
+            c = m_deep_ocean(format);
+        else
+            c = deep_ocean(format);
     }
     else if(rh<threshold->ocean)
     {
-        c = ocean(format);
+        if(export)
+            c = m_ocean(format);
+        else
+            c = ocean(format);
     }
-
     else if(rh<threshold->coast)
     {
-        c = coast(format);
+        if(export)
+            c = m_coast(format);
+        else
+            c = coast(format);
     }
     else if(rh>= threshold->coast && rh <threshold->plateau)
     {
-        c = beach(format);
+        if(export)
+            c = m_beach(format);
+        else
+            c = beach(format);
     }
     else if(rh>=threshold->mountains)
     {
-        c = mountains_desert(format);
+        if(export)
+            c = m_mountains_desert(format);
+        else
+            c = mountains_desert(format);
     }
-
     else if(rh>=threshold->mid_mountains)
     {
-        c = mid_mountains_desert(format);
+        if(export)
+            c = m_mid_mountains_desert(format);
+        else
+            c = mid_mountains_desert(format);
     }
     else if(rh>=threshold->plateau2&&rh<threshold->mid_mountains)
     {
-        c = desert2(format);
+        if(export)
+            c = m_desert2(format);
+        else
+            c = desert2(format);
     }
     else if(rh>=threshold->plateau3 && rh<threshold->plateau2)
     {
-        c= desert3(format);
+        if(export)
+            c = m_desert3(format);
+        else
+            c= desert3(format);
     }
     else
     {
-        c = desert(format);
+        if(export)
+            c = m_desert(format);
+        else
+            c = desert(format);
     }
     return c;
 }
 
 Uint32 swamp_alt_filter(Uint8 rh, SDL_PixelFormat* format,
-        struct threshold* threshold)
+        struct threshold* threshold, char export)
 {
     Uint32 c = ocean(format);
     if(rh<threshold->deep_ocean)
     {
-        c = deep_ocean(format);
+        if(export)
+            c = m_deep_ocean(format);
+        else
+            c = deep_ocean(format);
     }
     else if(rh<threshold->ocean)
     {
-        c = ocean(format);
+        if(export)
+            c = m_ocean(format);
+        else
+            c = ocean(format);
     }
-
     else if(rh<threshold->coast)
     {
-        c = coast(format);
+        if(export)
+            c = m_coast(format);
+        else
+            c = coast(format);
     }
     else if(rh>= threshold->coast && rh <threshold->plateau)
     {
-        c = beach(format);
+        if(export)
+            c = m_beach(format);
+        else
+            c = beach(format);
     }
     else if(rh>=threshold->mountains)
     {
-        c = mountains_desert(format);
+        if(export)
+            c = m_mountains_desert(format);
+        else
+            c = mountains_desert(format);
     }
-
     else if(rh>=threshold->mid_mountains)
     {
-        c = mid_mountains_desert(format);
+        if(export)
+            c = m_mid_mountains_desert(format);
+        else
+            c = mid_mountains_desert(format);
     }
     else if(rh>=threshold->plateau2&&rh<threshold->mid_mountains)
     {
-        c = swamp2(format);
+        if(export)
+            c = m_swamp2(format);
+        else
+            c = swamp2(format);
     }
     else if(rh>=threshold->plateau3 && rh<threshold->plateau2)
     {
-        c= swamp3(format);
+        if(export)
+            c = m_swamp3(format);
+        else
+            c= swamp3(format);
     }
     else
     {
-        c = swamp(format);
+        if(export)
+            c = m_swamp(format);
+        else
+            c = swamp(format);
     }
     return c;
 }
 
 SDL_Surface* apply_biome(SDL_Surface* heightmap, SDL_Surface* tempmap, 
         SDL_Surface* hummap, struct options* opt, struct options* opt_hum,
-        struct threshold *threshold)
+        struct threshold *threshold, char export)
 {
     int sizex = opt->sizex;
     int sizey = opt->sizey;
@@ -260,14 +394,14 @@ SDL_Surface* apply_biome(SDL_Surface* heightmap, SDL_Surface* tempmap,
             Uint32 c = ocean(format);
             if (rt<threshold->snow)
             {
-                c = snow_alt_filter(rh,format,threshold);
+                c = snow_alt_filter(rh,format,threshold,export);
             }
             else if(rt<threshold->plains)
             {
                 if(rhu<200)
-                    c = plains_alt_filter(rh,format,threshold);
+                    c = plains_alt_filter(rh,format,threshold,export);
                 else
-                    c = swamp_alt_filter(rh,format,threshold);
+                    c = swamp_alt_filter(rh,format,threshold,export);
             }
             /*else if(rt <threshold->savanna)
             {
@@ -276,9 +410,9 @@ SDL_Surface* apply_biome(SDL_Surface* heightmap, SDL_Surface* tempmap,
             else
             {
                 if(rhu<180)
-                    c = desert_alt_filter(rh, format, threshold);
+                    c = desert_alt_filter(rh, format, threshold,export);
                 else
-                    c = savanna_alt_filter(rh, format, threshold);
+                    c = savanna_alt_filter(rh, format, threshold,export);
 
             }
             if(y+1<sizey&&rh==155&&c==mid_mountains(format))
