@@ -4,7 +4,8 @@
 
 void exec_ui(int seed,
              struct options* opt_alt, struct options* opt_temp,
-             struct options* opt_hum, int w, int h, char island ,char rivers, 
+             struct options* opt_hum, struct threshold* t, 
+             int w, int h, char island ,char rivers, 
              char props, char structs, char is_3d, char shw, char mindustry)
 {
 
@@ -68,10 +69,8 @@ void exec_ui(int seed,
 
     SDL_Surface* ds = generate_diamond(seed,opt_hum);
 
-    struct threshold *t;
-    if(!isl)
-        t  = default_threshold_map();
-    else
+    //struct threshold *t;
+    if(isl)
     {
         t = default_threshold_island();
         apply_island(perlin,opt_alt);

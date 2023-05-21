@@ -14,10 +14,11 @@ struct threshold* default_threshold_map(void)
     t->picks = 170;
     t->plains = 140;
     t->snow = 65;
-    t->savanna = 155;
+    t->savanna = 180;
     t->plateau = 120;
     t->plateau2 = 140;
     t->plateau3 = 135;
+    t->swamp = 200;
     return t;
 }
 
@@ -37,5 +38,6 @@ struct threshold* default_threshold_island(void)
     t->plateau = 120;
     t->plateau2 = 140;
     t->plateau3 = 135;
+    t->swamp = 255;
     return t;
 }

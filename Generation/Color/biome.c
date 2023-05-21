@@ -398,7 +398,7 @@ SDL_Surface* apply_biome(SDL_Surface* heightmap, SDL_Surface* tempmap,
             }
             else if(rt<threshold->plains)
             {
-                if(rhu<200)
+                if(rhu<threshold->swamp)
                     c = plains_alt_filter(rh,format,threshold,export);
                 else
                     c = swamp_alt_filter(rh,format,threshold,export);
@@ -409,52 +409,52 @@ SDL_Surface* apply_biome(SDL_Surface* heightmap, SDL_Surface* tempmap,
             }*/
             else
             {
-                if(rhu<180)
+                if(rhu<threshold->savanna)
                     c = desert_alt_filter(rh, format, threshold,export);
                 else
                     c = savanna_alt_filter(rh, format, threshold,export);
 
             }
-            if(y+1<sizey&&rh==155&&c==mid_mountains(format))
+            if(y+1<sizey&&rh==threshold->mid_mountains&&c==mid_mountains(format))
             {
                 pixels[(y)*sizex+x] = c;
                 pixels[(y+1)*sizex+x] = relief_mountains(format);
             }
-            else if(y+1<sizey&&rh==155&&c==mid_mountains_desert(format))
+            else if(y+1<sizey&&rh==threshold->mid_mountains&&c==mid_mountains_desert(format))
             {
                 pixels[y*sizex+x] = c;
                 pixels[(y+1)*sizex+x]=relief_desert(format);
             }
 
-            else if(y+1<sizey&&rh==118&&c==beach(format))
+            else if(y+1<sizey&&rh==threshold->coast&&c==beach(format))
             {
                 pixels[(y)*sizex+x] = c;
                 pixels[(y+1)*sizex+x] = relief_beach(format);
 
             }
-            else if(y+1<sizey&&rh==160&&c==mountains(format))
+            else if(y+1<sizey&&rh==threshold->mountains&&c==mountains(format))
             {
                 pixels[(y)*sizex+x] = c;
                 pixels[(y+1)*sizex+x] = relief_mountains(format);
             }
 
-            else if(y+1<sizey&&rh==160&&c==mountains_desert(format))
+            else if(y+1<sizey&&rh==threshold->mountains&&c==mountains_desert(format))
             {
                 pixels[(y)*sizex+x] = c;
                 pixels[(y+1)*sizex+x] = relief_desert(format);
             }
             else if(pixels[y*sizex+x] == relief_mountains(format)&&
-                    ((rh>155 && rh<159) ||rh>160))
+                    ((rh>threshold->mid_mountains && rh<threshold->mountains-1) ||rh>threshold->mountains))
             {
                 pixels[y*sizex+x] = c;
             }
             else if(pixels[y*sizex+x] == relief_desert(format)&&
-                    ((rh>155 && rh<159)||rh>160))
+                    ((rh>threshold->mid_mountains && rh<threshold->mountains-1)||rh>threshold->mountains))
             {
                 pixels[y*sizex+x] = c;
             }
 
-            else if(pixels[y*sizex+x] == relief_beach(format)&&rh>118)
+            else if(pixels[y*sizex+x] == relief_beach(format)&&rh>threshold->coast)
                 pixels[y*sizex+x] = c;
 
             else if(pixels[y*sizex+x]!=relief_mountains(format)&&

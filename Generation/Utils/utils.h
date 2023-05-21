@@ -49,6 +49,7 @@ typedef struct threshold{
     int plateau;
     int plateau2;
     int plateau3;
+    int swamp;
 }threshold;
 
 typedef struct chunk

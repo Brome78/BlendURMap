@@ -26,6 +26,19 @@ typedef struct UserInterface
   GtkButton* render3d;
   GtkButton* generate_button;
   //GtkButton* load_button;
+  // Biome Tweaks
+  GtkAdjustment* beach;
+  GtkAdjustment* coast;
+  GtkAdjustment* deep_ocean;
+  GtkAdjustment* ocean;
+  GtkAdjustment* mid_mountains;
+  GtkAdjustment* mountains;
+  GtkAdjustment* picks;
+  GtkAdjustment* plains;
+  GtkAdjustment* plateau;
+  GtkAdjustment* savanna;
+  GtkAdjustment* snow;
+  GtkAdjustment* swamp;
 } UserInterface;
 
 typedef struct App
@@ -72,7 +85,24 @@ void on_generate_button_clicked(GtkButton *button, gpointer user_data)
   if(er1<0)
     return;
   printf("%d\n",gtk_toggle_button_get_active(app->ui.river));
-  exec_ui(seedi, opt_alt, opt_temp, opt_hum, width, height,
+
+  struct threshold *t = malloc(sizeof(struct threshold));
+  t->deep_ocean = gtk_adjustment_get_value(app->ui.deep_ocean);
+  t->ocean = gtk_adjustment_get_value(app->ui.ocean);
+  t->coast = gtk_adjustment_get_value(app->ui.coast);
+  t->beach = gtk_adjustment_get_value(app->ui.beach);
+  t->mid_mountains = gtk_adjustment_get_value(app->ui.mid_mountains);
+  t->mountains = gtk_adjustment_get_value(app->ui.mountains);
+  t->picks = gtk_adjustment_get_value(app->ui.picks);
+  t->plains = gtk_adjustment_get_value(app->ui.plains);
+  t->snow = gtk_adjustment_get_value(app->ui.snow);
+  t->savanna = gtk_adjustment_get_value(app->ui.savanna);
+  t->plateau = gtk_adjustment_get_value(app->ui.plateau);
+  t->plateau2 = gtk_adjustment_get_value(app->ui.plateau) + 20;
+  t->plateau3 = gtk_adjustment_get_value(app->ui.plateau) + 15;
+  t->swamp = gtk_adjustment_get_value(app->ui.swamp);
+
+  exec_ui(seedi, opt_alt, opt_temp, opt_hum, t, width, height,
             gtk_toggle_button_get_active(app->ui.island),
             gtk_toggle_button_get_active(app->ui.river),
             gtk_toggle_button_get_active(app->ui.props),
@@ -139,6 +169,21 @@ int main()
   GtkButton* generate_button = GTK_BUTTON(gtk_builder_get_object(builder,"generate"));
 
 
+  GtkAdjustment* beach = GTK_ADJUSTMENT(gtk_builder_get_object(builder,"Beach"));
+  GtkAdjustment* coast = GTK_ADJUSTMENT(gtk_builder_get_object(builder,"Coast"));
+  GtkAdjustment* deep_ocean = GTK_ADJUSTMENT(gtk_builder_get_object(builder,"Deep_Ocean"));
+  GtkAdjustment* ocean = GTK_ADJUSTMENT(gtk_builder_get_object(builder,"Ocean"));
+  GtkAdjustment* mid_mountains = GTK_ADJUSTMENT(gtk_builder_get_object(builder,"Mid_Mountains"));
+  GtkAdjustment* mountains = GTK_ADJUSTMENT(gtk_builder_get_object(builder,"Mountains"));
+  GtkAdjustment* picks = GTK_ADJUSTMENT(gtk_builder_get_object(builder,"Picks"));
+  GtkAdjustment* plains = GTK_ADJUSTMENT(gtk_builder_get_object(builder,"Plains"));
+  GtkAdjustment* plateau = GTK_ADJUSTMENT(gtk_builder_get_object(builder,"Plateau"));
+  GtkAdjustment* savanna = GTK_ADJUSTMENT(gtk_builder_get_object(builder,"Savanna"));
+  GtkAdjustment* snow = GTK_ADJUSTMENT(gtk_builder_get_object(builder,"Snow"));
+  GtkAdjustment* swamp = GTK_ADJUSTMENT(gtk_builder_get_object(builder,"Swamp"));
+
+
+
   App app =
     {
         .ui =
@@ -160,6 +205,19 @@ int main()
                 .render2d = render2d,
                 .render3d = render3d,
                 .generate_button = generate_button,
+
+                .beach = beach,
+                .coast = coast,
+                .deep_ocean = deep_ocean,
+                .ocean = ocean,
+                .mid_mountains = mid_mountains,
+                .mountains = mountains,
+                .picks = picks,
+                .plains = plains,
+                .plateau = plateau,
+                .savanna = savanna,
+                .snow = snow,
+                .swamp = swamp,
             },
     };
   
