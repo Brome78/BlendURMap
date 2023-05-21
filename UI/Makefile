@@ -17,6 +17,7 @@ ${EXE}: ${SRC}
 .PHONY: clean
 
 clean:
-	${RM} $(EXE) *.png *.OBJ *~
+	${RM} $(EXE) tmp/river.png tmp/village.png tmp/map_forest.png tmp/chunk.png\
+	 *.png *.OBJ *~
 
 # END

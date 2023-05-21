@@ -2,12 +2,16 @@
 #include "../../Generation/Noise/circular_gradient.h"
 #include "../../Generation/Exportation/export.h"
 
-void exec_ui(int seed,
+struct current_map* exec_ui(int seed,
              struct options* opt_alt, struct options* opt_temp,
              struct options* opt_hum, struct threshold* t, 
              int w, int h, char island ,char rivers, 
              char props, char structs, char is_3d, char shw, char mindustry)
 {
+
+    struct current_map* cur = malloc(sizeof(struct current_map));
+    cur->opt_alt = opt_alt;
+    cur->opt_hum = opt_hum;
 
     char *buffer = calloc(16,sizeof(char));
 
@@ -82,11 +86,15 @@ void exec_ui(int seed,
 
     SDL_Surface *map = apply_biome(perlin->map, simplex->map,ds,
             opt_alt,opt_hum,t,mindustry);
+    
+    cur->perlin = perlin->map;
+    cur->simplex = simplex->map;
+    cur->ds = ds;
 
     printf("\e[1;1H\e[2J");
     printf("[//////      ]\nSave Map\n");
 
-    save_to_png(map,"map.png");
+    save_to_png(map,"tmp/map.png");
     //if(is_3d)
     //    export_3d_map(perlin, map,"map.OBJ");
     if(riv)
@@ -94,11 +102,11 @@ void exec_ui(int seed,
         //SDL_Surface *river = draw_riviere(map,opt_alt);
         draw_riviere2(map,perlin->map,opt_alt);
 
-        save_to_png(map,"river.png");
+        save_to_png(map,"tmp/river.png");
     }
 
     if(is_3d)
-        export_3d_map(perlin, map,"map.OBJ");
+        export_3d_map(perlin, map,"tmp/map.OBJ");
 
     printf("\e[1;1H\e[2J");
     printf("[////////    ]\nCreate Chunks\n");
@@ -110,7 +118,7 @@ void exec_ui(int seed,
         printf("\e[1;1H\e[2J");
         printf("[//////////  ]\nApply props\n");
         apply_props(map, chunk_map,opt_alt);
-        save_to_png(map,"map_forest.png");
+        save_to_png(map,"tmp/map_forest.png");
     }
     if(structure)
     {
@@ -118,7 +126,7 @@ void exec_ui(int seed,
         printf("[//////////  ]\nApply structure\n");
         apply_village(map, chunk_map,opt_alt,10);
 
-        save_to_png(map,"village.png");
+        save_to_png(map,"tmp/village.png");
     }
     if(show)
     {
@@ -126,7 +134,7 @@ void exec_ui(int seed,
         printf("[//////////  ]\nCreate Chunk Map\n");
         show_chunk(chunk_map, map, opt_alt);
 
-        save_to_png(map,"chunk.png");
+        save_to_png(map,"tmp/chunk.png");
     }
 
     printf("\e[1;1H\e[2J");
@@ -135,18 +143,20 @@ void exec_ui(int seed,
         print_chunk(chunk_map, opt_alt);
 
     free_chunk(chunk_map, opt_alt);
-    SDL_FreeSurface(perlin->map);
-    free(perlin);
+    //SDL_FreeSurface(perlin->map);
+    //free(perlin);
     free(t);
 
-    free(opt_alt);
+    //free(opt_alt);
     free(opt_temp);
-    free(opt_hum);
+    //free(opt_hum);
     SDL_FreeSurface(map);
 
-    SDL_FreeSurface(simplex->map);
-    free(simplex);
+    //SDL_FreeSurface(simplex->map);
+    //free(simplex);
 
     free(buffer);
+
+    return cur;
 
 }

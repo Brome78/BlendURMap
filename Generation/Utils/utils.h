@@ -73,6 +73,14 @@ typedef struct type_structure{
     int type;
 }type_structure;
 
+typedef struct current_map{
+    struct options* opt_alt;
+    struct options* opt_hum;
+    SDL_Surface* perlin;
+    SDL_Surface* simplex;
+    SDL_Surface* ds;
+}current_map;
+
 SDL_Surface* load_image(const char* path);
 
 void save_image(SDL_Surface* surface, const char* path);

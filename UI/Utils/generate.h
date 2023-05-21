@@ -17,7 +17,7 @@
 #include "../../Generation/Utils/threshold.h"
 
 
-void exec_ui(int seed,
+struct current_map* exec_ui(int seed,
                 struct options* opt_alt, struct options* opt_temp,
                 struct options* opt_hum, struct threshold* t, 
                 int w, int h,char island,
