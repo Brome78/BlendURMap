@@ -7,6 +7,7 @@ This project developped by EPITA' students in S4 (4th semester).
 ## Dependences
 
 The project needs gcc, SDL2 and SDL2_image, libmaths and the C language (standard libraries)
+You must install the font present in UI/fonts/ folder
 
 ## Build
 

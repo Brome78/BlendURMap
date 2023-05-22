@@ -102,7 +102,7 @@ Uint32 plains_alt_filter(Uint8 rh, SDL_PixelFormat* format,
         else
             c = coast(format);
     }
-    else if(rh>= threshold->coast && rh <threshold->plateau)
+    else if(rh <threshold->beach)
     {
         if(export)
             c = m_beach(format);
@@ -179,7 +179,7 @@ Uint32 savanna_alt_filter(Uint8 rh, SDL_PixelFormat* format,
         else
             c = coast(format);
     }
-    else if(rh>= threshold->coast && rh <threshold->plateau)
+    else if(rh <threshold->beach)
     {
         if(export)
             c = m_beach(format);
@@ -249,7 +249,7 @@ Uint32 desert_alt_filter(Uint8 rh, SDL_PixelFormat* format,
         else
             c = coast(format);
     }
-    else if(rh>= threshold->coast && rh <threshold->plateau)
+    else if(rh <threshold->beach)
     {
         if(export)
             c = m_beach(format);
@@ -319,7 +319,7 @@ Uint32 swamp_alt_filter(Uint8 rh, SDL_PixelFormat* format,
         else
             c = coast(format);
     }
-    else if(rh>= threshold->coast && rh <threshold->plateau)
+    else if(rh <threshold->beach)
     {
         if(export)
             c = m_beach(format);

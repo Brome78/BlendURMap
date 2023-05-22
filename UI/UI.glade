@@ -101,7 +101,6 @@
         <property name="orientation">vertical</property>
         <child>
           <object class="GtkMenuBar">
-            <property name="visible">True</property>
             <property name="can-focus">False</property>
             <child>
               <object class="GtkMenuItem">
@@ -272,9 +271,14 @@
                   <object class="GtkLabel">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
+                    <property name="margin-left">5</property>
+                    <property name="margin-right">5</property>
                     <property name="margin-top">24</property>
                     <property name="margin-bottom">13</property>
                     <property name="label" translatable="yes">Generation options</property>
+                    <style>
+                      <class name="label_title"/>
+                    </style>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -294,97 +298,62 @@
                   </packing>
                 </child>
                 <child>
-                  <!-- n-columns=2 n-rows=11 -->
+                  <!-- n-columns=2 n-rows=10 -->
                   <object class="GtkGrid">
                     <property name="width-request">200</property>
                     <property name="height-request">200</property>
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
+                    <property name="margin-left">5</property>
+                    <property name="margin-right">5</property>
+                    <property name="margin-top">5</property>
                     <property name="orientation">vertical</property>
                     <property name="row-spacing">27</property>
                     <property name="column-spacing">9</property>
                     <property name="column-homogeneous">True</property>
                     <child>
-                      <object class="GtkLabel">
+                      <!-- n-columns=1 n-rows=2 -->
+                      <object class="GtkGrid">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
-                        <property name="label" translatable="yes">Width</property>
+                        <property name="halign">center</property>
+                        <property name="margin-top">5</property>
+                        <property name="row-spacing">5</property>
+                        <child>
+                          <object class="GtkLabel">
+                            <property name="visible">True</property>
+                            <property name="can-focus">False</property>
+                            <property name="label" translatable="yes">Width</property>
+                            <style>
+                              <class name="label"/>
+                            </style>
+                          </object>
+                          <packing>
+                            <property name="left-attach">0</property>
+                            <property name="top-attach">0</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkSpinButton">
+                            <property name="visible">True</property>
+                            <property name="can-focus">True</property>
+                            <property name="max-width-chars">10</property>
+                            <property name="adjustment">Width</property>
+                            <property name="numeric">True</property>
+                            <property name="value">500</property>
+                            <style>
+                              <class name="width"/>
+                            </style>
+                          </object>
+                          <packing>
+                            <property name="left-attach">0</property>
+                            <property name="top-attach">1</property>
+                          </packing>
+                        </child>
                       </object>
                       <packing>
                         <property name="left-attach">0</property>
                         <property name="top-attach">0</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkLabel">
-                        <property name="visible">True</property>
-                        <property name="can-focus">False</property>
-                        <property name="label" translatable="yes">Height</property>
-                      </object>
-                      <packing>
-                        <property name="left-attach">1</property>
-                        <property name="top-attach">0</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkLabel">
-                        <property name="visible">True</property>
-                        <property name="can-focus">False</property>
-                        <property name="label" translatable="yes">Island Generation</property>
-                      </object>
-                      <packing>
-                        <property name="left-attach">0</property>
-                        <property name="top-attach">2</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkLabel">
-                        <property name="visible">True</property>
-                        <property name="can-focus">False</property>
-                        <property name="label" translatable="yes">Props</property>
-                        <attributes>
-                          <attribute name="font-desc" value="Sans 11"/>
-                        </attributes>
-                      </object>
-                      <packing>
-                        <property name="left-attach">0</property>
-                        <property name="top-attach">3</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkLabel">
-                        <property name="visible">True</property>
-                        <property name="can-focus">False</property>
-                        <property name="label" translatable="yes">Rivers</property>
-                      </object>
-                      <packing>
-                        <property name="left-attach">0</property>
-                        <property name="top-attach">4</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkLabel">
-                        <property name="visible">True</property>
-                        <property name="can-focus">False</property>
-                        <property name="label" translatable="yes">Villages</property>
-                        <attributes>
-                          <attribute name="stretch" value="condensed"/>
-                        </attributes>
-                      </object>
-                      <packing>
-                        <property name="left-attach">0</property>
-                        <property name="top-attach">5</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkLabel">
-                        <property name="visible">True</property>
-                        <property name="can-focus">False</property>
-                        <property name="label" translatable="yes">Export to 3D </property>
-                      </object>
-                      <packing>
-                        <property name="left-attach">0</property>
-                        <property name="top-attach">6</property>
                       </packing>
                     </child>
                     <child>
@@ -395,10 +364,89 @@
                         <property name="halign">start</property>
                         <property name="valign">start</property>
                         <property name="draw-indicator">True</property>
+                        <style>
+                          <class name="check"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="left-attach">1</property>
+                        <property name="top-attach">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="label" translatable="yes">Island Generation</property>
+                        <style>
+                          <class name="label"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="left-attach">0</property>
+                        <property name="top-attach">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkCheckButton" id="props">
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="receives-default">False</property>
+                        <property name="halign">start</property>
+                        <property name="valign">start</property>
+                        <property name="draw-indicator">True</property>
+                        <style>
+                          <class name="check"/>
+                        </style>
                       </object>
                       <packing>
                         <property name="left-attach">1</property>
                         <property name="top-attach">2</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="label" translatable="yes">Props</property>
+                        <style>
+                          <class name="label"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="left-attach">0</property>
+                        <property name="top-attach">2</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkCheckButton" id="rivers">
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="receives-default">False</property>
+                        <property name="halign">start</property>
+                        <property name="valign">start</property>
+                        <property name="draw-indicator">True</property>
+                        <style>
+                          <class name="check"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="left-attach">1</property>
+                        <property name="top-attach">3</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="label" translatable="yes">Rivers</property>
+                        <style>
+                          <class name="label"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="left-attach">0</property>
+                        <property name="top-attach">3</property>
                       </packing>
                     </child>
                     <child>
@@ -409,46 +457,26 @@
                         <property name="halign">start</property>
                         <property name="valign">start</property>
                         <property name="draw-indicator">True</property>
+                        <style>
+                          <class name="check"/>
+                        </style>
                       </object>
                       <packing>
                         <property name="left-attach">1</property>
-                        <property name="top-attach">5</property>
+                        <property name="top-attach">4</property>
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkButton" id="generate">
-                        <property name="label" translatable="yes">Generate</property>
+                      <object class="GtkLabel">
                         <property name="visible">True</property>
-                        <property name="can-focus">True</property>
-                        <property name="receives-default">True</property>
-                        <signal name="clicked" handler="on_generate_button_clicked" swapped="no"/>
+                        <property name="can-focus">False</property>
+                        <property name="label" translatable="yes">Villages</property>
+                        <style>
+                          <class name="label"/>
+                        </style>
                       </object>
                       <packing>
                         <property name="left-attach">0</property>
-                        <property name="top-attach">7</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkCheckButton" id="props">
-                        <property name="visible">True</property>
-                        <property name="can-focus">True</property>
-                        <property name="receives-default">False</property>
-                        <property name="draw-indicator">True</property>
-                      </object>
-                      <packing>
-                        <property name="left-attach">1</property>
-                        <property name="top-attach">3</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkCheckButton" id="rivers">
-                        <property name="visible">True</property>
-                        <property name="can-focus">True</property>
-                        <property name="receives-default">False</property>
-                        <property name="draw-indicator">True</property>
-                      </object>
-                      <packing>
-                        <property name="left-attach">1</property>
                         <property name="top-attach">4</property>
                       </packing>
                     </child>
@@ -461,10 +489,113 @@
                         <property name="valign">start</property>
                         <property name="draw-indicator">True</property>
                         <signal name="toggled" handler="on_3D_render_toggled" swapped="no"/>
+                        <style>
+                          <class name="check"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="left-attach">1</property>
+                        <property name="top-attach">5</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="label" translatable="yes">Export to 3D </property>
+                        <style>
+                          <class name="label"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="left-attach">0</property>
+                        <property name="top-attach">5</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkCheckButton" id="mindustry">
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="receives-default">False</property>
+                        <property name="halign">start</property>
+                        <property name="valign">start</property>
+                        <property name="draw-indicator">True</property>
+                        <style>
+                          <class name="check"/>
+                        </style>
                       </object>
                       <packing>
                         <property name="left-attach">1</property>
                         <property name="top-attach">6</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="label" translatable="yes">Exportation Mindustry</property>
+                        <style>
+                          <class name="label"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="left-attach">0</property>
+                        <property name="top-attach">6</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkSpinButton" id="seed">
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="adjustment">Seedi</property>
+                        <style>
+                          <class name="seed"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="left-attach">1</property>
+                        <property name="top-attach">7</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="generate">
+                        <property name="label" translatable="yes">Generate</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="receives-default">True</property>
+                        <signal name="clicked" handler="on_generate_button_clicked" swapped="no"/>
+                        <style>
+                          <class name="generate"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="left-attach">0</property>
+                        <property name="top-attach">7</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="export_map">
+                        <property name="label" translatable="yes">Export Map</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="receives-default">True</property>
+                        <style>
+                          <class name="export"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="left-attach">1</property>
+                        <property name="top-attach">8</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                      </object>
+                      <packing>
+                        <property name="left-attach">1</property>
+                        <property name="top-attach">9</property>
                       </packing>
                     </child>
                     <child>
@@ -474,6 +605,9 @@
                         <property name="can-focus">True</property>
                         <property name="receives-default">True</property>
                         <signal name="clicked" handler="on_render_2D_clicked" swapped="no"/>
+                        <style>
+                          <class name="render_2d"/>
+                        </style>
                       </object>
                       <packing>
                         <property name="left-attach">0</property>
@@ -487,6 +621,9 @@
                         <property name="can-focus">True</property>
                         <property name="receives-default">True</property>
                         <signal name="clicked" handler="on_render_3D_clicked" swapped="no"/>
+                        <style>
+                          <class name="render_3d"/>
+                        </style>
                       </object>
                       <packing>
                         <property name="left-attach">0</property>
@@ -494,82 +631,49 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkLabel">
+                      <!-- n-columns=1 n-rows=2 -->
+                      <object class="GtkGrid">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
+                        <property name="halign">center</property>
+                        <property name="margin-top">5</property>
+                        <property name="row-spacing">5</property>
+                        <child>
+                          <object class="GtkLabel">
+                            <property name="visible">True</property>
+                            <property name="can-focus">False</property>
+                            <property name="label" translatable="yes">Height</property>
+                            <property name="justify">center</property>
+                            <style>
+                              <class name="label"/>
+                            </style>
+                          </object>
+                          <packing>
+                            <property name="left-attach">0</property>
+                            <property name="top-attach">0</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkSpinButton">
+                            <property name="visible">True</property>
+                            <property name="can-focus">True</property>
+                            <property name="max-width-chars">10</property>
+                            <property name="adjustment">Height</property>
+                            <property name="numeric">True</property>
+                            <property name="value">500</property>
+                            <style>
+                              <class name="height"/>
+                            </style>
+                          </object>
+                          <packing>
+                            <property name="left-attach">0</property>
+                            <property name="top-attach">1</property>
+                          </packing>
+                        </child>
                       </object>
                       <packing>
                         <property name="left-attach">1</property>
-                        <property name="top-attach">9</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkSpinButton">
-                        <property name="visible">True</property>
-                        <property name="can-focus">True</property>
-                        <property name="max-width-chars">10</property>
-                        <property name="adjustment">Width</property>
-                      </object>
-                      <packing>
-                        <property name="left-attach">0</property>
-                        <property name="top-attach">1</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkSpinButton">
-                        <property name="visible">True</property>
-                        <property name="can-focus">True</property>
-                        <property name="adjustment">Height</property>
-                      </object>
-                      <packing>
-                        <property name="left-attach">1</property>
-                        <property name="top-attach">1</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkSpinButton" id="seed">
-                        <property name="visible">True</property>
-                        <property name="can-focus">True</property>
-                        <property name="adjustment">Seedi</property>
-                      </object>
-                      <packing>
-                        <property name="left-attach">1</property>
-                        <property name="top-attach">7</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkLabel">
-                        <property name="visible">True</property>
-                        <property name="can-focus">False</property>
-                        <property name="label" translatable="yes">Exportation Mindustry</property>
-                      </object>
-                      <packing>
-                        <property name="left-attach">0</property>
-                        <property name="top-attach">10</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkCheckButton" id="mindustry">
-                        <property name="visible">True</property>
-                        <property name="can-focus">True</property>
-                        <property name="receives-default">False</property>
-                        <property name="draw-indicator">True</property>
-                      </object>
-                      <packing>
-                        <property name="left-attach">1</property>
-                        <property name="top-attach">10</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkButton" id="export_map">
-                        <property name="label" translatable="yes">Export Map</property>
-                        <property name="visible">True</property>
-                        <property name="can-focus">True</property>
-                        <property name="receives-default">True</property>
-                      </object>
-                      <packing>
-                        <property name="left-attach">1</property>
-                        <property name="top-attach">8</property>
+                        <property name="top-attach">0</property>
                       </packing>
                     </child>
                   </object>
@@ -597,6 +701,9 @@
                     <property name="margin-top">24</property>
                     <property name="margin-bottom">13</property>
                     <property name="label" translatable="yes">Biome Tweaking</property>
+                    <style>
+                      <class name="label_title"/>
+                    </style>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -627,7 +734,11 @@
                       <object class="GtkLabel">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
+                        <property name="margin-right">5</property>
                         <property name="label" translatable="yes">Savanna</property>
+                        <style>
+                          <class name="savanna"/>
+                        </style>
                       </object>
                       <packing>
                         <property name="left-attach">0</property>
@@ -639,6 +750,11 @@
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="adjustment">Savanna</property>
+                        <property name="numeric">True</property>
+                        <property name="value">180</property>
+                        <style>
+                          <class name="biome_tweaks"/>
+                        </style>
                       </object>
                       <packing>
                         <property name="left-attach">1</property>
@@ -650,6 +766,11 @@
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="adjustment">Plains</property>
+                        <property name="numeric">True</property>
+                        <property name="value">144</property>
+                        <style>
+                          <class name="biome_tweaks"/>
+                        </style>
                       </object>
                       <packing>
                         <property name="left-attach">1</property>
@@ -660,7 +781,11 @@
                       <object class="GtkLabel">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
+                        <property name="margin-right">5</property>
                         <property name="label" translatable="yes">Plains</property>
+                        <style>
+                          <class name="plains"/>
+                        </style>
                       </object>
                       <packing>
                         <property name="left-attach">0</property>
@@ -672,6 +797,11 @@
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="adjustment">Snow</property>
+                        <property name="numeric">True</property>
+                        <property name="value">65</property>
+                        <style>
+                          <class name="biome_tweaks"/>
+                        </style>
                       </object>
                       <packing>
                         <property name="left-attach">1</property>
@@ -682,7 +812,11 @@
                       <object class="GtkLabel">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
+                        <property name="margin-right">5</property>
                         <property name="label" translatable="yes">Snow</property>
+                        <style>
+                          <class name="snow"/>
+                        </style>
                       </object>
                       <packing>
                         <property name="left-attach">0</property>
@@ -694,6 +828,11 @@
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="adjustment">Picks</property>
+                        <property name="numeric">True</property>
+                        <property name="value">170</property>
+                        <style>
+                          <class name="biome_tweaks"/>
+                        </style>
                       </object>
                       <packing>
                         <property name="left-attach">1</property>
@@ -704,7 +843,11 @@
                       <object class="GtkLabel">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
-                        <property name="label" translatable="yes">Picks</property>
+                        <property name="margin-right">5</property>
+                        <property name="label" translatable="yes">Peaks</property>
+                        <style>
+                          <class name="picks"/>
+                        </style>
                       </object>
                       <packing>
                         <property name="left-attach">0</property>
@@ -715,7 +858,11 @@
                       <object class="GtkLabel">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
+                        <property name="margin-right">5</property>
                         <property name="label" translatable="yes">Mountains</property>
+                        <style>
+                          <class name="mountains"/>
+                        </style>
                       </object>
                       <packing>
                         <property name="left-attach">0</property>
@@ -727,6 +874,11 @@
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="adjustment">Mountains</property>
+                        <property name="numeric">True</property>
+                        <property name="value">160</property>
+                        <style>
+                          <class name="biome_tweaks"/>
+                        </style>
                       </object>
                       <packing>
                         <property name="left-attach">1</property>
@@ -738,6 +890,11 @@
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="adjustment">Mid_Mountains</property>
+                        <property name="numeric">True</property>
+                        <property name="value">155</property>
+                        <style>
+                          <class name="biome_tweaks"/>
+                        </style>
                       </object>
                       <packing>
                         <property name="left-attach">1</property>
@@ -748,7 +905,11 @@
                       <object class="GtkLabel">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
+                        <property name="margin-right">5</property>
                         <property name="label" translatable="yes">Mid Mountains</property>
+                        <style>
+                          <class name="mid_mountains"/>
+                        </style>
                       </object>
                       <packing>
                         <property name="left-attach">0</property>
@@ -760,6 +921,11 @@
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="adjustment">Plateau</property>
+                        <property name="numeric">True</property>
+                        <property name="value">130</property>
+                        <style>
+                          <class name="biome_tweaks"/>
+                        </style>
                       </object>
                       <packing>
                         <property name="left-attach">1</property>
@@ -770,7 +936,11 @@
                       <object class="GtkLabel">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
+                        <property name="margin-right">5</property>
                         <property name="label" translatable="yes">Plateau</property>
+                        <style>
+                          <class name="plateau"/>
+                        </style>
                       </object>
                       <packing>
                         <property name="left-attach">0</property>
@@ -782,6 +952,11 @@
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="adjustment">Beach</property>
+                        <property name="numeric">True</property>
+                        <property name="value">125</property>
+                        <style>
+                          <class name="biome_tweaks"/>
+                        </style>
                       </object>
                       <packing>
                         <property name="left-attach">1</property>
@@ -792,7 +967,11 @@
                       <object class="GtkLabel">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
+                        <property name="margin-right">5</property>
                         <property name="label" translatable="yes">Beach</property>
+                        <style>
+                          <class name="beach"/>
+                        </style>
                       </object>
                       <packing>
                         <property name="left-attach">0</property>
@@ -803,7 +982,11 @@
                       <object class="GtkLabel">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
+                        <property name="margin-right">5</property>
                         <property name="label" translatable="yes">Coast</property>
+                        <style>
+                          <class name="coast"/>
+                        </style>
                       </object>
                       <packing>
                         <property name="left-attach">0</property>
@@ -815,6 +998,11 @@
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="adjustment">Coast</property>
+                        <property name="numeric">True</property>
+                        <property name="value">118</property>
+                        <style>
+                          <class name="biome_tweaks"/>
+                        </style>
                       </object>
                       <packing>
                         <property name="left-attach">1</property>
@@ -826,6 +1014,11 @@
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="adjustment">Ocean</property>
+                        <property name="numeric">True</property>
+                        <property name="value">110</property>
+                        <style>
+                          <class name="biome_tweaks"/>
+                        </style>
                       </object>
                       <packing>
                         <property name="left-attach">1</property>
@@ -836,7 +1029,11 @@
                       <object class="GtkLabel">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
+                        <property name="margin-right">5</property>
                         <property name="label" translatable="yes">Ocean</property>
+                        <style>
+                          <class name="ocean"/>
+                        </style>
                       </object>
                       <packing>
                         <property name="left-attach">0</property>
@@ -847,7 +1044,11 @@
                       <object class="GtkLabel">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
+                        <property name="margin-right">5</property>
                         <property name="label" translatable="yes">Deep ocean</property>
+                        <style>
+                          <class name="deep_ocean"/>
+                        </style>
                       </object>
                       <packing>
                         <property name="left-attach">0</property>
@@ -859,6 +1060,11 @@
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="adjustment">Deep_Ocean</property>
+                        <property name="numeric">True</property>
+                        <property name="value">90</property>
+                        <style>
+                          <class name="biome_tweaks"/>
+                        </style>
                       </object>
                       <packing>
                         <property name="left-attach">1</property>
@@ -873,6 +1079,9 @@
 Height Tweaks
 </property>
                         <property name="ellipsize">middle</property>
+                        <style>
+                          <class name="label"/>
+                        </style>
                       </object>
                       <packing>
                         <property name="left-attach">0</property>
@@ -896,6 +1105,9 @@ Height Tweaks
                         <property name="label" translatable="yes">
 Climate Tweaks
 </property>
+                        <style>
+                          <class name="label"/>
+                        </style>
                       </object>
                       <packing>
                         <property name="left-attach">0</property>
@@ -917,6 +1129,11 @@ Climate Tweaks
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="adjustment">Plains</property>
+                        <property name="numeric">True</property>
+                        <property name="value">144</property>
+                        <style>
+                          <class name="biome_tweaks"/>
+                        </style>
                       </object>
                       <packing>
                         <property name="left-attach">1</property>
@@ -928,6 +1145,11 @@ Climate Tweaks
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="adjustment">Swamp</property>
+                        <property name="numeric">True</property>
+                        <property name="value">200</property>
+                        <style>
+                          <class name="biome_tweaks"/>
+                        </style>
                       </object>
                       <packing>
                         <property name="left-attach">1</property>
@@ -938,7 +1160,11 @@ Climate Tweaks
                       <object class="GtkLabel">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
+                        <property name="margin-right">5</property>
                         <property name="label" translatable="yes">Desert</property>
+                        <style>
+                          <class name="desert"/>
+                        </style>
                       </object>
                       <packing>
                         <property name="left-attach">0</property>
@@ -949,7 +1175,11 @@ Climate Tweaks
                       <object class="GtkLabel">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
+                        <property name="margin-right">5</property>
                         <property name="label" translatable="yes">Swamp</property>
+                        <style>
+                          <class name="swamp"/>
+                        </style>
                       </object>
                       <packing>
                         <property name="left-attach">0</property>
@@ -981,6 +1211,9 @@ Climate Tweaks
                     <property name="margin-top">24</property>
                     <property name="margin-bottom">13</property>
                     <property name="label" translatable="yes">Display</property>
+                    <style>
+                      <class name="label_title"/>
+                    </style>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -1009,7 +1242,12 @@ Climate Tweaks
                       <object class="GtkImage" id="image">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
+                        <property name="margin-right">5</property>
+                        <property name="margin-top">5</property>
                         <property name="stock">gtk-missing-image</property>
+                        <style>
+                          <class name="image"/>
+                        </style>
                       </object>
                       <packing>
                         <property name="left-attach">0</property>
@@ -1029,6 +1267,9 @@ Climate Tweaks
                 <property name="top-attach">0</property>
               </packing>
             </child>
+            <style>
+              <class name="windows"/>
+            </style>
           </object>
           <packing>
             <property name="expand">True</property>
