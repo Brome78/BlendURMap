@@ -589,16 +589,6 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkLabel">
-                        <property name="visible">True</property>
-                        <property name="can-focus">False</property>
-                      </object>
-                      <packing>
-                        <property name="left-attach">1</property>
-                        <property name="top-attach">9</property>
-                      </packing>
-                    </child>
-                    <child>
                       <object class="GtkButton" id="render_in_2D">
                         <property name="label" translatable="yes">Render in 2D</property>
                         <property name="visible">True</property>
@@ -674,6 +664,25 @@
                       <packing>
                         <property name="left-attach">1</property>
                         <property name="top-attach">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="translate">
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="receives-default">True</property>
+                        <child>
+                          <object class="GtkImage">
+                            <property name="visible">True</property>
+                            <property name="can-focus">False</property>
+                            <property name="pixbuf">translate.png</property>
+                            <property name="icon_size">1</property>
+                          </object>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="left-attach">1</property>
+                        <property name="top-attach">9</property>
                       </packing>
                     </child>
                   </object>

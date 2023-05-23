@@ -61,7 +61,12 @@ typedef struct UserInterface
   struct current_map* current_map;
 } UserInterface;
 
-const char *strings_en[] = 
+typedef struct {
+    const char *id;
+    const char *text;
+} StringEntry;
+
+const StringEntry strings_en[] = 
 {
     {"Label1", "Generation options"},
     {"Label2", "Width"},
@@ -92,11 +97,10 @@ const char *strings_en[] =
     {"generate", "Generate"},
     {"render_in_2D", "Render in 2D"},
     {"export_map", "Export Map"},
-    {"render_in_3D", "Render in 3D"},
-    {NULL, NULL}    // marche pô sinon
+    {"render_in_3D", "Render in 3D"}
 };
 
-const char *strings_fr[] = 
+const StringEntry strings_fr[] = 
 {
     {"Label1", "Options de génération"},
     {"Label2", "Largeur"},
@@ -127,8 +131,7 @@ const char *strings_fr[] =
     {"generate", "Générer"},
     {"render_in_2D", "Rendu en 2D"},
     {"export_map", "Exporter la carte"},
-    {"render_in_3D", "Rendu en 3D"},
-    {NULL, NULL}  // marche pô sinon
+    {"render_in_3D", "Rendu en 3D"}
 };
 
 typedef struct App
@@ -325,12 +328,12 @@ void set_language(const char *locale)     // ex *locale : fr_FR, en_US, ...
     textdomain("BlendURMap");
 }
 
-void update_language(GtkBuilder *builder, const char *strings[]) 
+/*void update_language(GtkBuilder *builder, const StringEntry strings[]) 
 {
-    for (int i = 0; strings[i][0] != NULL; i++) 
+    for (int i = 0; strings[i].id != NULL; i++) 
     {
-        const char *id = strings[i][0];
-        const char *text = strings[i][1];
+        const char *id = strings[i].id;
+        const char *text = strings[i].text;
         GObject *widget = gtk_builder_get_object(builder, id);
         if (GTK_IS_LABEL(widget)) 
         {
@@ -357,7 +360,7 @@ void on_change_language_button(GtkButton *button, gpointer user_data)
         update_language(builder, strings_fr);
         in_french = TRUE;
     }
-}
+}*/
 
 int main()
 {
