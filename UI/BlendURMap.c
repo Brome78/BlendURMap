@@ -1,6 +1,8 @@
 //#include "../Generation/main.h" - placeholder, make header file for main so can be called for gtk
 #include <gtk/gtk.h>
 #include <stdlib.h>
+#include <libintl.h>
+#include <locale.h>
 
 #include "Utils/generate.h"
 #include "Utils/resize.h"
@@ -59,6 +61,79 @@ typedef struct UserInterface
   struct current_map* current_map;
   struct available* available;
 } UserInterface;
+
+typedef struct {
+    const char *id;
+    const char *text;
+} StringEntry;
+
+const StringEntry strings_en[] = 
+{
+    {"Label1", "Generation options"},
+    {"Label2", "Width"},
+    {"Label3", "Height"},
+    {"Label4", "Biome Tweaking"},
+    {"Label5", "Display"},
+    {"Label6", "Island Generation"},
+    {"Label7", "Props"},
+    {"Label8", "Rivers"},
+    {"Label9", "Villages"},
+    {"Label10", "Export to 3D"},
+    {"Label11", "Exportation Mindustry"},
+    {"Label12", "Height Tweaks"},
+    {"Label13", "Deep ocean"},
+    {"Label14", "Ocean"},
+    {"Label15", "Coast"},
+    {"Label16", "Beach"},
+    {"Label17", "Plateau"},
+    {"Label18", "Hills"},
+    {"Label19", "Mountains"},
+    {"Label20", "Peaks"},
+    {"Label21", "Climate Tweaks"},
+    {"Label22", "Snow"},
+    {"Label23", "Plains"},
+    {"Label24", "Savanna"},
+    {"Label25", "Desert"},
+    {"Label26", "Swamp"},
+    {"generate", "Generate"},
+    {"render_in_2D", "Render in 2D"},
+    {"export_map", "Export Map"},
+    {"render_in_3D", "Render in 3D"}
+};
+
+const StringEntry strings_fr[] = 
+{
+    {"Label1", "Options de génération"},
+    {"Label2", "Largeur"},
+    {"Label3", "Hauteur"},
+    {"Label4", "Ajustements du biome"},
+    {"Label5", "Affichage"},
+    {"Label6", "Génération d'îles"},
+    {"Label7", "Objets"},
+    {"Label8", "Rivières"},
+    {"Label9", "Villages"},
+    {"Label10", "Exportation en 3D"},
+    {"Label11", "Exportation Mindustry"},
+    {"Label12", "Ajustement de la hauteur"},
+    {"Label13", "Océan profond"},
+    {"Label14", "Océan"},
+    {"Label15", "Côte"},
+    {"Label16", "Plage"},
+    {"Label17", "Plateau"},
+    {"Label18", "Collines"},
+    {"Label19", "Montagnes"},
+    {"Label20", "Pics enneigés"},
+    {"Label21", "Ajustements du climat"},
+    {"Label22", "Neige"},
+    {"Label23", "Plaines"},
+    {"Label24", "Savane"},
+    {"Label25", "Désert"},
+    {"Label26", "Marais"},
+    {"generate", "Générer"},
+    {"render_in_2D", "Rendu en 2D"},
+    {"export_map", "Exporter la carte"},
+    {"render_in_3D", "Rendu en 3D"}
+};
 
 typedef struct App
 {
@@ -374,6 +449,46 @@ void load_css(void)
     gtk_css_provider_load_from_file(provider,css_fp,&error);
     g_object_unref(provider);
 }
+
+void set_language(const char *locale)     // ex *locale : fr_FR, en_US, ...
+{
+    setlocale(LC_ALL, locale);
+    textdomain("BlendURMap");
+}
+
+/*void update_language(GtkBuilder *builder, const StringEntry strings[]) 
+{
+    for (int i = 0; strings[i].id != NULL; i++) 
+    {
+        const char *id = strings[i].id;
+        const char *text = strings[i].text;
+        GObject *widget = gtk_builder_get_object(builder, id);
+        if (GTK_IS_LABEL(widget)) 
+        {
+            gtk_label_set_text(GTK_LABEL(widget), text);
+        } 
+        else if (GTK_IS_BUTTON(widget)) 
+        {
+            gtk_button_set_label(GTK_BUTTON(widget), text);
+        }
+    }
+}
+
+void on_change_language_button(GtkButton *button, gpointer user_data) 
+{
+    static gboolean in_french = FALSE;
+    GtkBuilder *builder = GTK_BUILDER(user_data);
+
+    if (in_french) 
+    {
+        update_language(builder, strings_en);
+        in_french = FALSE;
+    } else 
+    {
+        update_language(builder, strings_fr);
+        in_french = TRUE;
+    }
+}*/
 
 int main()
 {
