@@ -93,6 +93,7 @@ const char *strings_en[] =
     {"render_in_2D", "Render in 2D"},
     {"export_map", "Export Map"},
     {"render_in_3D", "Render in 3D"},
+    {NULL, NULL}    // marche pô sinon
 };
 
 const char *strings_fr[] = 
@@ -127,6 +128,7 @@ const char *strings_fr[] =
     {"render_in_2D", "Rendu en 2D"},
     {"export_map", "Exporter la carte"},
     {"render_in_3D", "Rendu en 3D"},
+    {NULL, NULL}  // marche pô sinon
 };
 
 typedef struct App
@@ -317,12 +319,45 @@ void load_css(void)
     g_object_unref(provider);
 }
 
-void set_language(const char *locale) 
+void set_language(const char *locale)     // ex *locale : fr_FR, en_US, ...
 {
     setlocale(LC_ALL, locale);
     textdomain("BlendURMap");
 }
 
+void update_language(GtkBuilder *builder, const char *strings[]) 
+{
+    for (int i = 0; strings[i][0] != NULL; i++) 
+    {
+        const char *id = strings[i][0];
+        const char *text = strings[i][1];
+        GObject *widget = gtk_builder_get_object(builder, id);
+        if (GTK_IS_LABEL(widget)) 
+        {
+            gtk_label_set_text(GTK_LABEL(widget), text);
+        } 
+        else if (GTK_IS_BUTTON(widget)) 
+        {
+            gtk_button_set_label(GTK_BUTTON(widget), text);
+        }
+    }
+}
+
+void on_change_language_button(GtkButton *button, gpointer user_data) 
+{
+    static gboolean in_french = FALSE;
+    GtkBuilder *builder = GTK_BUILDER(user_data);
+
+    if (in_french) 
+    {
+        update_language(builder, strings_en);
+        in_french = FALSE;
+    } else 
+    {
+        update_language(builder, strings_fr);
+        in_french = TRUE;
+    }
+}
 
 int main()
 {
