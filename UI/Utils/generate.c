@@ -2,11 +2,13 @@
 #include "../../Generation/Noise/circular_gradient.h"
 #include "../../Generation/Exportation/export.h"
 
+
 struct current_map* exec_ui(int seed,
              struct options* opt_alt, struct options* opt_temp,
              struct options* opt_hum, struct threshold* t, 
-             int w, int h, char island ,char rivers, 
-             char props, char structs, char is_3d, char shw, char mindustry)
+             int w, int h, char island, char continent,char rivers, 
+             char props, char structs, char is_3d, char shw, char mindustry,
+             GtkAdjustment* seed_adj)
 {
 
     struct current_map* cur = malloc(sizeof(struct current_map));
@@ -52,6 +54,13 @@ struct current_map* exec_ui(int seed,
         show = 0;
         print = 0;
     }
+    if(continent == 1)
+    {
+        isl = 0;
+        riv = 0;
+        show = 0;
+        print = 0;
+    }
     if(mindustry == 1)
     {
         isl = 0;
@@ -66,12 +75,15 @@ struct current_map* exec_ui(int seed,
 
     struct map* perlin = perlin_generate(seed,opt_alt);
 
+    gtk_adjustment_set_value(seed_adj, perlin->seed);
+
     printf("\e[1;1H\e[2J");
     printf("[//          ]\nGenerate Simplex Noise\n");
 
-    struct map *simplex = generate_simplex(seed ,opt_temp);
+    struct map *simplex = perlin_generate(perlin->seed ,opt_temp);
+    //struct map *simplex = generate_simplex(perlin->seed ,opt_temp);
 
-    SDL_Surface* ds = generate_diamond(seed,opt_hum);
+    SDL_Surface* ds = generate_diamond(perlin->seed,opt_hum);
 
     //struct threshold *t;
     if(isl)
@@ -136,7 +148,7 @@ struct current_map* exec_ui(int seed,
 
         save_to_png(map,"tmp/chunk.png");
     }
-
+    save_to_png(map,"tmp/options.png");
     printf("\e[1;1H\e[2J");
     printf("[////////////]\nComplete\n");
     if(print)

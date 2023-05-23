@@ -41,3 +41,23 @@ struct threshold* default_threshold_island(void)
     t->swamp = 255;
     return t;
 }
+
+struct threshold* threshold_continent(void)
+{
+    struct threshold *t = malloc(sizeof(struct threshold));
+    t->deep_ocean = 0;
+    t->ocean = 0;
+    t->coast = 90;
+    t->beach = 100;
+    t->mid_mountains = 155;
+    t->mountains = 160;
+    t->picks = 170;
+    t->plains = 140;
+    t->snow = 65;
+    t->savanna = 180;
+    t->plateau = 120;
+    t->plateau2 = 140;
+    t->plateau3 = 135;
+    t->swamp = 200;
+    return t;
+}

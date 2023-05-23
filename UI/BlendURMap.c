@@ -6,6 +6,7 @@
 #include "Utils/resize.h"
 #include "../Generation/Options/exec_export.h"
 #include "../Generation/Utils/options_map.h"
+#include "../Generation/Utils/threshold.h"
 
 
 typedef struct UserInterface
@@ -13,13 +14,12 @@ typedef struct UserInterface
   GtkWindow* window;
   GtkImage* image;
   GtkSpinButton* width;
-  GtkSpinButton* height;
   GtkSpinButton* seed;
   GtkAdjustment* w;
-  GtkAdjustment* h;
   GtkAdjustment* seedix;
   GtkToggleButton *isrender3d;
   GtkToggleButton *island;
+  GtkToggleButton *continent;
   GtkToggleButton *mindustry;
   GtkToggleButton *props;
   GtkToggleButton *river;
@@ -57,6 +57,7 @@ typedef struct UserInterface
   GtkSpinButton* spb_swamp;
 
   struct current_map* current_map;
+  struct available* available;
 } UserInterface;
 
 typedef struct App
@@ -67,8 +68,8 @@ typedef struct App
 void set_image(GtkImage *image, const gchar* filename)
 {
 
-  resize(filename,"tmp/resized.png",500,500);
-  gtk_image_set_from_file(image,"tmp/resized.png");
+  resize(filename,"tmp/resized/resized.png",500,500);
+  gtk_image_set_from_file(image,"tmp/resized/resized.png");
 
 }
 
@@ -80,14 +81,28 @@ void on_generate_button_clicked(GtkButton *button, gpointer user_data)
   GError *err = NULL;
 
   int width = gtk_adjustment_get_value(app->ui.w);
-  int height = gtk_adjustment_get_value(app->ui.h);
+  int height = gtk_adjustment_get_value(app->ui.w);
 
   //g_print("w : %d \nh : %d\n",width,height);
 
-  if(width == 0 || height == 0 || height != width)
+  /*if(width == 0)
   {
-    width = 1025;
-    height = 1025;
+    width = 500;
+    height = 500;
+  }*/
+
+  if(gtk_toggle_button_get_active(app->ui.mindustry) && width != 500)
+  {
+    GtkDialogFlags flags = GTK_DIALOG_DESTROY_WITH_PARENT;
+    GtkWidget* dialog = gtk_message_dialog_new (app->ui.window,
+        flags,
+        GTK_MESSAGE_ERROR,
+        GTK_BUTTONS_CLOSE,
+        "Error...\nThe size for Mindustry Map Export must be 500px but is %dpx",
+        width);
+    gtk_dialog_run (GTK_DIALOG (dialog));
+    gtk_widget_destroy (dialog);
+    return;
   }
 
   struct options* opt_alt = options_alt_3d();
@@ -129,14 +144,23 @@ void on_generate_button_clicked(GtkButton *button, gpointer user_data)
   t->plateau3 = gtk_adjustment_get_value(app->ui.plateau) + 15;
   t->swamp = gtk_adjustment_get_value(app->ui.swamp);
 
+  struct available* a = app->ui.available;
+  a->map = 1;
+  a->model = gtk_toggle_button_get_active(app->ui.isrender3d);
+  a->props = gtk_toggle_button_get_active(app->ui.props);
+  a->river = gtk_toggle_button_get_active(app->ui.river);
+  a->village = gtk_toggle_button_get_active(app->ui.villages);
+
   struct current_map* current_map = exec_ui(seedi, opt_alt, opt_temp, opt_hum, t, width, height,
             gtk_toggle_button_get_active(app->ui.island),
+            gtk_toggle_button_get_active(app->ui.continent),
             gtk_toggle_button_get_active(app->ui.river),
             gtk_toggle_button_get_active(app->ui.props),
             gtk_toggle_button_get_active(app->ui.villages),
             gtk_toggle_button_get_active(app->ui.isrender3d),
             0,
-            gtk_toggle_button_get_active(app->ui.mindustry));
+            gtk_toggle_button_get_active(app->ui.mindustry),
+            app->ui.seedix);
   set_image(app->ui.image,"tmp/map.png");
   app->ui.current_map = current_map;
   //if statement for 3D gen
@@ -160,6 +184,19 @@ void refresh(GtkButton *button, gpointer user_data)
 {
 
   App *app = user_data; //recover App information
+
+  if(gtk_toggle_button_get_active(app->ui.island))
+  {
+    GtkDialogFlags flags = GTK_DIALOG_DESTROY_WITH_PARENT;
+    GtkWidget* dialog = gtk_message_dialog_new (app->ui.window,
+                                      flags,
+                                      GTK_MESSAGE_ERROR,
+                                      GTK_BUTTONS_CLOSE,
+                                      "Error...\nYou can't modify threshold for islands preset");
+    gtk_dialog_run (GTK_DIALOG (dialog));
+    gtk_widget_destroy (dialog);
+    return;
+  }
 
   if(app->ui.current_map == NULL)
     return;
@@ -193,43 +230,134 @@ void refresh(GtkButton *button, gpointer user_data)
   //if statement for 3D gen
 }
 
-void export_map_file(GtkWidget *widget, gpointer data)
+void export(char* source, GtkWindow* window)
 {
-    App *ui = data;
-    GtkWidget *dialog;
-    GtkFileChooserAction action = GTK_FILE_CHOOSER_ACTION_SAVE;
-    gint res;
-
-    dialog = gtk_file_chooser_dialog_new ("Choose File",
-            ui->ui.window,
-            action,
-            ("_Cancel"),
-            GTK_RESPONSE_CANCEL,
-            ("_Save"),
-            GTK_RESPONSE_ACCEPT,
-            NULL);
-
-    res = gtk_dialog_run (GTK_DIALOG (dialog));
-    char *filename = "default.png";
-    if (res == GTK_RESPONSE_ACCEPT)
-    {
-
-        GtkFileChooser *chooser = GTK_FILE_CHOOSER (dialog);
-        filename = gtk_file_chooser_get_filename (chooser);
-    }
-
-    gtk_widget_destroy (dialog);
-
-    save_image(load_image("tmp/map.png"),filename);
-
+  GtkWidget *dialog;
+  GtkFileChooserAction action = GTK_FILE_CHOOSER_ACTION_SAVE;
+  gint res;
+  dialog = gtk_file_chooser_dialog_new ("Choose File",
+          window,
+          action,
+          ("_Cancel"),
+          GTK_RESPONSE_CANCEL,
+          ("_Save"),
+          GTK_RESPONSE_ACCEPT,
+          NULL);
+  res = gtk_dialog_run (GTK_DIALOG (dialog));
+  char *filename = "default.png";
+  if (res == GTK_RESPONSE_ACCEPT)
+  {
+    GtkFileChooser *chooser = GTK_FILE_CHOOSER (dialog);
+    filename = gtk_file_chooser_get_filename (chooser);
+    save_to_png(load_image(source),filename);
     gchar string[200];
     g_snprintf(string,200,"Export :\n%s\nSuccess.",filename);
     GtkWidget* loaded = gtk_message_dialog_new(
-        NULL, GTK_DIALOG_MODAL, GTK_MESSAGE_INFO, GTK_BUTTONS_OK,"%s",string);
-
-
+    NULL, GTK_DIALOG_MODAL, GTK_MESSAGE_INFO, GTK_BUTTONS_OK,"%s",string);
     gtk_dialog_run(GTK_DIALOG(loaded));
     gtk_widget_destroy(loaded);
+  }
+  gtk_widget_destroy (dialog);
+  
+}
+
+void export_files(GtkWidget *widget, gpointer data)
+{
+  App *app = data;
+  struct available* a = app->ui.available;
+  if(a->map)
+  {
+    GtkWidget *dialog;
+    GtkDialogFlags flags = GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT;
+    dialog = gtk_dialog_new_with_buttons ("Would you export the classic map ?",
+                                      app->ui.window,
+                                      flags,
+                                      ("_OK"),
+                                      GTK_RESPONSE_ACCEPT,
+                                      ("_Cancel"),
+                                      GTK_RESPONSE_REJECT,
+                                      NULL);
+    gint res = gtk_dialog_run (GTK_DIALOG (dialog));
+    if(res == GTK_RESPONSE_ACCEPT)
+      export("tmp/map.png",app->ui.window);
+    gtk_widget_destroy (dialog);
+    
+  }
+
+  if(a->props || a->river || a->village)
+  {
+    GtkWidget *dialog;
+    GtkDialogFlags flags = GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT;
+    dialog = gtk_dialog_new_with_buttons ("Would you export the map with options (Props, Villages, Rivers) ?",
+                                      app->ui.window,
+                                      flags,
+                                      ("_OK"),
+                                      GTK_RESPONSE_ACCEPT,
+                                      ("_Cancel"),
+                                      GTK_RESPONSE_REJECT,
+                                      NULL);
+    gint res = gtk_dialog_run (GTK_DIALOG (dialog));
+    if(res == GTK_RESPONSE_ACCEPT)
+      export("tmp/options.png",app->ui.window);
+    gtk_widget_destroy (dialog);
+    
+  }
+
+  if(a->model)
+  {
+    GtkWidget *dialog;
+    GtkDialogFlags flags = GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT;
+    dialog = gtk_dialog_new_with_buttons ("Would you export the map in 3D?",
+                                      app->ui.window,
+                                      flags,
+                                      ("_OK"),
+                                      GTK_RESPONSE_ACCEPT,
+                                      ("_Cancel"),
+                                      GTK_RESPONSE_REJECT,
+                                      NULL);
+    gint res = gtk_dialog_run (GTK_DIALOG (dialog));
+    if(res == GTK_RESPONSE_ACCEPT)
+      export("tmp/map.OBJ",app->ui.window);
+    gtk_widget_destroy (dialog);
+    
+  }
+}
+
+void refresh_preset(GtkToggleButton *button, gpointer data)
+{
+  App *app = data;
+
+  if(gtk_toggle_button_get_active(app->ui.island) &&
+    gtk_toggle_button_get_active(app->ui.continent))
+  {
+    gtk_toggle_button_set_active(button,0);
+    GtkDialogFlags flags = GTK_DIALOG_DESTROY_WITH_PARENT;
+    GtkWidget* dialog = gtk_message_dialog_new (app->ui.window,
+                                      flags,
+                                      GTK_MESSAGE_ERROR,
+                                      GTK_BUTTONS_CLOSE,
+                                      "Error...\nYou can't check multiple presets\nPlease uncheck the preset");
+    gtk_dialog_run (GTK_DIALOG (dialog));
+    gtk_widget_destroy (dialog);
+  }
+
+  if(gtk_toggle_button_get_active(app->ui.continent))
+  {
+    struct threshold *t2 = threshold_continent();
+    gtk_adjustment_set_value(app->ui.deep_ocean,t2->deep_ocean);
+    gtk_adjustment_set_value(app->ui.ocean,t2->ocean);
+    gtk_adjustment_set_value(app->ui.coast,t2->coast);
+    gtk_adjustment_set_value(app->ui.beach,t2->beach);
+    gtk_adjustment_set_value(app->ui.mid_mountains,t2->mid_mountains);
+    gtk_adjustment_set_value(app->ui.mountains,t2->mountains);
+    gtk_adjustment_set_value(app->ui.picks,t2->picks);
+    gtk_adjustment_set_value(app->ui.plains,t2->plains);
+    gtk_adjustment_set_value(app->ui.snow,t2->snow);
+    gtk_adjustment_set_value(app->ui.savanna,t2->savanna);
+    gtk_adjustment_set_value(app->ui.plateau,t2->plateau);
+    gtk_adjustment_set_value(app->ui.swamp,t2->swamp);
+    free(t2);
+  }
 }
 
 void load_css(void)
@@ -271,15 +399,14 @@ int main()
   GtkImage* image = GTK_IMAGE(gtk_builder_get_object(builder,"image"));
 
   GtkSpinButton* width = GTK_SPIN_BUTTON(gtk_builder_get_object(builder,"width"));
-  GtkSpinButton* height = GTK_SPIN_BUTTON(gtk_builder_get_object(builder,"height"));
   GtkSpinButton* seed = GTK_SPIN_BUTTON(gtk_builder_get_object(builder,"seed"));
 
   GtkAdjustment* w = GTK_ADJUSTMENT(gtk_builder_get_object(builder,"Width"));
-  GtkAdjustment* h = GTK_ADJUSTMENT(gtk_builder_get_object(builder,"Height"));
   GtkAdjustment* seedix = GTK_ADJUSTMENT(gtk_builder_get_object(builder,"Seedi"));
 
   GtkToggleButton* isrender3d = GTK_TOGGLE_BUTTON(gtk_builder_get_object(builder,"render"));
   GtkToggleButton* island = GTK_TOGGLE_BUTTON(gtk_builder_get_object(builder,"island"));
+  GtkToggleButton* continent = GTK_TOGGLE_BUTTON(gtk_builder_get_object(builder,"continent"));
   GtkToggleButton* props = GTK_TOGGLE_BUTTON(gtk_builder_get_object(builder,"props"));
   GtkToggleButton* river = GTK_TOGGLE_BUTTON(gtk_builder_get_object(builder,"rivers"));
   GtkToggleButton* villages = GTK_TOGGLE_BUTTON(gtk_builder_get_object(builder,"villages"));
@@ -317,6 +444,12 @@ int main()
   GtkSpinButton* spb_snow = GTK_SPIN_BUTTON(gtk_builder_get_object(builder,"snow"));
   GtkSpinButton* spb_swamp = GTK_SPIN_BUTTON(gtk_builder_get_object(builder,"swamp"));
 
+  struct available* a = malloc(sizeof(struct available));
+  a->map = 0;
+  a->model = 0;
+  a->props = 0;
+  a->river = 0;
+  a->village = 0;
 
 
   App app =
@@ -327,13 +460,12 @@ int main()
                 .image = image,
                 .render2d = render2d,
                 .width = width,
-                .height = height,
                 .seed = seed,
                 .w = w,
-                .h = h,
                 .seedix = seedix,
                 .isrender3d = isrender3d,
                 .island = island,
+                .continent = continent,
                 .props = props,
                 .river = river,
                 .villages = villages,
@@ -370,6 +502,7 @@ int main()
                 .spb_swamp = spb_swamp,
 
                 .current_map = NULL,
+                .available = a,
             },
     };
 
@@ -383,7 +516,10 @@ int main()
   g_signal_connect(generate_button, "clicked", G_CALLBACK(on_generate_button_clicked),&app);
   g_signal_connect(render2d, "clicked", G_CALLBACK(on_render_2D_clicked),&app);
   g_signal_connect(render3d, "clicked", G_CALLBACK(on_render_3D_clicked),&app);
-  g_signal_connect(export_map, "clicked", G_CALLBACK(export_map_file),&app);
+  g_signal_connect(export_map, "clicked", G_CALLBACK(export_files),&app);
+
+  g_signal_connect(island, "toggled", G_CALLBACK(refresh_preset),&app);
+  g_signal_connect(continent, "toggled", G_CALLBACK(refresh_preset),&app);
 
   g_signal_connect(spb_beach, "value_changed", G_CALLBACK(refresh),&app);
   g_signal_connect(spb_coast, "value_changed", G_CALLBACK(refresh),&app);
@@ -402,6 +538,8 @@ int main()
   //g_signal_connect(area, "configure", G_CALLBACK(on_configure), &rect);
 
   gtk_main();
+
+  free(a);
 
   return 0;
 }

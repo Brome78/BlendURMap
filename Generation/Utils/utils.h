@@ -81,6 +81,14 @@ typedef struct current_map{
     SDL_Surface* ds;
 }current_map;
 
+typedef struct available{
+    char map;
+    char props;
+    char river;
+    char village;
+    char model;
+}available;
+
 SDL_Surface* load_image(const char* path);
 
 void save_image(SDL_Surface* surface, const char* path);
