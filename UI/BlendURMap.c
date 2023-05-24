@@ -62,7 +62,8 @@ typedef struct UserInterface
   struct available* available;
 } UserInterface;
 
-typedef struct {
+typedef struct 
+{
     const char *id;
     const char *text;
 } StringEntry;
@@ -98,7 +99,8 @@ const StringEntry strings_en[] =
     {"generate", "Generate"},
     {"render_in_2D", "Render in 2D"},
     {"export_map", "Export Map"},
-    {"render_in_3D", "Render in 3D"}
+    {"render_in_3D", "Render in 3D"},
+    { NULL, NULL }
 };
 
 const StringEntry strings_fr[] = 
@@ -132,7 +134,8 @@ const StringEntry strings_fr[] =
     {"generate", "Générer"},
     {"render_in_2D", "Rendu en 2D"},
     {"export_map", "Exporter la carte"},
-    {"render_in_3D", "Rendu en 3D"}
+    {"render_in_3D", "Rendu en 3D"},
+    { NULL, NULL }
 };
 
 typedef struct App
@@ -494,6 +497,10 @@ int main()
 {
   //Nothing to see yet !
   gtk_init(NULL,NULL);
+
+  // Set default language
+  set_language("en_US");
+
   // Constructs a GtkBuilder instance.
   GtkBuilder* builder = gtk_builder_new();
 
@@ -506,6 +513,9 @@ int main()
     g_clear_error(&error);
     return 1;
   }
+
+  // Update language in the UI
+  update_language(builder, strings_en);
 
   load_css();
 
@@ -558,6 +568,8 @@ int main()
   GtkSpinButton* spb_savanna = GTK_SPIN_BUTTON(gtk_builder_get_object(builder,"savanna"));
   GtkSpinButton* spb_snow = GTK_SPIN_BUTTON(gtk_builder_get_object(builder,"snow"));
   GtkSpinButton* spb_swamp = GTK_SPIN_BUTTON(gtk_builder_get_object(builder,"swamp"));
+
+  GtkButton* change_language_button = GTK_BUTTON(gtk_builder_get_object(builder,"change_language_button"));
 
   struct available* a = malloc(sizeof(struct available));
   a->map = 0;
@@ -648,6 +660,8 @@ int main()
   g_signal_connect(spb_savanna, "value_changed", G_CALLBACK(refresh),&app);
   g_signal_connect(spb_snow, "value_changed", G_CALLBACK(refresh),&app);
   g_signal_connect(spb_swamp, "value_changed", G_CALLBACK(refresh),&app);
+
+  g_signal_connect(change_language_button, "clicked", G_CALLBACK(on_change_language_button), builder);
 
   //g_signal_connect(area, "draw", G_CALLBACK(on_draw), &rect);
   //g_signal_connect(area, "configure", G_CALLBACK(on_configure), &rect);

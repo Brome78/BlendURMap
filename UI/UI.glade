@@ -591,10 +591,11 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkButton" id="translate">
+                      <object class="GtkButton" id="change_language_button">
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="receives-default">True</property>
+                        <signal name="clicked" handler="on_change_language_button" swapped="no"/>
                         <child>
                           <object class="GtkImage">
                             <property name="visible">True</property>

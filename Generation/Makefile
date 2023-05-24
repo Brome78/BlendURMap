@@ -18,4 +18,5 @@ ${EXE}: ${OBJ}
 .PHONY: clean
 
 clean:
-	${RM} ${OBJ} ${EXE} *.png *.bmp *.OBJ
+	${RM} ${OBJ} ${EXE} *.bmp *.OBJ
+	find . -type f -name "*.png" ! -name "translate.png" -exec rm -f {} \;
