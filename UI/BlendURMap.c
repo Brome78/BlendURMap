@@ -71,7 +71,7 @@ const StringEntry strings_en[] =
 {
     {"Label1", "Generation options"},
     {"Label2", "Width"},
-    {"Label3", "Height"},
+    {"Label3", "Continent Generation"},
     {"Label4", "Biome Tweaking"},
     {"Label5", "Display"},
     {"Label6", "Island Generation"},
@@ -105,7 +105,7 @@ const StringEntry strings_fr[] =
 {
     {"Label1", "Options de génération"},
     {"Label2", "Largeur"},
-    {"Label3", "Hauteur"},
+    {"Label3", "Génération d'un continent"},
     {"Label4", "Ajustements du biome"},
     {"Label5", "Affichage"},
     {"Label6", "Génération d'îles"},
@@ -456,7 +456,7 @@ void set_language(const char *locale)     // ex *locale : fr_FR, en_US, ...
     textdomain("BlendURMap");
 }
 
-/*void update_language(GtkBuilder *builder, const StringEntry strings[]) 
+void update_language(GtkBuilder *builder, const StringEntry strings[]) 
 {
     for (int i = 0; strings[i].id != NULL; i++) 
     {
@@ -488,7 +488,7 @@ void on_change_language_button(GtkButton *button, gpointer user_data)
         update_language(builder, strings_fr);
         in_french = TRUE;
     }
-}*/
+}
 
 int main()
 {
