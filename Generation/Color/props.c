@@ -157,12 +157,12 @@ int draw_cactus(SDL_Surface *map,int x, int y , int sizex, int sizey)
 }
 
 
-struct type_structure** apply_props(SDL_Surface *map, struct chunk **chunk_map, struct options* opt)
+void apply_props(SDL_Surface *map, struct chunk **chunk_map, struct options* opt)
 {
     int sizex = opt->sizex;
     int sizey = opt->sizey;
 
-    struct type_structure** list = malloc((sizex*sizey)*sizeof(struct type_structure*));
+    //struct type_structure** list = malloc((sizex*sizey)*sizeof(struct type_structure*));
     int n = 0;
 
     srand(time(NULL));
@@ -188,20 +188,20 @@ struct type_structure** apply_props(SDL_Surface *map, struct chunk **chunk_map, 
                     {
                         if(rand()%100 <5 && pixels[y2*sizex+x2] == plains2(format))
                         {
-                            struct type_structure* obj = malloc(sizeof(struct type_structure));
+                            /*struct type_structure* obj = malloc(sizeof(struct type_structure));
                             obj->x = x2;
-                            obj->y = y2;
+                            obj->y = y2;*/
                             if(rand()%100<80)
                             {
                                 draw_tree1(map,x2,y2,sizex,sizey);
-                                obj->type = TREE;
+                                //obj->type = TREE;
                             }
                             else
                             {
                                 draw_tree2(map,x2,y2,sizex,sizey);
-                                obj->type = BIRCH;
+                                //obj->type = BIRCH;
                             }
-                            list[n] = obj;
+                            //list[n] = obj;
                             n++;
                         }
 
@@ -217,11 +217,11 @@ struct type_structure** apply_props(SDL_Surface *map, struct chunk **chunk_map, 
                         
                         if(rand()%100 <3 && pixels[y2*sizex+x2] == plains(format))
                         {
-                            struct type_structure* obj = malloc(sizeof(struct type_structure));
+                            /*struct type_structure* obj = malloc(sizeof(struct type_structure));
                             obj->x = x2;
                             obj->y = y2;
                             obj->type = BUSH;
-                            list[n] = obj;
+                            list[n] = obj;*/
                             n++;
                             draw_bush1(map,x2,y2,sizex,sizey);
                         }
@@ -238,11 +238,11 @@ struct type_structure** apply_props(SDL_Surface *map, struct chunk **chunk_map, 
                     {
                         if(rand()%400 <1 && pixels[y2*sizex+x2] == desert(format))
                         {
-                            struct type_structure* obj = malloc(sizeof(struct type_structure));
+                            /*struct type_structure* obj = malloc(sizeof(struct type_structure));
                             obj->x = x2;
                             obj->y = y2;
                             obj->type = CACTUS;
-                            list[n] = obj;
+                            list[n] = obj;*/
                             n++;
                             draw_cactus(map,x2,y2,sizex,sizey);
                         }
@@ -259,11 +259,11 @@ struct type_structure** apply_props(SDL_Surface *map, struct chunk **chunk_map, 
                     {
                         if(rand()%400 <1 && pixels[y2*sizex+x2] == savanna(format))
                         {
-                            struct type_structure* obj = malloc(sizeof(struct type_structure));
+                            /*struct type_structure* obj = malloc(sizeof(struct type_structure));
                             obj->x = x2;
                             obj->y = y2;
                             obj->type = ACACIA;
-                            list[n] = obj;
+                            list[n] = obj;*/
                             n++;
                             draw_savanna_tree(map,x2,y2,sizex,sizey);
                         }
@@ -280,11 +280,11 @@ struct type_structure** apply_props(SDL_Surface *map, struct chunk **chunk_map, 
                     {
                         if(rand()%400 <1 && pixels[y2*sizex+x2] == snow(format))
                         {
-                            struct type_structure* obj = malloc(sizeof(struct type_structure));
+                            /*struct type_structure* obj = malloc(sizeof(struct type_structure));
                             obj->x = x2;
                             obj->y = y2;
                             obj->type = SPRUCE;
-                            list[n] = obj;
+                            list[n] = obj;*/
                             n++;
                             draw_pine(map,x2,y2,sizex,sizey);
                         }
@@ -295,5 +295,5 @@ struct type_structure** apply_props(SDL_Surface *map, struct chunk **chunk_map, 
             }
         }
     }
-    return list;
+    //return list;
 }

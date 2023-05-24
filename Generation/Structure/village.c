@@ -57,6 +57,8 @@ void draw_house(SDL_Surface* map, struct options* opt, int x1, int y1)
 
     SDL_UnlockSurface(map);
     SDL_UnlockSurface(h->scheme);
+    SDL_FreeSurface(h->scheme);
+    free(h);
 
 }
 
@@ -169,7 +171,7 @@ void generate_village(SDL_Surface* map, int x, int y, struct options* opt,
     return;
 }
 
-struct type_structure** apply_village(SDL_Surface* map, struct chunk **chunk_map,
+void apply_village(SDL_Surface* map, struct chunk **chunk_map,
         struct options* opt,int nmb)
 {
     /*draw_house(map,opt,400,100);
@@ -202,7 +204,7 @@ struct type_structure** apply_village(SDL_Surface* map, struct chunk **chunk_map
     int sizey = opt->sizey;
     int chunk_sizex = sizex/16;
 
-    struct type_structure** list = malloc(nmb*sizeof(struct type_structure*));
+    //struct type_structure** list = malloc(nmb*sizeof(struct type_structure*));
     int n = 0;
 
     if(sizex%16>0)
@@ -233,11 +235,11 @@ struct type_structure** apply_village(SDL_Surface* map, struct chunk **chunk_map
                         {
                             printf("launch village %d / %d\n",x2,y2);
                             generate_village(map, x2, y2, opt, 10);
-                            struct type_structure* obj = malloc(sizeof(struct type_structure));
+                            /*struct type_structure* obj = malloc(sizeof(struct type_structure));
                             obj->x = x2;
                             obj->y = y2;
                             obj->type = SPRUCE;
-                            list[n] = obj;
+                            list[n] = obj;*/
                             n++;
                             nmb--;
                         }
@@ -249,5 +251,5 @@ struct type_structure** apply_village(SDL_Surface* map, struct chunk **chunk_map
 
         }
     }
-    return list;
+    //return list;
 }

@@ -598,6 +598,24 @@ void show_help(GtkButton *button, gpointer user_data)
   printf("\e[1;1H\e[2J");
 }
 
+void quit(GtkWidget *wid, gpointer user_data)
+{
+  App *app = user_data;
+  struct current_map* cur = app->ui.current_map;
+  if (cur != NULL)
+  {
+    SDL_FreeSurface(cur->perlin);
+    SDL_FreeSurface(cur->simplex);
+    SDL_FreeSurface(cur->ds);
+    free(cur->opt_alt);
+    free(cur->opt_hum);
+    free(cur);
+  }
+  struct available* a = app->ui.available;
+  free(a);
+  
+  gtk_main_quit();
+}
 
 
 int main()
@@ -751,7 +769,8 @@ int main()
   gtk_toggle_button_set_active(app.ui.classic,1);
 
   
-  g_signal_connect(window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
+  //g_signal_connect(window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
+  g_signal_connect(window, "destroy", G_CALLBACK(quit), &app);
 
   //g_signal_connect(isrender3d, "toggled", G_CALLBACK(render), NULL);
   g_signal_connect(generate_button, "clicked", G_CALLBACK(on_generate_button_clicked),&app);

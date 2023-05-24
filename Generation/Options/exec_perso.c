@@ -151,23 +151,25 @@ void exec_perso(int seed, struct options* opt_alt, struct options* opt_temp,
 
     struct chunk **chunk_map = define_chunk(perlin->map,
             simplex->map,opt_alt,t);
-    struct type_structure** props_l;
+    //struct type_structure** props_l;
     if(props)
     {
         printf("\e[1;1H\e[2J");
         printf("[//////////  ]\nApply props\n");
-        props_l = apply_props(map, chunk_map,opt_alt);
+        apply_props(map, chunk_map,opt_alt);
         save_to_png(map,"map_forest.png");
     }
-    struct type_structure** villages;
+
+    //struct type_structure** villages;
     if(structure)
     {
         printf("\e[1;1H\e[2J");
         printf("[//////////  ]\nApply structure\n");
-        villages = apply_village(map, chunk_map,opt_alt,10);
+        apply_village(map, chunk_map,opt_alt,10);
 
         save_to_png(map,"village.png");
     }
+    
     if(show)
     {
         printf("\e[1;1H\e[2J");

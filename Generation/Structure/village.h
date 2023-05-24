@@ -4,7 +4,7 @@
 
 #include "../Utils/utils.h"
 
-struct type_structure** apply_village(SDL_Surface* map, struct chunk **chunk_map, struct options* opt,int nmb);
+void apply_village(SDL_Surface* map, struct chunk **chunk_map, struct options* opt,int nmb);
 
 
 
