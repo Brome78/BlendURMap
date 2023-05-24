@@ -20,8 +20,10 @@ typedef struct UserInterface
   GtkAdjustment* w;
   GtkAdjustment* seedix;
   GtkToggleButton *isrender3d;
+  GtkToggleButton *classic;
   GtkToggleButton *island;
   GtkToggleButton *continent;
+  GtkToggleButton *mountains_gen;
   GtkToggleButton *mindustry;
   GtkToggleButton *props;
   GtkToggleButton *river;
@@ -171,6 +173,55 @@ void on_generate_button_clicked(GtkButton *button, gpointer user_data)
     height = 500;
   }*/
 
+  if(gtk_toggle_button_get_active(app->ui.mindustry) && 
+  (gtk_toggle_button_get_active(app->ui.river) ||
+   gtk_toggle_button_get_active(app->ui.props) ||
+    gtk_toggle_button_get_active(app->ui.villages)))
+  {
+    GtkDialogFlags flags = GTK_DIALOG_DESTROY_WITH_PARENT;
+    GtkWidget* dialog = gtk_message_dialog_new (app->ui.window,
+        flags,
+        GTK_MESSAGE_ERROR,
+        GTK_BUTTONS_CLOSE,
+        "Error...\nThe map props / rivers / villages aren't available for Mindustry Export");
+    gtk_dialog_run (GTK_DIALOG (dialog));
+    gtk_widget_destroy (dialog);
+    gtk_toggle_button_set_active(app->ui.river,0);
+    gtk_toggle_button_set_active(app->ui.props,0);
+    gtk_toggle_button_set_active(app->ui.villages,0);
+    return;
+  }
+
+  if(gtk_toggle_button_get_active(app->ui.mountains_gen) && 
+     gtk_toggle_button_get_active(app->ui.river))
+  {
+    GtkDialogFlags flags = GTK_DIALOG_DESTROY_WITH_PARENT;
+    GtkWidget* dialog = gtk_message_dialog_new (app->ui.window,
+        flags,
+        GTK_MESSAGE_ERROR,
+        GTK_BUTTONS_CLOSE,
+        "Error...\nThe map rivers aren't available in Mountains Preset");
+    gtk_dialog_run (GTK_DIALOG (dialog));
+    gtk_widget_destroy (dialog);
+    gtk_toggle_button_set_active(app->ui.river,0);
+    return;
+  }
+
+  if(gtk_toggle_button_get_active(app->ui.island) && 
+     gtk_toggle_button_get_active(app->ui.river))
+  {
+    GtkDialogFlags flags = GTK_DIALOG_DESTROY_WITH_PARENT;
+    GtkWidget* dialog = gtk_message_dialog_new (app->ui.window,
+        flags,
+        GTK_MESSAGE_ERROR,
+        GTK_BUTTONS_CLOSE,
+        "Error...\nThe map rivers aren't available in Island Preset");
+    gtk_dialog_run (GTK_DIALOG (dialog));
+    gtk_widget_destroy (dialog);
+    gtk_toggle_button_set_active(app->ui.river,0);
+    return;
+  }
+
   if(gtk_toggle_button_get_active(app->ui.mindustry) && width != 500)
   {
     GtkDialogFlags flags = GTK_DIALOG_DESTROY_WITH_PARENT;
@@ -236,6 +287,7 @@ void on_generate_button_clicked(GtkButton *button, gpointer user_data)
   struct current_map* current_map = exec_ui(seedi, opt_alt, opt_temp, opt_hum, t, width, height,
             gtk_toggle_button_get_active(app->ui.island),
             gtk_toggle_button_get_active(app->ui.continent),
+            gtk_toggle_button_get_active(app->ui.mountains_gen),
             gtk_toggle_button_get_active(app->ui.river),
             gtk_toggle_button_get_active(app->ui.props),
             gtk_toggle_button_get_active(app->ui.villages),
@@ -268,21 +320,7 @@ void refresh(GtkButton *button, gpointer user_data)
 {
 
   App *app = user_data; //recover App information
-
-  if(gtk_toggle_button_get_active(app->ui.island))
-  {
-    GtkDialogFlags flags = GTK_DIALOG_DESTROY_WITH_PARENT;
-    GtkWidget* dialog = gtk_message_dialog_new (app->ui.window,
-                                      flags,
-                                      GTK_MESSAGE_ERROR,
-                                      GTK_BUTTONS_CLOSE,
-                                      "Error...\nYou can't modify threshold for islands preset");
-    gtk_dialog_run (GTK_DIALOG (dialog));
-    gtk_widget_destroy (dialog);
-    return;
-  }
-
-  
+ 
 
   if(app->ui.current_map == NULL)
     return;
@@ -413,23 +451,74 @@ void refresh_preset(GtkToggleButton *button, gpointer data)
 {
   App *app = data;
 
-  if(gtk_toggle_button_get_active(app->ui.island) &&
-    gtk_toggle_button_get_active(app->ui.continent))
+  if((gtk_toggle_button_get_active(app->ui.island) +
+    gtk_toggle_button_get_active(app->ui.continent)+
+    gtk_toggle_button_get_active(app->ui.classic) +
+    gtk_toggle_button_get_active(app->ui.mountains_gen)) >1)
   {
-    gtk_toggle_button_set_active(button,0);
-    GtkDialogFlags flags = GTK_DIALOG_DESTROY_WITH_PARENT;
-    GtkWidget* dialog = gtk_message_dialog_new (app->ui.window,
-                                      flags,
-                                      GTK_MESSAGE_ERROR,
-                                      GTK_BUTTONS_CLOSE,
-                                      "Error...\nYou can't check multiple presets\nPlease uncheck the preset");
-    gtk_dialog_run (GTK_DIALOG (dialog));
-    gtk_widget_destroy (dialog);
+    gtk_toggle_button_set_active(app->ui.island,0);
+    gtk_toggle_button_set_active(app->ui.continent,0);
+    gtk_toggle_button_set_active(app->ui.classic,0);
+    gtk_toggle_button_set_active(app->ui.mountains_gen,0);
+    gtk_toggle_button_set_active(button,1);
   }
 
   if(gtk_toggle_button_get_active(app->ui.continent))
   {
     struct threshold *t2 = threshold_continent();
+    gtk_adjustment_set_value(app->ui.deep_ocean,t2->deep_ocean);
+    gtk_adjustment_set_value(app->ui.ocean,t2->ocean);
+    gtk_adjustment_set_value(app->ui.coast,t2->coast);
+    gtk_adjustment_set_value(app->ui.beach,t2->beach);
+    gtk_adjustment_set_value(app->ui.mid_mountains,t2->mid_mountains);
+    gtk_adjustment_set_value(app->ui.mountains,t2->mountains);
+    gtk_adjustment_set_value(app->ui.picks,t2->picks);
+    gtk_adjustment_set_value(app->ui.plains,t2->plains);
+    gtk_adjustment_set_value(app->ui.snow,t2->snow);
+    gtk_adjustment_set_value(app->ui.savanna,t2->savanna);
+    gtk_adjustment_set_value(app->ui.plateau,t2->plateau);
+    gtk_adjustment_set_value(app->ui.swamp,t2->swamp);
+    free(t2);
+  }
+
+  if(gtk_toggle_button_get_active(app->ui.island))
+  {
+    struct threshold *t2 = default_threshold_island();
+    gtk_adjustment_set_value(app->ui.deep_ocean,t2->deep_ocean);
+    gtk_adjustment_set_value(app->ui.ocean,t2->ocean);
+    gtk_adjustment_set_value(app->ui.coast,t2->coast);
+    gtk_adjustment_set_value(app->ui.beach,t2->beach);
+    gtk_adjustment_set_value(app->ui.mid_mountains,t2->mid_mountains);
+    gtk_adjustment_set_value(app->ui.mountains,t2->mountains);
+    gtk_adjustment_set_value(app->ui.picks,t2->picks);
+    gtk_adjustment_set_value(app->ui.plains,t2->plains);
+    gtk_adjustment_set_value(app->ui.snow,t2->snow);
+    gtk_adjustment_set_value(app->ui.savanna,t2->savanna);
+    gtk_adjustment_set_value(app->ui.plateau,t2->plateau);
+    gtk_adjustment_set_value(app->ui.swamp,t2->swamp);
+    free(t2);
+  }
+
+  if(gtk_toggle_button_get_active(app->ui.classic))
+  {
+    struct threshold *t2 = default_threshold_map();
+    gtk_adjustment_set_value(app->ui.deep_ocean,t2->deep_ocean);
+    gtk_adjustment_set_value(app->ui.ocean,t2->ocean);
+    gtk_adjustment_set_value(app->ui.coast,t2->coast);
+    gtk_adjustment_set_value(app->ui.beach,t2->beach);
+    gtk_adjustment_set_value(app->ui.mid_mountains,t2->mid_mountains);
+    gtk_adjustment_set_value(app->ui.mountains,t2->mountains);
+    gtk_adjustment_set_value(app->ui.picks,t2->picks);
+    gtk_adjustment_set_value(app->ui.plains,t2->plains);
+    gtk_adjustment_set_value(app->ui.snow,t2->snow);
+    gtk_adjustment_set_value(app->ui.savanna,t2->savanna);
+    gtk_adjustment_set_value(app->ui.plateau,t2->plateau);
+    gtk_adjustment_set_value(app->ui.swamp,t2->swamp);
+    free(t2);
+  }
+  if(gtk_toggle_button_get_active(app->ui.mountains_gen))
+  {
+    struct threshold *t2 = threshold_mountains();
     gtk_adjustment_set_value(app->ui.deep_ocean,t2->deep_ocean);
     gtk_adjustment_set_value(app->ui.ocean,t2->ocean);
     gtk_adjustment_set_value(app->ui.coast,t2->coast);
@@ -548,8 +637,10 @@ int main()
   GtkAdjustment* seedix = GTK_ADJUSTMENT(gtk_builder_get_object(builder,"Seedi"));
 
   GtkToggleButton* isrender3d = GTK_TOGGLE_BUTTON(gtk_builder_get_object(builder,"render"));
+  GtkToggleButton* classic = GTK_TOGGLE_BUTTON(gtk_builder_get_object(builder,"classic"));
   GtkToggleButton* island = GTK_TOGGLE_BUTTON(gtk_builder_get_object(builder,"island"));
   GtkToggleButton* continent = GTK_TOGGLE_BUTTON(gtk_builder_get_object(builder,"continent"));
+  GtkToggleButton* mountains_gen = GTK_TOGGLE_BUTTON(gtk_builder_get_object(builder,"mountains_gen"));
   GtkToggleButton* props = GTK_TOGGLE_BUTTON(gtk_builder_get_object(builder,"props"));
   GtkToggleButton* river = GTK_TOGGLE_BUTTON(gtk_builder_get_object(builder,"rivers"));
   GtkToggleButton* villages = GTK_TOGGLE_BUTTON(gtk_builder_get_object(builder,"villages"));
@@ -610,8 +701,10 @@ int main()
                 .w = w,
                 .seedix = seedix,
                 .isrender3d = isrender3d,
+                .classic = classic,
                 .island = island,
                 .continent = continent,
+                .mountains_gen = mountains_gen,
                 .props = props,
                 .river = river,
                 .villages = villages,
@@ -655,7 +748,7 @@ int main()
     };
 
   set_image(image,"tmp/map.png");
-
+  gtk_toggle_button_set_active(app.ui.classic,1);
 
   
   g_signal_connect(window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
@@ -667,8 +760,10 @@ int main()
   g_signal_connect(export_map, "clicked", G_CALLBACK(export_files),&app);
   g_signal_connect(help, "clicked", G_CALLBACK(show_help),&app);
 
+  g_signal_connect(classic, "toggled", G_CALLBACK(refresh_preset),&app);
   g_signal_connect(island, "toggled", G_CALLBACK(refresh_preset),&app);
   g_signal_connect(continent, "toggled", G_CALLBACK(refresh_preset),&app);
+  g_signal_connect(mountains_gen, "toggled", G_CALLBACK(refresh_preset),&app);
 
   g_signal_connect(spb_beach, "value_changed", G_CALLBACK(refresh),&app);
   g_signal_connect(spb_coast, "value_changed", G_CALLBACK(refresh),&app);

@@ -5,6 +5,7 @@
 struct threshold* default_threshold_map(void);
 struct threshold* default_threshold_island(void);
 struct threshold* threshold_continent(void);
+struct threshold* threshold_mountains(void);
 
 
 #endif

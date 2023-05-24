@@ -6,7 +6,7 @@
 struct current_map* exec_ui(int seed,
              struct options* opt_alt, struct options* opt_temp,
              struct options* opt_hum, struct threshold* t, 
-             int w, int h, char island, char continent,char rivers, 
+             int w, int h, char island, char continent, char mount, char rivers, 
              char props, char structs, char is_3d, char shw, char mindustry,
              GtkAdjustment* seed_adj)
 {
@@ -23,6 +23,7 @@ struct current_map* exec_ui(int seed,
     char show = 0;
     char print = 0;
     char isl = 0;
+    char mnt = 0;
 
     opt_alt->sizex = w;
     opt_alt->sizey = h;
@@ -48,8 +49,13 @@ struct current_map* exec_ui(int seed,
     {
         isl = 1;
         riv = 0;
-        prop = 0;
-        structure = 0;
+        show = 0;
+        print = 0;
+    }
+    if(mount == 1)
+    {
+        mnt = 1;
+        riv = 0;
         show = 0;
         print = 0;
     }
@@ -87,9 +93,9 @@ struct current_map* exec_ui(int seed,
     SDL_Surface* ds = generate_diamond(perlin->seed,opt_hum);
 
     //struct threshold *t;
-    if(isl)
+    if(isl || mnt)
     {
-        t = default_threshold_island();
+
         apply_island(perlin,opt_alt);
         apply_island(simplex, opt_alt);
     }

@@ -93,7 +93,7 @@ void generate_village(SDL_Surface* map, int x, int y, struct options* opt,
     int sizex = opt->sizex;
     int sizey = opt->sizey;
 
-    int r = rand()%60;
+    int r = rand()%50;
     if (r<0)
         r = -r;
 
@@ -112,7 +112,7 @@ void generate_village(SDL_Surface* map, int x, int y, struct options* opt,
         generate_village(map,x+4,y,opt,nmb-1);
     }
 
-    r = rand()%60;
+    r = rand()%50;
     if(r<0)
         r = -r;
 
@@ -130,7 +130,7 @@ void generate_village(SDL_Surface* map, int x, int y, struct options* opt,
         generate_village(map,x-4,y,opt,nmb-1);
     }
 
-    r = rand()%60;
+    r = rand()%50;
     if(r<0)
         r = -r;
 
@@ -140,15 +140,15 @@ void generate_village(SDL_Surface* map, int x, int y, struct options* opt,
     if(r<10 && y+4 < sizey)
     {
         draw_house(map,opt,x,y);
-        generate_village(map,y+4,y,opt,nmb-1);
+        generate_village(map,x,y+4,opt,nmb-1);
     }
     if(r<20 && y+4 < sizey)
     {
         draw_path(map,opt,x,y,dir);
-        generate_village(map,y+4,y,opt,nmb-1);
+        generate_village(map,x,y+4,opt,nmb-1);
     }
 
-    r = rand()%60;
+    r = rand()%50;
     if(r<0)
         r = -r;
 
@@ -158,12 +158,12 @@ void generate_village(SDL_Surface* map, int x, int y, struct options* opt,
     if(r<10 && y-4 > 0)
     {
         draw_house(map,opt,x,y);
-        generate_village(map,y-4,y,opt,nmb-1);
+        generate_village(map,x,y-4,opt,nmb-1);
     }
     if(r<20 && y-4 > 0)
     {
         draw_path(map,opt,x,y,dir);
-        generate_village(map,y-4,y,opt,nmb-1);
+        generate_village(map,x,y-4,opt,nmb-1);
     }
     free(dir);
     return;
