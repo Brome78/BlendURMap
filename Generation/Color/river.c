@@ -122,7 +122,7 @@ void flooding(SDL_Surface* image, SDL_Surface* perlin, struct options* opt,
         for(int j = 0; j<3; j++)
         {
             if(x+coeff[i] < 0 || x+coeff[i] > sizex 
-                || y+coeff[i] < 0 || y+coeff[i] > sizey)
+                || y+coeff[i] < 0 || y+coeff[i] > sizey || pixels[(y+coeff[j])*sizex+x+coeff[i]] == river2(format))
                 continue;
             Uint8 r,g,b;
             Uint32 cur = P_pixels[(y+coeff[j])*sizex+(x+coeff[i])];
@@ -130,7 +130,7 @@ void flooding(SDL_Surface* image, SDL_Surface* perlin, struct options* opt,
 
             //if(r <= 118)
             //    continue;
-            printf("not max :%d, %d\n\n",i, j);
+            //printf("not max :%d, %d\n\n",i, j);
             if(r < max)
             {
                 //printf("in flood :%d, %d, %d, %d, %d, %d, %d, %d\n\n",opt,x+coeff[i],y+coeff[j],r , i, j, max, c);
@@ -143,7 +143,6 @@ void flooding(SDL_Surface* image, SDL_Surface* perlin, struct options* opt,
 
 void draw_riviere2(SDL_Surface* image, SDL_Surface* perlin, struct options* opt)
 {
-    save_to_png(perlin,"perlin.png");
     int sizex = opt->sizex;
     int sizey = opt->sizey;
 
@@ -166,34 +165,12 @@ void draw_riviere2(SDL_Surface* image, SDL_Surface* perlin, struct options* opt)
                     int yp = y;
                     int x0 = x;
                     int y0 = y;
-                    int c = 0;
+                    int lake = 0;
                     while(pixels[y0*sizex+x0]!=relief_beach(format) 
-                    && pixels[y0*sizex+x0]!=coast(format) && c < 500)
+                    && pixels[y0*sizex+x0]!=coast(format) && !lake)
                     {
+                        pixels[y0*sizex+x0] = river2(format);
                         int coeff[] = {-1,0,1};
-
-                        for(int i = 0; i<3; i++)
-                        {
-                            for(int j = 0; j<3; j++)
-                            {
-                                if (coeff[i] == 0 && coeff[j] == 0)
-                                    pixels[y0*sizex+x0] = river2(format);
-                                else if (pixels[(y0+coeff[j])*sizex+x0+coeff[i]]
-                                 != river2(format) &&
-                                         pixels[(y0+coeff[j])*sizex+x0+coeff[i]] 
-                                         != coast(format) && 
-                                         pixels[(y0+coeff[j])*sizex+x0+coeff[i]] 
-                                         != relief_beach(format) &&
-                                         pixels[(y0+coeff[j])*sizex+x0+coeff[i]] 
-                                         != mountains(format) &&
-                                         pixels[(y0+coeff[j])*sizex+x0+coeff[i]] 
-                                         != relief_mountains(format) &&
-                                         pixels[(y0+coeff[j])*sizex+x0+coeff[i]] 
-                                         != mid_mountains(format))
-                                    pixels[(y0+coeff[j])*sizex+x0+coeff[i]] 
-                                        = river1(format);
-                            }
-                        }
                         
                         int minx = x0;
                         int miny = y0;
@@ -236,11 +213,10 @@ void draw_riviere2(SDL_Surface* image, SDL_Surface* perlin, struct options* opt)
                         SDL_GetRGB(cur2,format,&r2,&g2,&b2);
                         if (r2<min_val)
                         {
-                            //printf("%d, %d, %d, %d\n\n",opt,x0,y0,r2);
-                            //flooding(image,perlin,opt,x0,y0,r2+2,0);
+                            flooding(image,perlin,opt,x0,y0,r2+2,0);
+                            lake = 1;
                             break;
                         }
-                        //algo flooding 
                         xp = x0;
                         yp = y0;
                         
