@@ -94,6 +94,7 @@
     <property name="can-focus">False</property>
     <property name="modal">True</property>
     <property name="window-position">center-always</property>
+    <property name="icon">src/BlendURMAP.png</property>
     <child>
       <object class="GtkBox">
         <property name="visible">True</property>
@@ -298,7 +299,7 @@
                   </packing>
                 </child>
                 <child>
-                  <!-- n-columns=2 n-rows=10 -->
+                  <!-- n-columns=2 n-rows=11 -->
                   <object class="GtkGrid">
                     <property name="width-request">200</property>
                     <property name="height-request">200</property>
@@ -363,7 +364,7 @@
                       <object class="GtkLabel" id="Label2">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
-                        <property name="label" translatable="yes">Width</property>
+                        <property name="label" translatable="yes">Size (Pixels)</property>
                         <style>
                           <class name="label"/>
                         </style>
@@ -600,7 +601,7 @@
                           <object class="GtkImage">
                             <property name="visible">True</property>
                             <property name="can-focus">False</property>
-                            <property name="pixbuf">translate.png</property>
+                            <property name="pixbuf">src/translate.png</property>
                           </object>
                         </child>
                       </object>
@@ -608,6 +609,27 @@
                         <property name="left-attach">0</property>
                         <property name="top-attach">9</property>
                       </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="help_button">
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="receives-default">True</property>
+                        <child>
+                          <object class="GtkImage">
+                            <property name="visible">True</property>
+                            <property name="can-focus">False</property>
+                            <property name="stock">gtk-find</property>
+                          </object>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="left-attach">0</property>
+                        <property name="top-attach">10</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <placeholder/>
                     </child>
                     <child>
                       <placeholder/>

@@ -30,6 +30,7 @@ typedef struct UserInterface
   GtkButton* render3d;
   GtkButton* generate_button;
   GtkButton* export_map;
+  GtkButton* help;
   //GtkButton* load_button;
   // Biome Tweaks
   GtkAdjustment* beach;
@@ -57,6 +58,7 @@ typedef struct UserInterface
   GtkSpinButton* spb_savanna;
   GtkSpinButton* spb_snow;
   GtkSpinButton* spb_swamp;
+
 
   struct current_map* current_map;
   struct available* available;
@@ -183,6 +185,8 @@ void on_generate_button_clicked(GtkButton *button, gpointer user_data)
     return;
   }
 
+
+
   struct options* opt_alt = options_alt_3d();
   struct options* opt_temp = options_temp_3d();
   struct options* opt_hum = options_alt_3d();
@@ -242,6 +246,8 @@ void on_generate_button_clicked(GtkButton *button, gpointer user_data)
   set_image(app->ui.image,"tmp/map.png");
   app->ui.current_map = current_map;
   //if statement for 3D gen
+
+
 }
 
 void on_render_2D_clicked(GtkButton* button, gpointer user_data)
@@ -275,6 +281,8 @@ void refresh(GtkButton *button, gpointer user_data)
     gtk_widget_destroy (dialog);
     return;
   }
+
+  
 
   if(app->ui.current_map == NULL)
     return;
@@ -493,6 +501,16 @@ void on_change_language_button(GtkButton *button, gpointer user_data)
     }
 }
 
+void show_help(GtkButton *button, gpointer user_data) 
+{
+  int er = system("firefox https://blendurmap.wixsite.com/website");
+  if(er<0)
+    return;
+  printf("\e[1;1H\e[2J");
+}
+
+
+
 int main()
 {
   //Nothing to see yet !
@@ -569,6 +587,7 @@ int main()
   GtkSpinButton* spb_snow = GTK_SPIN_BUTTON(gtk_builder_get_object(builder,"snow"));
   GtkSpinButton* spb_swamp = GTK_SPIN_BUTTON(gtk_builder_get_object(builder,"swamp"));
 
+  GtkButton* help = GTK_BUTTON(gtk_builder_get_object(builder,"help_button"));
   GtkButton* change_language_button = GTK_BUTTON(gtk_builder_get_object(builder,"change_language_button"));
 
   struct available* a = malloc(sizeof(struct available));
@@ -627,6 +646,8 @@ int main()
                 .spb_savanna = spb_savanna,
                 .spb_snow = spb_snow,
                 .spb_swamp = spb_swamp,
+                .help = help,
+
 
                 .current_map = NULL,
                 .available = a,
@@ -644,6 +665,7 @@ int main()
   g_signal_connect(render2d, "clicked", G_CALLBACK(on_render_2D_clicked),&app);
   g_signal_connect(render3d, "clicked", G_CALLBACK(on_render_3D_clicked),&app);
   g_signal_connect(export_map, "clicked", G_CALLBACK(export_files),&app);
+  g_signal_connect(help, "clicked", G_CALLBACK(show_help),&app);
 
   g_signal_connect(island, "toggled", G_CALLBACK(refresh_preset),&app);
   g_signal_connect(continent, "toggled", G_CALLBACK(refresh_preset),&app);

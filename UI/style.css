@@ -157,3 +157,10 @@
     background-color: #d3d3d3;
     font: 18px "Fredoka Light","Serif";
 }
+
+.help
+{
+    border: 4px double black;
+    color : whitesmoke;
+    font: 18px "Fredoka Light","Serif";
+}

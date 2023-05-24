@@ -35,7 +35,6 @@ struct current_map* exec_ui(int seed,
     }
     if(rivers == 1)
         riv = 1;
-    printf("%d / %d\n",rivers,riv);
     if(props == 1)
         prop = 1;
 
@@ -70,12 +69,14 @@ struct current_map* exec_ui(int seed,
         show = 0;
         print = 0;
     }
+
     printf("\e[1;1H\e[2J");
     printf("[            ]\nGenerate Perlin Noise\n");
 
     struct map* perlin = perlin_generate(seed,opt_alt);
 
     gtk_adjustment_set_value(seed_adj, perlin->seed);
+
 
     printf("\e[1;1H\e[2J");
     printf("[//          ]\nGenerate Simplex Noise\n");
@@ -93,6 +94,7 @@ struct current_map* exec_ui(int seed,
         apply_island(simplex, opt_alt);
     }
 
+
     printf("\e[1;1H\e[2J");
     printf("[////        ]\nApply Biome\n");
 
@@ -102,6 +104,7 @@ struct current_map* exec_ui(int seed,
     cur->perlin = perlin->map;
     cur->simplex = simplex->map;
     cur->ds = ds;
+    
 
     printf("\e[1;1H\e[2J");
     printf("[//////      ]\nSave Map\n");
@@ -120,11 +123,14 @@ struct current_map* exec_ui(int seed,
     if(is_3d)
         export_3d_map(perlin, map,"tmp/map.OBJ");
 
+
     printf("\e[1;1H\e[2J");
     printf("[////////    ]\nCreate Chunks\n");
 
     struct chunk **chunk_map = define_chunk(perlin->map,
             simplex->map,opt_alt,t);
+
+
     if(prop)
     {
         printf("\e[1;1H\e[2J");
@@ -149,6 +155,9 @@ struct current_map* exec_ui(int seed,
         save_to_png(map,"tmp/chunk.png");
     }
     save_to_png(map,"tmp/options.png");
+
+
+
     printf("\e[1;1H\e[2J");
     printf("[////////////]\nComplete\n");
     if(print)
