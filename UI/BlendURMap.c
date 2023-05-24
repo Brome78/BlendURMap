@@ -75,7 +75,7 @@ typedef struct
 const StringEntry strings_en[] = 
 {
     {"Label1", "Generation options"},
-    {"Label2", "Width"},
+    {"Label2", "Size (Pixels)"},
     {"Label3", "Continent Generation"},
     {"Label4", "Biome Tweaking"},
     {"Label5", "Display"},
@@ -84,7 +84,7 @@ const StringEntry strings_en[] =
     {"Label8", "Rivers"},
     {"Label9", "Villages"},
     {"Label10", "Export to 3D"},
-    {"Label11", "Exportation Mindustry"},
+    {"Label11", "Export to Mindustry"},
     {"Label12", "Height Tweaks"},
     {"Label13", "Deep ocean"},
     {"Label14", "Ocean"},
@@ -100,6 +100,8 @@ const StringEntry strings_en[] =
     {"Label24", "Savanna"},
     {"Label25", "Desert"},
     {"Label26", "Swamp"},
+    {"Label27", "Classic Generation"},
+    {"Label28", "Mountains Generation"},
     {"generate", "Generate"},
     {"render_in_2D", "Render in 2D"},
     {"export_map", "Export Map"},
@@ -110,7 +112,7 @@ const StringEntry strings_en[] =
 const StringEntry strings_fr[] = 
 {
     {"Label1", "Options de génération"},
-    {"Label2", "Largeur"},
+    {"Label2", "Taille (Pixels)"},
     {"Label3", "Génération d'un continent"},
     {"Label4", "Ajustements du biome"},
     {"Label5", "Affichage"},
@@ -135,6 +137,8 @@ const StringEntry strings_fr[] =
     {"Label24", "Savane"},
     {"Label25", "Désert"},
     {"Label26", "Marais"},
+    {"Label27", "Génération classique"},
+    {"Label28", "Génération de montagne"},
     {"generate", "Générer"},
     {"render_in_2D", "Rendu en 2D"},
     {"export_map", "Exporter la carte"},
