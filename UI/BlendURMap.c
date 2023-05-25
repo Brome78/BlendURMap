@@ -596,7 +596,7 @@ void on_change_language_button(GtkButton *button, gpointer user_data)
 
 void show_help(GtkButton *button, gpointer user_data) 
 {
-  int er = system("firefox https://blendurmap.wixsite.com/website");
+  int er = system("firefox https://blendurmap.wixsite.com/website/faq");
   if(er<0)
     return;
   printf("\e[1;1H\e[2J");
