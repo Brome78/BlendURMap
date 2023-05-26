@@ -378,7 +378,14 @@ void export(char* source, GtkWindow* window)
   {
     GtkFileChooser *chooser = GTK_FILE_CHOOSER (dialog);
     filename = gtk_file_chooser_get_filename (chooser);
-    save_to_png(load_image(source),filename);
+    if(source == "tmp/map.OBJ")
+    {
+      int e = system("cp tmp/map.OBJ .");
+      if(e<0)
+        printf("error export");
+    }
+    else
+      save_to_png(load_image(source),filename);
     gchar string[200];
     g_snprintf(string,200,"Export :\n%s\nSuccess.",filename);
     GtkWidget* loaded = gtk_message_dialog_new(
