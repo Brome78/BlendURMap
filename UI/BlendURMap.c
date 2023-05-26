@@ -6,6 +6,7 @@
 
 #include "Utils/generate.h"
 #include "Utils/resize.h"
+#include "../Generation/Utils/utils.h"
 #include "../Generation/Options/exec_export.h"
 #include "../Generation/Utils/options_map.h"
 #include "../Generation/Utils/threshold.h"
@@ -626,6 +627,21 @@ int main()
 {
   //Nothing to see yet !
   gtk_init(NULL,NULL);
+
+  //Mindustry color export chooser
+  /*
+  SDL_Surface* color_m = load_image("color.png");
+  Uint32* pixels = color_m->pixels;
+  SDL_PixelFormat* f = color_m->format;
+
+  Uint8 r,g,b;
+  for (int i = 0; i<11;i++)
+  {
+    SDL_GetRGB(pixels[i],f,&r,&g,&b);
+    printf("%d %d %d\n",r,g,b);
+  }*/
+  
+
 
   // Set default language
   set_language("en_US");
